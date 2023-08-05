@@ -1,12 +1,14 @@
 
-import useAxios from "../../hooks/use-axios";
+// import useAxios from "../../hooks/use-axios";
 
-import httpClient from "../../lib/axios-instance";
+import { Category } from "@/types/category.interface"
 
+// import httpClient from "../../lib/axios-instance";
+//
 // const getCategoriesUrl = 'category/get-categories'
-
-
-
+//
+//
+//
 // export const GetCategories = () => {
 //     const { 
 //         response: getCategoriesResponse,
@@ -27,7 +29,7 @@ import httpClient from "../../lib/axios-instance";
 // }
 
 
-export async function GetCategories() {
+export async function GetCategories(): Promise<Category []> {
   const res = await fetch('http://localhost:3000/category/get-categories')
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.

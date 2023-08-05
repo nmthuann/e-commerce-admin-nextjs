@@ -19,14 +19,15 @@ interface CategoriesClientProps {
 export const CategoriesClient: React.FC<CategoriesClientProps> = ({
   data
 }) => {
-  let category_id  = useParams()
+  const parmas = useParams();
   const router = useRouter();
 
+  console.log("CategoriesClient", parmas)
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title={`Categories (${data.length})`} description="Manage categories for your store" />
-        <Button onClick={() => router.push(`/category/${category_id.category_id.length}`)}>
+        <Button onClick={() => router.push(`/category/create`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>

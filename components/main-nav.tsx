@@ -23,11 +23,11 @@ export function MainNav({
       label: 'Categories',
       active: pathname === `/category`,
     },
-    // {
-    //   href: `/${params}/discount`,
-    //   label: 'Discounts',
-    //   active: pathname === `/${params}/discount`,
-    // },
+    {
+      href: `/discount`,
+      label: 'Discounts',
+      active: pathname === `/discount`,
+    },
     // {
     //   href: `/${params}/sizes`,
     //   label: 'Sizes',
@@ -38,11 +38,11 @@ export function MainNav({
     //   label: 'Colors',
     //   active: pathname === `/${params}/colors`,
     // },
-    // {
-    //   href: `/${params}/product`,
-    //   label: 'Products',
-    //   active: pathname === `/${params}/product`,
-    // },
+    {
+      href: `/product`,
+      label: 'Products',
+      active: pathname === `/product`,
+    },
     // {
     //   href: `/${params.storeId}/order`,
     //   label: 'Orders',

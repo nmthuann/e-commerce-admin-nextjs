@@ -1,15 +1,15 @@
 // import prismadb from "@/lib/prismadb";
 
 import { GetCategoryById } from "@/actions/category/get-category";
-import { CategoryForm } from "./components/category-form";
+import { CategoryForm } from "@/app/(dashboard)/category/[category_id]/components/category-form";
+import { useParams } from "next/navigation";
 // export const revalidate = 0;
-const CategoryPage = async ({
-  params
-}: {
-  params: { category_id: number }
-}) => {
+const CategoryPage = async (
+ {params}: {params: { category_id: number}}
+) => {
+  // const params = useParams();
   const category = await GetCategoryById(params.category_id);
-  console.log(params.category_id) // { params: { category_id: 'new' }, searchParams: {} }
+  console.log(":::category/:id/page.tsx:::",params.category_id) // { params: { category_id: 'new' }, searchParams: {} }
 
   // const billboards = await prismadb.billboard.findMany({
   //   where: {

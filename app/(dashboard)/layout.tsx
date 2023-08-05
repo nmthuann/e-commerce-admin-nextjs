@@ -1,15 +1,13 @@
 import { redirect } from 'next/navigation';
-
-
 import Navbar from '@/components/navbar'
 
 
 export default async function DashboardLayout({
   children,
-  //params
+  // params
 }: {
   children: React.ReactNode
-//   params: { storeId: string }
+  // params: any
 }) {
   
 
@@ -23,7 +21,7 @@ export default async function DashboardLayout({
     //     }
     // }
 
-
+  // console.log("layout - dash",params)
 
 //   if (!store) {
 //     redirect('/');
@@ -31,6 +29,7 @@ export default async function DashboardLayout({
 
   return (
     <>
+    
       <Navbar />
       {children}
     </>

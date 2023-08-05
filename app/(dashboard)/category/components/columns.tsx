@@ -8,7 +8,8 @@ export type CategoryColumn = {
   category_id: number;
   category_name: string;
   description: string;
-  //createdAt: Date;
+  category_url: string;
+  createdAt: string;
 }
 
 export const columns: ColumnDef<CategoryColumn>[] = [
@@ -20,12 +21,16 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   {
     accessorKey: "category_name",
     header: "Name",
-    cell: ({ row }) => row.original.category_name,
+    // cell: ({ row }) => row.original.category_name,
   },
   {
     accessorKey: "description",
     header: "Description",
   },
+  // {
+  //   accessorKey: " createdAt",
+  //   header: " Created At",
+  // },
   {
     id: "actions",
     cell: ({ row }) => <CellAction data={row.original} />

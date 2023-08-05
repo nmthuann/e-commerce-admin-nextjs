@@ -1,4 +1,5 @@
 "use client"
+import { ToastProvider } from '@/providers/toast-provider';
 import './globals.css'
 import { Inter } from 'next/font/google'
 // import { ClerkProvider } from '@clerk/nextjs'
@@ -7,6 +8,7 @@ import { Inter } from 'next/font/google'
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useEffect } from "react";
+// import { ModalProvider } from '@/providers/modal-provider';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -48,8 +50,8 @@ export default function RootLayout({
   return (
       <html lang="en">
         <body className={inter.className}>
-          {/* <ToastProvider></ToastProvider>
-          <ModalProvider></ModalProvider> */}
+          <ToastProvider></ToastProvider>
+          {/* <ModalProvider></ModalProvider> */}
           {children}
         </body>
       </html>

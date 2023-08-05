@@ -2,6 +2,8 @@
 import { redirect } from "next/navigation";
 
 import { MainNav } from "@/components/main-nav";
+import { Search } from "@/components/search-nav";
+import { UserNav } from "@/components/user-nav";
 // import { ThemeToggle } from "@/components/theme-toggle";
 
 
@@ -30,6 +32,10 @@ const Navbar = async () => {
         <div className="ml-auto flex items-center space-x-4">
           {/* <ThemeToggle /> */}
           {/* <UserButton afterSignOutUrl="/" /> */}
+          
+              <Search />
+              <UserNav />
+    
         </div>
       </div>
     </div>

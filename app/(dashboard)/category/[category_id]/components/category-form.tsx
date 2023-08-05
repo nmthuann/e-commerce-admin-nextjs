@@ -25,6 +25,7 @@ import { Heading } from "@/components/ui/heading"
 import { AlertModal } from "@/components/modals/alert-modal"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Category } from "@/types/category.interface"
+import { useOrigin } from "@/hooks/use-origin"
 
 const formSchema = z.object({
   category_name: z.string().min(2),
@@ -34,7 +35,7 @@ const formSchema = z.object({
 type CategoryFormValues = z.infer<typeof formSchema>
 
 interface CategoryFormProps {
-  initialData: Category;
+  initialData: Category | null;
   // description: Billboard[];
 };
 
@@ -44,6 +45,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
+
+
+  const origin = useOrigin();
+  const baseUrl = `${origin}`
+  const URL=`${process.env.NEXT_PUBLIC_API_URL}/category`
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,7 +61,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 
   const form = useForm<CategoryFormValues>({
     resolver: zodResolver(formSchema),  // useState
-    defaultValues: {
+    defaultValues: initialData || {
       category_name: '',
       description: '',
     }
@@ -65,9 +71,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        await axios.put(`${params}`, data);
+        console.log(`${URL}}/update/${params.category_id}`)
+        await axios.put(`${URL}/update/${parseInt(params.category_id as string)}`, data);
       } else {
-        await axios.post(`/create`, data);
+        console.log("${baseUrl}",baseUrl)
+        await axios.post(`${URL}/create`, data);
       }
       router.refresh();
       router.push(`/category`);
@@ -126,7 +134,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Category name" {...field} />
+                    <Input disabled={loading} placeholder="Category name"   {...field}  />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,17 +148,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                   <FormLabel>Description</FormLabel>
                   {/* <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}> */}
                     <FormControl>
-                       <Input disabled={loading} placeholder="Description" {...field} />
-                      {/* <SelectTrigger>
-                        <SelectValue defaultValue={field.value} placeholder="Select a billboard" />
-                      </SelectTrigger> */}
+                      <Input disabled={loading} placeholder="Description" {...field}  />
                     </FormControl>
-                    {/* <SelectContent>
-                      {billboards.map((billboard) => (
-                        <SelectItem key={billboard.id} value={billboard.id}>{billboard.label}</SelectItem>
-                      ))}
-                    </SelectContent> */}
-                  {/* </Select> */}
                   <FormMessage />
                 </FormItem>
               )}
