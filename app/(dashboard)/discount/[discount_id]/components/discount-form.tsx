@@ -164,7 +164,7 @@ export const DiscountForm: React.FC<DiscountFormProps> = ({
                         format(field.value, "PPP")
                       ) : (
                         <span>
-                        {field.value.toString()}
+                        {String(field.value)}
                         </span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />

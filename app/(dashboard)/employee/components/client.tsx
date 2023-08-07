@@ -9,13 +9,13 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 
-import { ProductColumn, columns } from "./columns";
+import { EmployeeColumn, columns } from "./columns";
 
-interface ProductsClientProps {
-  data: ProductColumn[];
+interface EmployeesClientProps {
+  data: EmployeeColumn[];
 };
 
-export const ProductsClient: React.FC<ProductsClientProps> = ({
+export const EmployeesClient: React.FC<EmployeesClientProps> = ({
   data
 }) => {
   // const params = useParams();
@@ -24,16 +24,16 @@ export const ProductsClient: React.FC<ProductsClientProps> = ({
   return (
     <> 
       <div className="flex items-center justify-between">
-        <Heading title={`Products (${data.length})`} description="Manage products for your store" />
-        <Button onClick={() => router.push(`/product/create`)}>
+        <Heading title={`Employees (${data.length})`} description="Manage Employees for your store" />
+        <Button onClick={() => router.push(`/Employee/create`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="product_name" columns={columns} data={data} />
-      <Heading title="API" description="API Calls for Products" />
+      <DataTable searchKey="employee_name" columns={columns} data={data} />
+      <Heading title="API" description="API Calls for Employees" />
       <Separator />
-      <ApiList entityName="product" entityIdName="product_id" />
+      <ApiList entityName="employee" entityIdName="employee_id" />
     </>
   );
 };

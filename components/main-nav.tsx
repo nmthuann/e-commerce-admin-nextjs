@@ -43,16 +43,31 @@ export function MainNav({
       label: 'Products',
       active: pathname === `/product`,
     },
-    // {
-    //   href: `/${params.storeId}/order`,
-    //   label: 'Orders',
-    //   active: pathname === `/${params}/order`,
-    // },
-    // {
-    //   href: `/${params}/settings`,
-    //   label: 'Settings',
-    //   active: pathname === `/${params}/settings`,
-    // },
+    {
+      href: `/task`,
+      label: 'Tasks',
+      active: pathname === `/task`,
+    },
+    {
+      href: `/employee`,
+      label: 'Employees',
+      active: pathname === `/employee`,
+    },
+    {
+      href: `/customer`,
+      label: 'Customers',
+      active: pathname === `/customer`,
+    },
+    {
+      href: `/order`,
+      label: 'Orders',
+      active: pathname === `/order`,
+    },
+    {
+      href: `/setting`,
+      label: 'Settings',
+      active: pathname === `/setting`,
+    },
   ]
 
   return (

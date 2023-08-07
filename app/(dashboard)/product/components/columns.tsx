@@ -36,12 +36,12 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: "Discount",
   },
   {
-    accessorKey: "price ($)",
-    header: "Price",
+    accessorKey: "price",
+    header: "Price ($)",
   },
   {
-    accessorKey: "unit_price ($)",
-    header: "Unit Price",
+    accessorKey: "unit_price",
+    header: "Unit Price ($)",
   },
   {
     accessorKey: "category",
@@ -63,7 +63,8 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     accessorKey: "warranty_time",
-    header: "Warranty",
+    header: "Warranty (m)",
+    
   },
   {
     id: "actions",

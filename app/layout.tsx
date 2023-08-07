@@ -5,9 +5,11 @@ import { Inter } from 'next/font/google'
 // import { ClerkProvider } from '@clerk/nextjs'
 // import { ModalProvider } from '@/providers/modal-provider'
 // import { ToastProvider } from '@/providers/toast-provider'
-import { redirect } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { redirect, useRouter } from 'next/navigation';
+// import { useRouter } from 'next/router';
 import { useEffect } from "react";
+import { LoginForm } from './auth/(routes)/login/components/user-auth-form';
+import Footer from '@/components/footer';
 // import { ModalProvider } from '@/providers/modal-provider';
 
 
@@ -25,14 +27,16 @@ export default function RootLayout({
 }) {
 
   // const router = useRouter();
+  
   // const token = localStorage.getItem('token');
   //   if (!token) {
   //     redirect('/auth/login');
   //   }
-  // useEffect(() => {
-  // // Perform localStorage action
-  //   const token = localStorage.getItem('access_token')
-  // }, [])
+  //useEffect(() => {
+  // Perform localStorage action
+    
+   
+  //}, [])
 
   //  const token = localStorage.getItem('token')
   //   if (!token) {
@@ -41,11 +45,19 @@ export default function RootLayout({
   //     //router.push('/auth/login');
       
   //   }
+
+
+  //  chạy dc đoạn này
   // if (typeof window !== 'undefined') {
   // // Perform localStorage action
-   
+  //  const token = localStorage.getItem('access_token')
+  //     if (!token) {
+  //       router.push('/auth/login');
+  //   }
   // }
-  // router.push('/auth/login');
+
+
+  
 
   return (
       <html lang="en">
@@ -53,7 +65,11 @@ export default function RootLayout({
           <ToastProvider></ToastProvider>
           {/* <ModalProvider></ModalProvider> */}
           {children}
+          {/* <LoginForm   /> */}
+      
+    
         </body>
+              {/* <Footer/>  */}
       </html>
   )
 }

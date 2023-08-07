@@ -48,9 +48,10 @@ const formSchema = z.object({
 type ProductFormValues = z.infer<typeof formSchema>
 
 interface ProductFormProps {
-  initialData: Product & {
+  initialData: Product &
+  {
     images: Image []
-  } | null;
+  } | null | undefined;
   categories: Category[],
   discounts: Discount[];
 };
@@ -58,7 +59,8 @@ interface ProductFormProps {
 export const ProductForm: React.FC<ProductFormProps> = ({
   initialData,
   categories,
-  discounts
+  discounts,
+  // Images
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -79,7 +81,7 @@ const origin = useOrigin();
     ...initialData,
     price: parseFloat(String(initialData?.price)),
     unit_price: parseFloat(String(initialData?.unit_price)),
-    category_id: parseInt(String(initialData?.__category__.category_id)),
+    //category_id: parseInt(String(initialData?.__category__.category_id)) || undefined,
     quantity: parseFloat(String(initialData?.quantity)),
   } : {
     product_name: '',
@@ -156,6 +158,7 @@ const origin = useOrigin();
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+
           <FormField
             control={form.control}
             name="images"
@@ -163,10 +166,27 @@ const origin = useOrigin();
               <FormItem>
                 <FormLabel>Images</FormLabel>
                 <FormControl>
-                  <ImageUpload 
-                    value={field.value.map((image) => image.url)} 
+                  {/* <ImageUpload 
+                    value = {
+                      field.value?.map((image) => image.url ) || []
+                    } 
                     disabled={loading} 
-                    onChange={(url) => field.onChange([...field.value, { url }])}
+                    onChange={(url) => field.onChange([field.value, { url }])}
+                    onRemove={(url) => field.onChange([field.value.filter((current) => current.url !== url)])}
+                  /> */}
+
+                   <ImageUpload 
+                    value={field.value?.map((image) => image.url) || []  } 
+                    disabled={loading} 
+                    // onChange={(url) => field.onChange([...field.value, { url }])}
+                    onChange={(url) => {
+                      if (Array.isArray(field.value)) {
+                        field.onChange([...field.value, { url }]);
+                      } else {
+                        // If field.value is not an array, handle it appropriately, for example:
+                        field.onChange([{ url }]);
+                      }
+                    }}
                     onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                   />
                 </FormControl>
@@ -174,6 +194,8 @@ const origin = useOrigin();
               </FormItem>
             )}
           />
+
+
           <div className="md:grid md:grid-cols-3 gap-8">
             <FormField
               control={form.control}
@@ -225,8 +247,8 @@ const origin = useOrigin();
                   <Select 
                     disabled={loading} 
                     onValueChange={field.onChange} 
-                    value={field.value.toString()} 
-                    defaultValue={field.value.toString()}>
+                    value={String(field.value) || undefined} 
+                    defaultValue={String(field.value) }>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue defaultValue={field.value} placeholder="Select a category" />
