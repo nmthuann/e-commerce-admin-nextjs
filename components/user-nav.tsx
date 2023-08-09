@@ -21,7 +21,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+            <AvatarImage src="https://firebasestorage.googleapis.com/v0/b/tttn-donghoonline.appspot.com/o/avatar%2Favatar.jpg?alt=media&token=1849d191-8530-42cc-b4bf-093f3aa1acc2" alt="@shadcn" />
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>
         </Button>

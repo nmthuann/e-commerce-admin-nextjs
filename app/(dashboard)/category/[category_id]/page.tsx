@@ -8,7 +8,11 @@ const CategoryPage = async (
  {params}: {params: { category_id: number}}
 ) => {
   // const params = useParams();
-  const category = await GetCategoryById(params.category_id);
+  let category  = null
+  if((params.category_id).toString() != 'create'){
+    category = await GetCategoryById(params.category_id);
+  } 
+  
   console.log(":::category/:id/page.tsx:::",params.category_id) // { params: { category_id: 'new' }, searchParams: {} }
 
   // const billboards = await prismadb.billboard.findMany({

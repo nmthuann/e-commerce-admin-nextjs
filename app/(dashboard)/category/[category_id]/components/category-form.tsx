@@ -26,6 +26,7 @@ import { AlertModal } from "@/components/modals/alert-modal"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Category } from "@/types/category.interface"
 import { useOrigin } from "@/hooks/use-origin"
+import { Textarea } from "@/components/ui/textarea"
 
 const formSchema = z.object({
   category_name: z.string().min(2),
@@ -74,8 +75,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         console.log(`${URL}}/update/${params.category_id}`)
         await axios.put(`${URL}/update/${parseInt(params.category_id as string)}`, data);
       } else {
-        console.log("${baseUrl}",baseUrl)
-        await axios.post(`${URL}/create`, data);
+        console.log(`${baseUrl}`,baseUrl)
+        await axios.post(`/api/category`, data);
       }
       router.refresh();
       router.push(`/category`);
@@ -148,7 +149,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                   <FormLabel>Description</FormLabel>
                   {/* <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}> */}
                     <FormControl>
-                      <Input disabled={loading} placeholder="Description" {...field}  />
+                      {/* <Input disabled={loading} placeholder="Description" {...field}  /> */}
+                      <Textarea disabled={loading} placeholder="Description" {...field} />
                     </FormControl>
                   <FormMessage />
                 </FormItem>

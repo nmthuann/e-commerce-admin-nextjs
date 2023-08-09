@@ -11,6 +11,7 @@ import { ApiAlert } from "@/components/ui/api-alert";
 
 import { columns, DiscountColumn } from "./columns";
 import { ApiList } from "@/components/ui/api-list";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface DiscountsClientProps {
   data: DiscountColumn[];
@@ -27,9 +28,22 @@ export const DiscountsClient: React.FC<DiscountsClientProps> = ({
     <>
       <div className="flex items-center justify-between">
         <Heading title={`Discounts (${data.length})`} description="Manage discounts for your store" />
-        <Button onClick={() => router.push(`/discount/create`)}>
-          <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              {/* Hover */}
+              <Button onClick={() => router.push(`/discount/create`)}>
+                <Plus className="mr-2 h-4 w-4" /> Add New
+              </Button>
+
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Add New Discount</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        
       </div>
       <Separator />
       <DataTable searchKey="description" columns={columns} data={data} />
