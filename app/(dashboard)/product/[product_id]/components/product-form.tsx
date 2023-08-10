@@ -40,7 +40,7 @@ const formSchema = z.object({
   quatity: z.coerce.number().min(1),
   category_id: z.coerce.number().min(1),
   brand: z.string().min(1),
-  orgin: z.string().min(1),
+  origin: z.string().min(1),
   isDiscount: z.boolean().default(false).optional(),
   isStatus: z.boolean().default(false).optional()
 });
@@ -91,7 +91,7 @@ const origin = useOrigin();
     category_id: 1,
     quantity: 0,
     brand: '',
-    orgin: '',
+    origin: '',
     isDiscount: false,
     isStatus: false,
   }
@@ -105,9 +105,9 @@ const origin = useOrigin();
     try {
       setLoading(true);
       if (initialData) {
-        await axios.put(`${URL}/update/${parseInt(params.product_id as string)}`, data);
+        await axios.put(`/api/product/update/${parseInt(params.product_id as string)}`, data);
       } else {
-        await axios.post(`${URL}/create`, data);
+        await axios.post(`/api/product/create`, data);
       }
       router.refresh();
       router.push(`/product`);
@@ -197,6 +197,7 @@ const origin = useOrigin();
 
 
           <div className="md:grid md:grid-cols-3 gap-8">
+            
             <FormField
               control={form.control}
               name="product_name"
@@ -210,6 +211,8 @@ const origin = useOrigin();
                 </FormItem>
               )}
             />
+
+            {!initialData && (
             <FormField
               control={form.control}
               name="price"
@@ -223,7 +226,9 @@ const origin = useOrigin();
                 </FormItem>
               )}
             />
+            )}
 
+            {!initialData && (
             <FormField
               control={form.control}
               name="unit_price"
@@ -237,7 +242,10 @@ const origin = useOrigin();
                 </FormItem>
               )}
             />
+            )}
 
+
+            {!initialData && (
             <FormField
               control={form.control}
               name="category_id"
@@ -247,7 +255,7 @@ const origin = useOrigin();
                   <Select 
                     disabled={loading} 
                     onValueChange={field.onChange} 
-                    value={String(field.value) || undefined} 
+                    value={String(field.value)} 
                     defaultValue={String(field.value) }>
                     <FormControl>
                       <SelectTrigger>
@@ -258,7 +266,7 @@ const origin = useOrigin();
                       {categories.map((category) => (
                         <SelectItem 
                             key={category.category_id} 
-                            value={category.category_id.toString()}>{category.category_name}
+                            value={String(category.category_id)}>{category.category_name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -267,6 +275,7 @@ const origin = useOrigin();
                 </FormItem>
               )}
             />
+            )}
 
             <FormField
               control={form.control}
@@ -284,12 +293,12 @@ const origin = useOrigin();
 
              <FormField
               control={form.control}
-              name="orgin"
+              name="origin"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Orgin</FormLabel>
+                  <FormLabel>Origin</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="orgin" {...field} />
+                    <Input disabled={loading} placeholder="origin" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -6,6 +6,7 @@ export async function GetDiscounts(): Promise<Discount[]> {
     // const url = `${URL}${discount_id}`;
     const options = {
       method: 'GET', // Chỉ định phương thức là GET
+        next: { revalidate: 0 },
     };
 
     const res = await fetch(URL, options);

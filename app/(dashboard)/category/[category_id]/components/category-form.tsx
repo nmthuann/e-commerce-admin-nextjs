@@ -50,7 +50,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 
   const origin = useOrigin();
   const baseUrl = `${origin}`
-  const URL=`${process.env.NEXT_PUBLIC_API_URL}/category`
+  // const URL=`${process.env.NEXT_PUBLIC_API_URL}/category`
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -72,10 +72,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        console.log(`${URL}}/update/${params.category_id}`)
-        await axios.put(`${URL}/update/${parseInt(params.category_id as string)}`, data);
+        // console.log(`${URL}}/update/${params.category_id}`)
+        await axios.put(`/api/category/${params.category_id}`, data);
       } else {
-        console.log(`${baseUrl}`,baseUrl)
+        // console.log(`${baseUrl}`,baseUrl)
         await axios.post(`/api/category`, data);
       }
       router.refresh();
@@ -91,7 +91,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`${params.category_id}`);
+      await axios.delete(`/api/category/${params.category_id}`);
       router.refresh();
       router.push(`/category`);
       toast.success('Category deleted.');

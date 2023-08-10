@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -109,6 +110,8 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
+            <ChevronLeftIcon className="h-4 w-4" />
+            
           Previous
         </Button>
         <Button
@@ -117,7 +120,9 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
+          
           Next
+          <ChevronRightIcon className="h-4 w-4" />
         </Button>
       </div>
     </div>

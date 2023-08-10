@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server';
 const URL=`${process.env.NEXT_PUBLIC_API_URL}/category/create`
 export async function POST(
   req: Request,
-//   { params }: { params: { storeId: string } }
 ) {
   try {
     // const { userId } = auth(); // check token
@@ -28,11 +27,6 @@ export async function POST(
 
     //  call api in here
     const category= await axios.post(URL, {category_name, description});
-    // const res = {
-    //   c
-    //   category_name: category.category_name,
-    //   description: category.description
-    // }
     console.log("category:::::",category.data)
     return NextResponse.json(category.data);
   } catch (error) {
@@ -43,22 +37,13 @@ export async function POST(
 
 
 
-// export async function GET(
-// //   req: Request,
-// //   { params }: { params: { storeId: string } }
-// ) {
-//   try {
-//     // if (!params.storeId) {
-//     //   return new NextResponse("Store id is required", { status: 400 });
-//     // }
-
-//     const getUrl =`${process.env.NEXT_PUBLIC_API_URL}/category/get-categories`
-
-//     const categories = await axios.get(getUrl)
-  
-//     return NextResponse.json(categories);
-//   } catch (error) {
-//     console.log('[CATEGORIES_GET]', error);
-//     return new NextResponse("Internal error", { status: 500 });
-//   }
-// };
+export async function GET() {
+  try {
+    const getUrl =`${process.env.NEXT_PUBLIC_API_URL}/category/get-categories`
+    const categories = await axios.get(getUrl)
+    return NextResponse.json(categories.data);
+  } catch (error) {
+    console.log('[CATEGORIES_GET]', error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};

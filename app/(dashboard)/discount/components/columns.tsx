@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { CellAction } from "./cell-action"
 
 export type DiscountColumn = {
-  discount_id: number;
+  discount_id: string;
   description: string;
   expired: string;
   percent: number;

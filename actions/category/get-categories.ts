@@ -30,7 +30,11 @@ import { Category } from "@/types/category.interface"
 
 
 export async function GetCategories(): Promise<Category []> {
-  const res = await fetch('http://localhost:3000/category/get-categories')
+  const res = await fetch('http://localhost:3000/category/get-categories',
+  {
+    next: { revalidate: 0 },
+  }
+  )
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
  
@@ -39,6 +43,6 @@ export async function GetCategories(): Promise<Category []> {
     throw new Error('Failed to fetch data')
   }
  
-  return res.json()
+  return await res.json()
 }
 

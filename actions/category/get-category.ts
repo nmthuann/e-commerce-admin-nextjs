@@ -7,6 +7,7 @@ export async function GetCategoryById(category_id: number): Promise<Category> {
     const options = {
       method: 'GET', // Chỉ định phương thức là GET
       // Thêm các thông tin khác vào options nếu cần (headers, body, ...)
+      next: { revalidate: 0 },
     };
 
     const res = await fetch(url, options);

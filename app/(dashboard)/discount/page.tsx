@@ -11,11 +11,10 @@ const DiscountsPage = async (
 ) => {
     const discounts = await GetDiscounts();
     const formattedDiscounts: DiscountColumn[] = discounts.map((item: Discount) => ({
-        discount_id: item.discount_id,
+        discount_id: String(item.discount_id),
         description: item.description,
         expired: (item.expired).toString(),
         percent: item.percent,
-
     }));
 
     return (

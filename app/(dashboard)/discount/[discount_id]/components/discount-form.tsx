@@ -73,11 +73,11 @@ export const DiscountForm: React.FC<DiscountFormProps> = ({
     try {
       setLoading(true);
       if (initialData) {
-        console.log(`${URL}}/update/${params.discount_id}`)
-        await axios.put(`${URL}/update/${parseInt(params.discount_id as string)}`, data);
+        // console.log(`${URL}}/update/${params.discount_id}`)
+        await axios.put(`/api/discount/${params.discount_id}`, data);
       } else {
-        console.log("${baseUrl}",baseUrl)
-        await axios.post(`${URL}/create`, data);
+        // console.log(`${baseUrl}`,baseUrl)
+        await axios.post(`/api/discount`, data);
       }
       router.refresh();
       router.push(`/discount`);
@@ -92,7 +92,7 @@ export const DiscountForm: React.FC<DiscountFormProps> = ({
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`${URL}/delete/${parseInt(params.discount_id as string)}`);
+      await axios.delete(`/api/discount/${params.discount_id}`);
       router.refresh();
       router.push(`/discount`);
       toast.success('discount deleted.');

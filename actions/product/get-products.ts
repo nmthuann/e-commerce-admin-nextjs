@@ -10,13 +10,14 @@ export async function GetProducts(): Promise<Product[]> {
       // headers: {
       //   'Authorization': `Bearer ${token}`,
       // }
+      next: { revalidate: 0 },
     };
 
     const res = await fetch(URL, options);
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch data');
-    }
+    // if (!res.ok) {
+    //   throw new Error('Failed to fetch data');
+    // }
 
     // Xử lý kết quả từ res ở đây
     return res.json();

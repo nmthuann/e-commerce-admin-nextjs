@@ -7,6 +7,7 @@ export async function GetDiscountById(discount_id: number): Promise<Discount> {
     const url = `${URL}${discount_id}`;
     const options = {
       method: 'GET',
+        next: { revalidate: 0 },
     };
 
     const res = await fetch(url, options);

@@ -1,9 +1,10 @@
+// "use client"
 import { format } from "date-fns";
 
 // import prismadb from "@/lib/prismadb";
 import { formatter } from "@/lib/utils";
 
-import { EmployeesClient } from "./components/client";
+import { EmployeesClient } from "@/app/(dashboard)/employee/components/client";
 import { EmployeeColumn } from "./components/columns";
 import { GetEmployeeList } from "@/actions/employee/get-employees";
 

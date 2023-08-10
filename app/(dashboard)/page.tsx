@@ -4,13 +4,14 @@ import { Separator } from "@/components/ui/separator";
 // import { Overview } from "@/components/overview";
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GetTaskOrders } from "@/actions/order/get-task-order";
 import { GetTotalRevenue } from "@/actions/dashboard/get-total-revenue";
 import { CounttProductSold } from "@/actions/dashboard/count-product-sold";
 import { formatter } from "@/lib/utils";
 import { Overview } from "@/components/overview";
 import { getGraphRevenue } from "@/actions/dashboard/get-monthly-revenue";
+import { RecentSales } from "@/components/recent-sales";
 // import { getTotalRevenue } from "@/actions/get-total-revenue";
 // import { getSalesCount } from "@/actions/get-sales-count";
 // import { getGraphRevenue } from "@/actions/get-graph-revenue";
@@ -72,6 +73,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
             </CardContent>
           </Card>
         </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
@@ -80,6 +82,18 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({
             <Overview data={graphRevenue} />
           </CardContent>
         </Card>
+        <Card className="col-span-3">
+                  <CardHeader>
+                    <CardTitle>Recent Sales</CardTitle>
+                    <CardDescription>
+                      You made 265 sales this month.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <RecentSales />
+                  </CardContent>
+        </Card>
+        </div>
       </div>
     </div>
   );
