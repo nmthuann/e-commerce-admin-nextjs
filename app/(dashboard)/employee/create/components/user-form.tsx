@@ -33,17 +33,19 @@ type UserFormValues = z.infer<typeof userFormSchema>;
 
 interface UserFormProps {
   // ... (other props)
+  onConfirm: () => void;
 };
 
 export const UserForm: React.FC<UserFormProps> = ({
   // ... (other props)
+   onConfirm
 }) => {
   // ... (other state and variables)
 
   const router = useRouter();
 
   
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
     
 
@@ -63,9 +65,9 @@ export const UserForm: React.FC<UserFormProps> = ({
   const onSubmitUser = async (data: UserFormValues) => {
     try {
       setLoading(true);
-      await axios.post(`/api/employee`, data);
-      router.refresh();
-      router.push(`/employee`);
+      await axios.post(`/api/employee/create-user`, data);
+      // router.refresh();
+      router.push(`/employee/create/user-form`);
       toast.success('User created!.');
     } catch (error: any) {
       toast.error('Something went wrong.');
@@ -74,7 +76,18 @@ export const UserForm: React.FC<UserFormProps> = ({
     }
   };
 
+
+  //  // Call onSubmit when the form is submitted
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    // Your form submission logic
+
+    // Call the onSubmit prop
+    onConfirm();
+  };
+
   return (
+     <>
     <Form {...userForm}>
       <form onSubmit={userForm.handleSubmit(onSubmitUser)} className="space-y-8 w-full">
         <div className="md:grid md:grid-cols-3 gap-8">
@@ -207,5 +220,6 @@ export const UserForm: React.FC<UserFormProps> = ({
         </Button>
       </form>
     </Form>
+    </>
   );
 };

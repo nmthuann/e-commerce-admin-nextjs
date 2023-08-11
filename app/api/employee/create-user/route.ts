@@ -1,31 +1,39 @@
-import { Discount } from '@/types/discount.interface';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers'
 
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/employee/create/`
+const URL=`${process.env.NEXT_PUBLIC_API_URL}/user/create`
 export async function POST(
   req: Request
 ) {
     const cookieStore = cookies()
-    const email = cookieStore.get('email')
+    const email = cookieStore.get('email');
+
+    console.log('email',email);
+
     try {
 
     // const { userId } = auth(); // check token
 
     const body = await req.json();
     const data = {
-      employee_id: body.employee_id,
-      salary: body.salary,
-      position_id: body.position_id
+        first_name: body.first_name, 
+        last_name:  body.last_name, 
+        avatar_url: '',
+        gender: body.gender,
+        birthday: body.birthday,
+        address: body.address,
+        phone: body.phone,
+        account:  String(email)
     }
 
     //  call api in here
-    const employee = await axios.post(`${URL}${email}`, data);
+    const verify = await axios.post(URL, data);
+    // console.log("discount:::::",discount.data)
 
-    return NextResponse.json(await employee.data);
+    return NextResponse.json(await verify.data);
   } catch (error) {
-    console.log('[EMPLOYEE_POST]', error);
+    console.log('[USER_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };

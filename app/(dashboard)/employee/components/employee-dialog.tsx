@@ -1,28 +1,29 @@
+"use client"
 import React, { useState } from 'react';
 import axios from 'axios';
-// import { NextRouter, useRouter } from 'next/router';
-
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
-
 interface EmployeeDialogProps {
   onClose: () => void; // Function to close the dialog
 //   routers: string;
 }
 
-const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose}) => {
+const EmployeeDialog: React.FC<EmployeeDialogProps> = ({onClose}) => {
+  // const positions = await GetPositions();
   const router = useRouter();
   const [email, setEmail] = useState('');
-
+   
   const handleConfirm = async () => {
     try {
       const response = await axios.post('/api/employee/verify-email', { email });
       console.log('API Response:', response.data);
+      // router.replace('/employee/otp-verify')
       onClose(); // Close the dialog after successful API request
-      router.push(`/employee/create`);
+      // router.refresh();
+      router.push('/employee/create');
     } catch (error) {
       console.error('API Error:', error);
     }

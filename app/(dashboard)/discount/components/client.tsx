@@ -20,7 +20,7 @@ interface DiscountsClientProps {
 export const DiscountsClient: React.FC<DiscountsClientProps> = ({
   data
 }) => {
-  const parmas = useParams();
+  // const parmas = useParams();
   const router = useRouter();
 
  
@@ -47,7 +47,7 @@ export const DiscountsClient: React.FC<DiscountsClientProps> = ({
       </div>
       <Separator />
       <DataTable searchKey="description" columns={columns} data={data} />
-      <Heading title="API" description="API Calls for Categories" />
+      <Heading title="API" description="API Calls for Discount" />
       <Separator />
       <ApiList entityName="discount" entityIdName="discount_id" />
     </>

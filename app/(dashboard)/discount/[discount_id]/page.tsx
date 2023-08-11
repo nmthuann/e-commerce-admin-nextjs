@@ -5,9 +5,15 @@ import { DiscountForm } from "@/app/(dashboard)/discount/[discount_id]/component
 import { useParams } from "next/navigation";
 export const revalidate = 0;
 const DiscountPage = async (
- {params}: {params: { discount_id: number}}
+ {params}: {params: { discount_id: string}}
 ) => {
-  const discount = await GetDiscountById(params.discount_id);
+
+  let discount  = null
+  if((params.discount_id).toString() != 'create'){
+    discount = await GetDiscountById(parseInt(params.discount_id));
+  } 
+
+  // const discount = await GetDiscountById(params.discount_id);
   return ( 
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">

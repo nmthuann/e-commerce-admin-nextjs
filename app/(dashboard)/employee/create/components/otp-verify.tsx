@@ -155,29 +155,38 @@
 
 // export default OTPCard;
 
+
+
 "use client"
 import React, { useState } from 'react';
 import axios from 'axios'; // Make sure to install axios
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 interface OTPCardProps {
-  onVerified: () => void;
+  onConfirm: () => void;
 }
 
 
-export const OTPCard: React.FC<OTPCardProps> = ({ onVerified }) => {
+export const OTPCard: React.FC<OTPCardProps> = ({ onConfirm }) => {
+   const router = useRouter();
+  
   const [otp, setOTP] = useState('');
-  const [verificationError, setVerificationError] = useState<string | null>(null);
+  const [verificationError, setVerificationError] = useState('');
 
   const handleConfirm = async () => {
     try {
       const response = await axios.post('/api/employee/verify-otp', { otp }); // Replace with your API endpoint
-      if (response.data.success) {
-        onVerified(); // Call the onVerified function to trigger the navigation
-      } else {
-        setVerificationError('adadaa'); //'Invalid OTP'
+      if (response.data.message == "success") {
+        console.log(await response.data)
+        router.replace('/employee/otp-verify')
+        onConfirm(); // Call the onVerified function to trigger the navigation
+        // router.refresh();
+        
+      }  {
+        setVerificationError('Invalid OTP'); //'Invalid OTP'
       }
     } catch (error) {
       console.error('API Error:', error);
@@ -186,22 +195,29 @@ export const OTPCard: React.FC<OTPCardProps> = ({ onVerified }) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Enter OTP</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col space-y-4">
-          <Input
-            value={otp}
-            onChange={(e) => setOTP(e.target.value)}
-            placeholder="Enter OTP"
-          />
-          {verificationError && <p className="text-red-500">{verificationError}</p>}
-          <Button onClick={handleConfirm}>Confirm</Button>
-        </div>
-      </CardContent>
-    </Card>
+  <>
+    {/* <Card> */}
+  <form onSubmit={handleConfirm}>
+    <CardHeader>
+      <CardTitle>Enter OTP</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="flex flex-col space-y-4">
+        <Input
+          value={otp}
+          onChange={(e) => setOTP(e.target.value)}
+          placeholder="Enter OTP"
+        />
+        {verificationError && <p className="text-red-500">{verificationError}</p>}
+        <Button type="submit">Confirm</Button>
+      </div>
+    </CardContent>
+  </form>
+{/* </Card> */}
+  </>
+  
+
+
   );
 };
 

@@ -1,4 +1,4 @@
-// "use client"
+
 import { format } from "date-fns";
 
 // import prismadb from "@/lib/prismadb";
@@ -7,9 +7,11 @@ import { formatter } from "@/lib/utils";
 import { EmployeesClient } from "@/app/(dashboard)/employee/components/client";
 import { EmployeeColumn } from "./components/columns";
 import { GetEmployeeList } from "@/actions/employee/get-employees";
+import { GetPositions } from "@/actions/employee/get-postions";
 
-const EmployeesPage = async () => {
-
+export const EmployeesPage = async () => {
+    
+ 
     const employees = await GetEmployeeList();
     console.log(employees)
     const formattedEmployees: EmployeeColumn[] | undefined = employees.map((item) => ({

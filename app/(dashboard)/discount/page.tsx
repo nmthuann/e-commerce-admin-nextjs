@@ -13,7 +13,7 @@ const DiscountsPage = async (
     const formattedDiscounts: DiscountColumn[] = discounts.map((item: Discount) => ({
         discount_id: String(item.discount_id),
         description: item.description,
-        expired: (item.expired).toString(),
+        expired: item.expired,
         percent: item.percent,
     }));
 

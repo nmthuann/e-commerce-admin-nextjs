@@ -1,4 +1,4 @@
-"use client";
+
 
 // import { Plus } from "lucide-react";
 // import { useParams, useRouter } from "next/navigation";
@@ -77,7 +77,7 @@
 //   );
 // };
 
-
+"use client";
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 
@@ -99,21 +99,23 @@ interface EmployeesClientProps {
 
 export const EmployeesClient: React.FC<EmployeesClientProps> = ({ data }) => {
   const [isDialogOpen, setDialogOpen] = useState(false); // State to manage dialog visibility
-  const router = useRouter();
-  const orgin = useOrigin();
+  // const router = useRouter();
+  // const orgin = useOrigin();
   return (
     <>
       <div className="flex items-center justify-between">
         <Heading title={`Employees (${data.length})`} description="Manage Employees for your store" />
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
-              {/* Hover */}
-              <Button  onClick={() => {setDialogOpen(true)}} variant="outline">Create Employee</Button>
-              {/* <Button > */}
-                {/* <Plus size={24} /> */}
-              {/* </Button> */}
-              {isDialogOpen && <EmployeeDialog onClose={() => setDialogOpen(false)} />}
+            <TooltipTrigger>  
+              <div>
+                <Button  onClick={() => {
+                  setDialogOpen(true)
+                }} variant="outline">
+                  Create Employee
+                </Button>
+                {isDialogOpen && <EmployeeDialog onClose={() => setDialogOpen(false)} />}
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <p>Create Account for Employee</p>
@@ -131,5 +133,3 @@ export const EmployeesClient: React.FC<EmployeesClientProps> = ({ data }) => {
     </>
   );
 };
-
-// export default EmployeesClient;

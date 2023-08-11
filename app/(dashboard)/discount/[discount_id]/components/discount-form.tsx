@@ -31,8 +31,8 @@ import { format, formatISO, formatISO9075, formatRelative, isValid } from "date-
 
 const formSchema = z.object({
   description: z.string().min(1),
-  expired: z.date(),
-  percent: z.number()
+  expired: z.coerce.date(),
+  percent: z.coerce.number()
 });
 
 type DiscountFormValues = z.infer<typeof formSchema>
@@ -65,7 +65,7 @@ export const DiscountForm: React.FC<DiscountFormProps> = ({
     defaultValues: initialData || {
       description: '',
       expired: new Date(),
-      percent: 0
+      percent: 0,
     }
   });
 
@@ -164,7 +164,7 @@ export const DiscountForm: React.FC<DiscountFormProps> = ({
                         format(field.value, "PPP")
                       ) : (
                         <span>
-                        {String(field.value)}
+                        {format(field.value, "PPP")}
                         </span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
