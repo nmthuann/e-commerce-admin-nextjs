@@ -9,6 +9,10 @@ import { DataTable } from "./components/data-table"
 import { UserNav } from "@/components/user-nav"
 // import { Task, taskSchema } from "./data/schema"
 import { GetTaskOrders } from "@/actions/order/get-task-order"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import { useRouter } from "next/navigation"
 // import { faker } from "@faker-js/faker"
 
 // import { labels, priorities, statuses } from "./data/data"
@@ -57,6 +61,7 @@ export default async function TaskPage() {
  
   //const data = await GetTaskOrders();
   const tasks = await GetTaskOrders();
+  const router = useRouter();
   console.log(tasks)
 
   return (
@@ -86,6 +91,19 @@ export default async function TaskPage() {
             </p>
           </div>
           <div className="flex items-center space-x-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  {/* Hover */}
+                  <Button onClick={() => router.push(`/order/create`)}>
+                    <Plus className="mr-2 h-4 w-4" /> Add New
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add New Order</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             {/* <UserNav /> */}
           </div>
         </div>

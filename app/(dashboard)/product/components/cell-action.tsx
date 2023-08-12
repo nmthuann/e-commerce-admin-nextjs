@@ -33,7 +33,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/product/${data.product_id}`);
+      await axios.delete(`api/product/${data.product_id}`);
       toast.success('Product deleted.');
       router.refresh();
     } catch (error) {
@@ -45,7 +45,7 @@ export const CellAction: React.FC<CellActionProps> = ({
   };
 
   const onCopy = (id: string) => {
-    navigator.clipboard.writeText(id.toString());
+    navigator.clipboard.writeText(id);
     toast.success('Product ID copied to clipboard.');
   }
 

@@ -105,9 +105,9 @@ const origin = useOrigin();
     try {
       setLoading(true);
       if (initialData) {
-        await axios.put(`/api/product/update/${parseInt(params.product_id as string)}`, data);
+        await axios.put(`/api/product/${parseInt(params.product_id as string)}`, data);
       } else {
-        await axios.post(`/api/product/create`, data);
+        await axios.post(`/api/product`, data);
       }
       router.refresh();
       router.push(`/product`);
@@ -122,9 +122,9 @@ const origin = useOrigin();
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`${URL}/delete/${parseInt(params.product_id as string)}`);
+      await axios.delete(`/api/product/${params.product_id}`);
       router.refresh();
-      router.push(`/products`);
+      router.push(`/product`);
       toast.success('Product deleted.');
     } catch (error: any) {
       toast.error('Something went wrong.');
@@ -378,8 +378,6 @@ const origin = useOrigin();
         </FormItem>
     )}
     />
-
-
 
             <FormField
               control={form.control}

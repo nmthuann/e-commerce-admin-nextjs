@@ -1,5 +1,5 @@
 import { Image } from "@/types/image.interface"
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/Image/get-images`
+const URL=`${process.env.NEXT_PUBLIC_API_URL}/image/get-images`
 
 export async function GetImages(): Promise<Image[]> {
   // const token = localStorage.getItem('token');
