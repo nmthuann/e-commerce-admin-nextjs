@@ -2,7 +2,7 @@ import useAxiosFunction from "../../hooks/use-axios-function";
 
 import httpClient from "../../lib/axios-instance";
 
-const loginUrl = '/auth/login'
+const loginUrl = '/auth/admin/login'
 
 
 

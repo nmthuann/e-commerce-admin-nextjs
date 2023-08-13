@@ -15,6 +15,9 @@ export const CreateEmployee: React.FC<CreateEmployeeProps> = ({positions}) => {
     const [showUserForm, setShowUserForm] = useState(false);
     const [showEmployeeForm, setShowEmployeeForm] = useState(false);
 
+    console.log("showOTP", showOTP);
+    console.log("showUserForm", showUserForm);
+
   const handleOTPConfirm = () => {
     setShowOTP(false);
     setShowUserForm(true);

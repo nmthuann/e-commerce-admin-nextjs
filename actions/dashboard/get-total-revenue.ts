@@ -1,16 +1,18 @@
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/order/get-total-revenue`
+import axios from 'axios';
+
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/get-total-revenue`;
+
 export async function GetTotalRevenue(): Promise<number> {
   try {
-    
-    const options = {
-      method: 'GET',
-    };
+    const token = localStorage.getItem('token') || ""
+    const response = await axios.get(URL, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
-    const res = await fetch(URL, options);
-    // if (!res.ok) {
-    //   throw new Error('Failed to fetch data');
-    // }
-    return await res.json();
+    // Giả sử API trả về dữ liệu dưới dạng JSON
+    return response.data;
 
   } catch (error) {
     console.error('Error fetching data:', error);

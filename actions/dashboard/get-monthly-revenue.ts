@@ -1,25 +1,28 @@
-import { IOrder } from "@/types/order.interface";
+// "use client"
+// import { IOrder } from "@/types/order.interface";
+import axios from "axios";
 
-// const URL=`${process.env.NEXT_PUBLIC_API_URL}/order/get-orders-has-completed-status`
 const URL=`${process.env.NEXT_PUBLIC_API_URL}/order/get-revenue-by-month`
 interface RevenueByMonth{
-  //month: string,
-  //total: number,
+
    [month: string]: number;
 }
+// import { cookies } from "next/headers";
 async function getRevenueByMonth(): Promise<RevenueByMonth> {
+  
   try {
-    
-    const options = {
-      method: 'GET',
-    };
+    // const token = ''
+    const token = localStorage.getItem('token') || ""
+     
+        //  const cookieStore = cookies()
+        // const token = cookieStore.get('token')
+    const response = await axios.get(URL, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
-    const res = await fetch(URL, options);
-    // if (!res.ok) {
-    //   throw new Error('Failed to fetch data');
-    // }
-    return await res.json();
-
+    return response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;
@@ -27,7 +30,7 @@ async function getRevenueByMonth(): Promise<RevenueByMonth> {
 }
 
 
-interface GraphData {
+export interface GraphData {
   name: string;
   total: number;
 }

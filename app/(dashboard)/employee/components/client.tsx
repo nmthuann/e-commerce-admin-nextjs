@@ -108,13 +108,10 @@ export const EmployeesClient: React.FC<EmployeesClientProps> = ({ data }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>  
-              <div>
-                <Button  onClick={() => {
-                  setDialogOpen(true)
-                }} variant="outline">
-                  Create Employee
-                </Button>
-                {isDialogOpen && <EmployeeDialog onClose={() => setDialogOpen(false)} />}
+              <div> 
+                <EmployeeDialog onClose={() => {
+                  setDialogOpen(false)
+                }} />  
               </div>
             </TooltipTrigger>
             <TooltipContent>

@@ -7,7 +7,7 @@ import { Inter } from 'next/font/google'
 // import { ToastProvider } from '@/providers/toast-provider'
 import { redirect, useRouter } from 'next/navigation';
 // import { useRouter } from 'next/router';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LoginForm } from './auth/(routes)/login/components/user-auth-form';
 import Footer from '@/components/footer';
 // import { ModalProvider } from '@/providers/modal-provider';
@@ -26,38 +26,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  // const router = useRouter();
-  
-  // const token = localStorage.getItem('token');
-  //   if (!token) {
-  //     redirect('/auth/login');
-  //   }
-  //useEffect(() => {
+  const router = useRouter();
+
+
+
+  // chạy dc đoạn này
+  if (typeof window !== 'undefined') {
   // Perform localStorage action
-    
-   
-  //}, [])
+   const token = localStorage.getItem('token')
+      if (!token) {
+        router.push('/auth/login');
+    }
+  }
 
-  //  const token = localStorage.getItem('token')
-  //   if (!token) {
-  //     console.log('hello')
-  //     //redirect('auth/login');
-  //     //router.push('/auth/login');
-      
-  //   }
-
-
-  //  chạy dc đoạn này
-  // if (typeof window !== 'undefined') {
-  // // Perform localStorage action
-  //  const token = localStorage.getItem('access_token')
-  //     if (!token) {
-  //       router.push('/auth/login');
-  //   }
-  // }
-
-
-  
 
   return (
       <html lang="en">

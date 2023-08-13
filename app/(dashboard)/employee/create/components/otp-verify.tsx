@@ -158,7 +158,7 @@
 
 
 "use client"
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import axios from 'axios'; // Make sure to install axios
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -176,12 +176,13 @@ export const OTPCard: React.FC<OTPCardProps> = ({ onConfirm }) => {
   const [otp, setOTP] = useState('');
   const [verificationError, setVerificationError] = useState('');
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       const response = await axios.post('/api/employee/verify-otp', { otp }); // Replace with your API endpoint
       if (response.data.message == "success") {
         console.log(await response.data)
-        router.replace('/employee/otp-verify')
+        // router.replace('/employee/otp-verify')
         onConfirm(); // Call the onVerified function to trigger the navigation
         // router.refresh();
         

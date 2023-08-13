@@ -1,3 +1,5 @@
+
+"use client"
 import { CreditCard, DollarSign, Package } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
@@ -5,35 +7,45 @@ import { Separator } from "@/components/ui/separator";
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { GetTaskOrders } from "@/actions/order/get-task-order";
-import { GetTotalRevenue } from "@/actions/dashboard/get-total-revenue";
-import { CounttProductSold } from "@/actions/dashboard/count-product-sold";
+// import { GetTaskOrders } from "@/actions/order/get-task-order";
+// import { GetTotalRevenue } from "@/actions/dashboard/get-total-revenue";
+// import { CounttProductSold } from "@/actions/dashboard/count-product-sold";
 import { formatter } from "@/lib/utils";
 import { Overview } from "@/components/overview";
-import { getGraphRevenue } from "@/actions/dashboard/get-monthly-revenue";
+import { GraphData, getGraphRevenue } from "@/actions/dashboard/get-monthly-revenue";
 import { RecentSales } from "@/components/recent-sales";
-// import { getTotalRevenue } from "@/actions/get-total-revenue";
-// import { getSalesCount } from "@/actions/get-sales-count";
-// import { getGraphRevenue } from "@/actions/get-graph-revenue";
-// import { getStockCount } from "@/actions/get-stock-count";
-// import { formatter } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 
 interface DashboardPageProps {
-//   params: {
-//     storeId: string;
-//   };
+
 };
 
-const DashboardPage: React.FC<DashboardPageProps> = async ({ 
+const DashboardPage: React.FC<DashboardPageProps> = ({ 
   //params -> 
 }) => {
+  const [graphRevenue, setGraphRevenue] = useState<GraphData[]>([]);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [orderCreated, setOrderCreated] = useState(0);
+  const [productInStock, setProductInStock] = useState(0);
 
-  const graphRevenue = await getGraphRevenue();
-
-  const totalRevenue = await GetTotalRevenue();
-  const orderCreated = (await GetTaskOrders()).length;
-  const productInStock = await CounttProductSold();
-
+  useEffect(() => {
+      fetchData();
+    }, []); 
+    
+  const fetchData = () => {
+      getGraphRevenue()
+      .then(res => setGraphRevenue(res))
+      // setGraphRevenue(graphRevenueRes);
+      // const totalRevenueRes = await GetTotalRevenue();
+      // setTotalRevenue(totalRevenueRes)
+      // const orderCreatedRes = (await GetTaskOrders()).length;
+      // setOrderCreated(orderCreatedRes)
+      // const productInStockRes = await CounttProductSold();
+      // setProductInStock(productInStockRes)
+  }
+ 
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">

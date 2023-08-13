@@ -19,7 +19,8 @@ import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
 import { LoginApi } from "@/actions/auth/login"
 import { redirect } from "next/navigation"
-
+// import useLocalStorage from "@/hooks/custom-hook"
+// import { cookies } from 'next/headers'
 
 const formSchema = z.object({
   email: z.string().min(2, {
@@ -42,6 +43,11 @@ export function LoginForm() {
         if (loginResponse) {
             console.log(loginResponse);
             localStorage.setItem('token', loginResponse.access_token);
+          //  cookies().set({
+          //   name: 'token',
+          //   value: loginResponse.access_token,
+          //   httpOnly: true,
+          // })
             redirect('/');
         }
         else if (loginError) {
@@ -49,7 +55,6 @@ export function LoginForm() {
             alert('Login Failed');
         }
     }, [loginResponse, loginError])
-
 
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,6 +71,7 @@ export function LoginForm() {
     // ✅ This will be type-safe and validated.
     console.log(values)
     callLoginRefetch(values);
+
   }
 
   return (
