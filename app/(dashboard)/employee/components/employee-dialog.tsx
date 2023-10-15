@@ -1,65 +1,87 @@
-"use client"
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState } from "react";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 interface EmployeeDialogProps {
-  onClose: () => void; // Function to close the dialog
-//   routers: string;
+    onClose: () => void; // Function to close the dialog
+    //   routers: string;
 }
 
-const EmployeeDialog: React.FC<EmployeeDialogProps> = ({onClose}) => {
-  // const positions = await GetPositions();
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-   
-  const handleConfirm = async () => {
-    try {
-      const response = await axios.post('/api/employee/verify-email', { email });
-      console.log('API Response:', response.data);
-      // router.replace('/employee/otp-verify')
-      onClose(); // Close the dialog after successful API request
-      // router.refresh();
-      router.push('/employee/create');
-    } catch (error) {
-      console.error('API Error:', error);
-    }
-  };
+const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
+    // const positions = await GetPositions();
+    const router = useRouter();
+    const [email, setEmail] = useState("");
 
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Create Employee</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Email
-            </Label>
-            <Input
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button onClick={handleConfirm}>Confirm</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+    const handleConfirm = async () => {
+        try {
+            const response = await axios.post("/api/employee/verify-email", {
+                email,
+            });
+            console.log("API Response:", response.data);
+            if (response.data.message) {
+                // toast.success(response.data.message);
+                // onClose();
+                // router.push('/employee/create');
+                toast.error(response.data.message);
+            } else {
+                toast.success("Email is true");
+                onClose();
+                router.push("/employee/create"); // -> chuyển sang trang create
+            }
+            // onClose();
+            // router.push('/employee/create');
+        } catch (error: any) {
+            toast.error(`${error}`);
+            onClose();
+            console.error("API Error:", error);
+        }
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="outline">Create Employee</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogDescription>
+                        Make changes to your profile here. Click save when
+                        you're done.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                            Email
+                        </Label>
+                        <Input
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="col-span-3"
+                        />
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button onClick={handleConfirm}>Confirm</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
 };
 
 export default EmployeeDialog;

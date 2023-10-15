@@ -16,6 +16,9 @@ import { GraphData, getGraphRevenue } from "@/actions/dashboard/get-monthly-reve
 import { RecentSales } from "@/components/recent-sales";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { GetTotalRevenue } from "@/actions/dashboard/get-total-revenue";
+import { GetTaskOrders } from "@/actions/order/get-task-order";
+import { CounttProductSold } from "@/actions/dashboard/count-product-sold";
 
 
 interface DashboardPageProps {
@@ -35,8 +38,10 @@ const DashboardPage: React.FC<DashboardPageProps> = ({
     }, []); 
     
   const fetchData = () => {
-      getGraphRevenue()
-      .then(res => setGraphRevenue(res))
+      getGraphRevenue().then(res => setGraphRevenue(res));
+      GetTotalRevenue().then(res => setTotalRevenue(res));
+
+      CounttProductSold().then (res =>setProductInStock(res))
       // setGraphRevenue(graphRevenueRes);
       // const totalRevenueRes = await GetTotalRevenue();
       // setTotalRevenue(totalRevenueRes)
@@ -44,6 +49,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({
       // setOrderCreated(orderCreatedRes)
       // const productInStockRes = await CounttProductSold();
       // setProductInStock(productInStockRes)
+            // GetTaskOrders().then(res => setOrderCreated(res));
   }
  
   return (

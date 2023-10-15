@@ -24,29 +24,15 @@ export async function POST(
         birthday: body.birthday,
         address: body.address,
         phone: body.phone,
-        account:  String(email)
+        account:  String(email?.value)
     }
 
     //  call api in here
-    const verify = await axios.post(URL, data);
-    // console.log("discount:::::",discount.data)
+    const user = await axios.post(URL, data);
 
-    return NextResponse.json(await verify.data);
+    return NextResponse.json(user.data);
   } catch (error) {
     console.log('[USER_POST]', error);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
-
-
-
-// export async function GET() {
-//   try {
-//     const getUrl =`${process.env.NEXT_PUBLIC_API_URL}/discount/get-discounts`
-//     const discounts = await axios.get(getUrl)
-//     return NextResponse.json(discounts.data);
-//   } catch (error) {
-//     console.log('[DISCOUNTS_GET]', error);
-//     return new NextResponse("Internal error", { status: 500 });
-//   }
-// };

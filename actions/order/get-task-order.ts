@@ -1,21 +1,23 @@
-import { ITask } from "@/types/task.interface"
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/order/get-task-orders`
+import axios from 'axios';
+import { ITask } from '@/types/task.interface';
+
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/get-task-orders`;
 
 export async function GetTaskOrders(): Promise<ITask[]> {
   try {
-    // const url = `${URL}${discount_id}`;
-    const options = {
-      method: 'GET', // Chỉ định phương thức là GET
-    };
+   //  const token = localStorage.getItem('token') || ""
+    const response = await axios.get(URL, {
+      // headers: {
+      //   'Authorization': `Bearer ${token}`
+      // }
+    });
 
-    const res = await fetch(URL, options);
+    // if (response.status !== 200) {
+    //   throw new Error('Failed to fetch data');
+    // }
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch data');
-    }
-
-    // Xử lý kết quả từ res ở đây
-    return await res.json() ;
+    // Xử lý kết quả từ response.data ở đây
+    return response.data;
 
   } catch (error) {
     console.error('Error fetching data:', error);

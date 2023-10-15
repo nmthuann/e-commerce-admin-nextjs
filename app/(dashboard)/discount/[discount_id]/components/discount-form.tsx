@@ -159,14 +159,19 @@ export const DiscountForm: React.FC<DiscountFormProps> = ({
                         !field.value && "text-muted-foreground"
                       )}
                     >
-                      {
+                      {/* {
                       isValid(field.value)  ? (
                         format(field.value, "PPP")
                       ) : (
                         <span>
                         {format(field.value, "PPP")}
                         </span>
-                      )}
+                      )} */}
+                      {isValid(field.value) ? (
+  <span>{format(field.value, "PPP")}</span>
+) : (
+  <span>Invalid Date</span>
+)}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>

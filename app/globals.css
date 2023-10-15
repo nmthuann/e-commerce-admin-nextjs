@@ -82,3 +82,14 @@ body,
     @apply bg-background text-foreground;
   }
 }
+.display-flex{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.w-32{
+  width: 32%;
+}
+.w-100 {
+  width: 100%;
+}

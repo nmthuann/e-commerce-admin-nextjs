@@ -16,12 +16,12 @@ export async function POST(
     const body = await req.json();
     const data = {
       employee_id: body.employee_id,
-      salary: body.salary,
+      salary: parseInt(body.salary),
       position_id: body.position_id
     }
 
     //  call api in here
-    const employee = await axios.post(`${URL}${email}`, data);
+    const employee = await axios.post(`${URL}${email?.value}`, data);
 
     return NextResponse.json(await employee.data);
   } catch (error) {

@@ -25,9 +25,9 @@ export const CustomersClient: React.FC<CustomersClientProps> = ({
     <> 
       <div className="flex items-center justify-between">
         <Heading title={`Customers (${data.length})`} description="Manage Customers for your store" />
-        <Button onClick={() => router.push(`/customer/create`)}>
+        {/* <Button onClick={() => router.push(`/customer/create`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button>
+        </Button> */}
       </div>
       {/* <Separator />
       <DataTable searchKey="customer_name" columns={columns} data={data} />

@@ -58,11 +58,11 @@ export function MainNav({
       label: 'Customers',
       active: pathname === `/customer`,
     },
-    {
-      href: `/order`,
-      label: 'Orders',
-      active: pathname === `/order`,
-    },
+    // {
+    //   href: `/order`,
+    //   label: 'Orders',
+    //   active: pathname === `/order`,
+    // },
     {
       href: `/setting`,
       label: 'Settings',
