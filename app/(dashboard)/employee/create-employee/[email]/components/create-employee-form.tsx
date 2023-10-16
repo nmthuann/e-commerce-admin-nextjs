@@ -28,6 +28,8 @@ import { Position } from "@/types/position.interface";
 import ImageUpload from "@/components/ui/image-upload";
 import AvatarUpload from "@/components/ui/avatar-upload";
 import { useState } from "react";
+import { useEmail } from "@/contexts/email.context";
+import { useParams } from "next/navigation";
 // import { toast } from "@/components/ui/use-toast";
 // import { useState } from "react";
 
@@ -50,24 +52,25 @@ import { useState } from "react";
  */
 interface EmployeeFormProps {
     positions: Position[];
+    // email?: string;
 }
 
 type registerFormValues = z.infer<typeof registerFormSchema>;
 const defaultValues: Partial<registerFormValues> = {
-    // name: "Your name",
-    // dob: new Date("2023-01-23"),
     employee_id: "",
     first_name: "",
     last_name: "",
-    // email: "",
     address: "",
 };
 
 export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
     positions,
+    // email,
 }) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    // const { email } = useEmail();
+    const params = useParams();
 
     const form = useForm<z.infer<typeof registerFormSchema>>({
         resolver: zodResolver(registerFormSchema),
@@ -76,7 +79,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
 
     // 2. Define a submit handler.
     function onSubmit(data: registerFormValues) {
-        console.log(`Submit ${JSON.stringify(data, null, 2)}`);
+        console.log(`Submit ${JSON.stringify(data, null, 2)} ${params.email}`);
     }
 
     return (

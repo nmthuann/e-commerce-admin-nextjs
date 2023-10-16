@@ -13,41 +13,42 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { Messages } from "@/constants/notifications/message";
 interface EmployeeDialogProps {
     onClose: () => void; // Function to close the dialog
     //   routers: string;
 }
 
 const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
-    // const positions = await GetPositions();
     const router = useRouter();
+    const pathname = usePathname();
     const [email, setEmail] = useState("");
-
     const handleConfirm = async () => {
-        try {
-            const response = await axios.post("/api/employee/verify-email", {
-                email,
-            });
-            console.log("API Response:", response.data);
-            if (response.data.message) {
-                // toast.success(response.data.message);
-                // onClose();
-                // router.push('/employee/create');
-                toast.error(response.data.message);
-            } else {
-                toast.success("Email is true");
-                onClose();
-                router.push("/employee/create"); // -> chuyển sang trang create
-            }
-            // onClose();
-            // router.push('/employee/create');
-        } catch (error: any) {
-            toast.error(`${error}`);
-            onClose();
-            console.error("API Error:", error);
-        }
+        // try {
+        //     const response = await axios.post("/api/employee/verify-email", {
+        //         email,
+        //     });
+        //     // console.log("API Response:", response.data);
+        //     if (response.data.message) {
+        //         toast.error(response.data.message);
+        //     } else {
+        //         toast.success(Messages.EMAIL_VALID);
+        //         onClose();
+        //         router.push({
+        //             pathname: "/employee/create-employee",
+        //             query: { email },
+        //         }); // -> chuyển sang trang create"/employee/create-employee"
+        //     }
+        // } catch (error: any) {
+        //     toast.error(`${error}`);
+        //     onClose();
+        //     console.error("API Error:", error);
+        // }
+        toast.success(Messages.EMAIL_VALID);
+        onClose();
+        router.push(`/employee/create-employee/${email}`); // -> chuyển sang trang create"/employee/create-employee"
     };
 
     return (

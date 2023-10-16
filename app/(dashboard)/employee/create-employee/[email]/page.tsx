@@ -1,6 +1,8 @@
 import { Metadata } from "next";
-import { CreateEmployeeForm } from "./components/create-employee-form";
+
 import { GetPositions } from "@/actions/employee/get-postions";
+// import { EmailProvider } from "@/contexts/email.context";
+import { CreateEmployeeForm } from "./components/create-employee-form";
 
 export const metadata: Metadata = {
     title: "Tạo tài khoản nhân viên",
@@ -20,7 +22,11 @@ export default async function CreateEmployeePage() {
                     </p>
                 </div>
                 <div className="mt-4">
+                    {/* <EmailProvider value={{ email }}> */}
+                    {/* Các phần tử và component khác trong EmployeeDialog */}
                     <CreateEmployeeForm positions={positions} />
+                    {/* </EmailProvider> */}
+                    {/* <CreateEmployeeForm positions={positions} /> */}
                 </div>
             </div>
         </div>
