@@ -17,9 +17,27 @@ export enum ErrorInput{
     NUMBER_ERROR = "Vui lòng không nhập số.",
     STRING_ERROR = "Vui lòng không nhập text.",
     MAX_ERROR = "Không nhập quá ",
-    MIN_ERROR = "Phải nhập đủ ",
+    MIN_ERROR = "Phải nhập đủ tối thiểu",
     NOT_SELECT_FIELD = "Vui lòng chọn ",
     LENGTH_ERROR = "Yêu cầu phải đủ",
+
+}
+
+export enum AuthError{
+  LOGIN_FAILED = "Đăng nhập thất bại."
 }
 
 
+export enum SystemError{
+  INTERNAL_SERVER_ERROR = "Internal server error.",
+  CONNECT_ERROR = "Kết nối thất bại."
+}
+
+export enum MiddlewareError{
+  TOKEN_MISSING = "Bạn thiếu token.",
+  TOKEN_INVALID = "Token của bạn hết hạn khoặc không hợp lệ.",
+}
+
+export enum UnknownError{
+  SOMETHING_WRONG = 'Something went wrong.'
+}

@@ -79,7 +79,11 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
 
     // 2. Define a submit handler.
     function onSubmit(data: registerFormValues) {
-        console.log(`Submit ${JSON.stringify(data, null, 2)} ${params.email}`);
+        console.log(
+            `Submit ${JSON.stringify(data, null, 2)} ${params.email}@${
+                params.domain
+            } `
+        );
     }
 
     return (

@@ -23,7 +23,7 @@ interface EmployeeDialogProps {
 
 const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
     const router = useRouter();
-    const pathname = usePathname();
+    // const pathname = usePathname();
     const [email, setEmail] = useState("");
     const handleConfirm = async () => {
         // try {
@@ -48,7 +48,9 @@ const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
         // }
         toast.success(Messages.EMAIL_VALID);
         onClose();
-        router.push(`/employee/create-employee/${email}`); // -> chuyển sang trang create"/employee/create-employee"
+        const emailAddress = email;
+        const [userName, domain] = emailAddress.split("@");
+        router.push(`/employee/create-employee/${userName}/${domain}`); // -> chuyển sang trang create"/employee/create-employee"
     };
 
     return (

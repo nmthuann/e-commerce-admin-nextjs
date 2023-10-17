@@ -1,7 +1,10 @@
 import axios from "axios";
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 const httpClient = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: process.env.SERVER_URL,
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
