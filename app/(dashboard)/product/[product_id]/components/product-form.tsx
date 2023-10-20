@@ -1,413 +1,729 @@
-"use client"
+"use client";
 
-import * as z from "zod"
-import axios from "axios"
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
-import { Trash } from "lucide-react"
-import { useParams, useRouter } from "next/navigation"
+import * as z from "zod";
+import axios from "axios";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { Trash } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input";
+
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Separator } from "@/components/ui/separator"
-import { Heading } from "@/components/ui/heading"
-import { AlertModal } from "@/components/modals/alert-modal"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import ImageUpload from "@/components/ui/image-upload"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Product } from "@/types/product.interface"
-import { Category } from "@/types/category.interface"
-import { Image } from "@/types/image.interface"
-import { useOrigin } from "@/hooks/use-origin"
-import { Discount } from "@/types/discount.interface"
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
+import { Heading } from "@/components/ui/heading";
+import { AlertModal } from "@/components/modals/alert-modal";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import ImageUpload from "@/components/ui/image-upload";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Product } from "@/types/product.interface";
+import { Category } from "@/types/category.interface";
+import { Image } from "@/types/image.interface";
+import { useOrigin } from "@/hooks/use-origin";
+import { Discount } from "@/types/discount.interface";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
+import { ErrorInput } from "@/constants/errors/errors";
+import { Switch } from "@/components/ui/switch";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
-const formSchema = z.object({
-  product_name: z.string().min(1),
-  images: z.object({ url: z.string() }).array(),
-  price: z.coerce.number().min(1),
-  unit_price: z.coerce.number().min(1),
-  quatity: z.coerce.number().min(1),
-  category_id: z.coerce.number().min(1),
-  brand: z.string().min(1),
-  origin: z.string().min(1),
-  isDiscount: z.boolean().default(false).optional(),
-  isStatus: z.boolean().default(false).optional()
-});
-
-type ProductFormValues = z.infer<typeof formSchema>
+type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
-  initialData: Product &
-  {
-    images: Image []
-  } | null | undefined;
-  categories: Category[],
-  discounts: Discount[];
-};
+    initialData:
+        | (Product & {
+              images: Image[];
+          })
+        | null;
+
+    categories: Category[];
+    discounts: Discount[];
+}
 
 export const ProductForm: React.FC<ProductFormProps> = ({
-  initialData,
-  categories,
-  discounts,
-  // Images
+    initialData,
+    categories,
+    discounts,
 }) => {
-  const params = useParams();
-  const router = useRouter();
+    const params = useParams();
+    const router = useRouter();
 
-const origin = useOrigin();
-  const baseUrl = `${origin}`
-  const URL=`${process.env.NEXT_PUBLIC_API_URL}/product`
+    const origin = useOrigin();
+    // const baseUrl = `${origin}`;
+    const URL = `${process.env.SERVER_URL}/product`;
 
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'Edit product' : 'Create product';
-  const description = initialData ? 'Edit a product.' : 'Add a new product';
-  const toastMessage = initialData ? 'Product updated.' : 'Product created.';
-  const action = initialData ? 'Save changes' : 'Create';
+    const title = initialData ? "Edit product" : "Create product";
+    const description = initialData ? "Edit a product." : "Add a new product";
+    const toastMessage = initialData ? "Product updated." : "Product created.";
+    const action = initialData ? "Save changes" : "Create";
 
-  const defaultValues = initialData ? {
-    ...initialData,
-    price: parseFloat(String(initialData?.price)),
-    unit_price: parseFloat(String(initialData?.unit_price)),
-    //category_id: parseInt(String(initialData?.__category__.category_id)) || undefined,
-    quantity: parseFloat(String(initialData?.quantity)),
-  } : {
-    product_name: '',
-    images: [],
-    price: 0,
-    unit_price: 0,
-    category_id: 1,
-    quantity: 0,
-    brand: '',
-    origin: '',
-    isDiscount: false,
-    isStatus: false,
-  }
+    const defaultValues = initialData
+        ? {
+              ...initialData,
+              price: parseFloat(String(initialData?.price)),
+              unit_price: parseFloat(String(initialData?.unit_price)),
+              category_id: parseInt(String(initialData?.category.category_id)),
+              discount_id: parseInt(String(initialData?.discount.discount_id)),
+          }
+        : {
+              images: [],
+              model_name: "",
+              price: 0,
+              unit_price: 0,
+              vote: 0,
+              description: "",
+              quantity: 0,
+              category_id: 1,
+              discount_id: 1,
+              operation_system: "",
+              hardware: "",
+              status: false,
+              color: "",
+              battery: 0,
+              screen: 0,
+              memory: 0,
+              front_camera: 0,
+              behind_camera: 0,
+              ram: 0,
+          };
 
-  const form = useForm<ProductFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues
-  });
+    const form = useForm<ProductFormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues,
+    });
 
-  const onSubmit = async (data: ProductFormValues) => {
-    try {
-      setLoading(true);
-      if (initialData) {
-        await axios.put(`/api/product/${parseInt(params.product_id as string)}`, data);
-      } else {
-        await axios.post(`/api/product`, data);
-      }
-      router.refresh();
-      router.push(`/product`);
-      toast.success(toastMessage);
-    } catch (error: any) {
-      toast.error('Something went wrong.');
-    } finally {
-      setLoading(false);
+    async function onSubmit(data: any) {
+        // try {
+        //     if (initialData) {
+        //         setLoading(true);
+        //         console.log(`Put ${JSON.stringify(data, null, 2)} `);
+        //     } else {
+        //         toast.success(toastMessage);
+        //         console.log(`Create ${JSON.stringify(data, null, 2)} `);
+        //     }
+        // } catch (error) {}
+
+        try {
+            setLoading(true);
+            console.log(initialData);
+            if (initialData) {
+                toast.error("Something went wrong.");
+                await axios.put(
+                    `/api/product/${parseInt(params.product_id as string)}`,
+                    data
+                );
+            } else {
+                toast.error("Something went wrong.");
+                await axios.post(`/api/product`, data); // create
+            }
+            router.refresh();
+            router.push(`/product`);
+            toast.success(toastMessage);
+        } catch (error: any) {
+            toast.error("Something went wrong.");
+        } finally {
+            setLoading(false);
+        }
     }
-  };
 
-  const onDelete = async () => {
-    try {
-      setLoading(true);
-      await axios.delete(`/api/product/${params.product_id}`);
-      router.refresh();
-      router.push(`/product`);
-      toast.success('Product deleted.');
-    } catch (error: any) {
-      toast.error('Something went wrong.');
-    } finally {
-      setLoading(false);
-      setOpen(false);
-    }
-  }
+    const onDelete = async () => {
+        try {
+            setLoading(true);
+            await axios.delete(`/api/product/${params.product_id}`);
+            router.refresh();
+            router.push(`/product`);
+            toast.success("Product deleted.");
+        } catch (error: any) {
+            toast.error("Something went wrong.");
+        } finally {
+            setLoading(false);
+            setOpen(false);
+        }
+    };
 
-  return (
-    <>
-    <AlertModal 
-      isOpen={open} 
-      onClose={() => setOpen(false)}
-      onConfirm={onDelete}
-      loading={loading}
-    />
-     <div className="flex items-center justify-between">
-        <Heading title={title} description={description} />
-        {initialData && (
-          <Button
-            disabled={loading}
-            variant="destructive"
-            size="sm"
-            onClick={() => setOpen(true)}
-          >
-            <Trash className="h-4 w-4" />
-          </Button>
-        )}
-      </div>
-      <Separator />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-
-          <FormField
-            control={form.control}
-            name="images"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Images</FormLabel>
-                <FormControl>
-                  {/* <ImageUpload 
-                    value = {
-                      field.value?.map((image) => image.url ) || []
-                    } 
-                    disabled={loading} 
-                    onChange={(url) => field.onChange([field.value, { url }])}
-                    onRemove={(url) => field.onChange([field.value.filter((current) => current.url !== url)])}
-                  /> */}
-
-                   <ImageUpload 
-                    value={field.value?.map((image) => image.url) || []  } 
-                    disabled={loading} 
-                    // onChange={(url) => field.onChange([...field.value, { url }])}
-                    onChange={(url) => {
-                      if (Array.isArray(field.value)) {
-                        field.onChange([...field.value, { url }]);
-                      } else {
-                        // If field.value is not an array, handle it appropriately, for example:
-                        field.onChange([{ url }]);
-                      }
-                    }}
-                    onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-
-          <div className="md:grid md:grid-cols-3 gap-8">
-            
-            <FormField
-              control={form.control}
-              name="product_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="Product name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+    return (
+        <>
+            <AlertModal
+                isOpen={open}
+                onClose={() => setOpen(false)}
+                onConfirm={onDelete}
+                loading={loading}
             />
+            <div className="flex items-center justify-between">
+                <Heading title={title} description={description} />
+                {initialData && (
+                    <Button
+                        disabled={loading}
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => setOpen(true)}
+                    >
+                        <Trash className="h-4 w-4" />
+                    </Button>
+                )}
+            </div>
+            <Separator />
 
-            {!initialData && (
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <Input type="number" disabled={loading} placeholder="9.99" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            )}
-
-            {!initialData && (
-            <FormField
-              control={form.control}
-              name="unit_price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Unit Price</FormLabel>
-                  <FormControl>
-                    <Input type="number" disabled={loading} placeholder="9.99" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            )}
-
-
-            {!initialData && (
-            <FormField
-              control={form.control}
-              name="category_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select 
-                    disabled={loading} 
-                    onValueChange={field.onChange} 
-                    value={String(field.value)} 
-                    defaultValue={String(field.value) }>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue defaultValue={field.value} placeholder="Select a category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem 
-                            key={category.category_id} 
-                            value={String(category.category_id)}>{category.category_name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            )}
-
-            <FormField
-              control={form.control}
-              name="brand"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brand</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="brand" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-             <FormField
-              control={form.control}
-              name="origin"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Origin</FormLabel>
-                  <FormControl>
-                    <Input disabled={loading} placeholder="origin" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-
-            {/* <FormField
-              control={form.control}
-              name="isDiscount"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      // @ts-ignore
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      Featured
-                    </FormLabel>
-                    <FormDescription>
-                      This product will appear on the home page
-                    </FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            /> */}
-
-            <FormField
-    control={form.control}
-    name="isDiscount"
-    render={({ field }) => (
-        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-        <FormControl>
-            <Checkbox
-            checked={field.value}
-            // @ts-ignore
-            onCheckedChange={field.onChange}
-            />
-        </FormControl>
-        <div className="space-y-1 leading-none">
-            <FormLabel>
-            Featured
-            </FormLabel>
-            <FormDescription>
-            This product will appear on the home page
-            </FormDescription>
-        </div>
-        {/* Conditionally render the Select based on the checkbox value */}
-        {field.value && (
-            <Select
-            disabled={loading}
-            onValueChange={field.onChange}
-            value={field.value.toString()}
-            defaultValue={field.value.toString()}
-            >
-            <FormControl>
-                <SelectTrigger>
-                <SelectValue  placeholder="Select a Discount" />
-                </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-                {discounts.map((discount) => (
-                <SelectItem
-                    key={discount.discount_id}
-                    value={discount.discount_id.toString()}
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-8 w-full"
                 >
-                    {discount.description}
-                </SelectItem>
-                ))}
-            </SelectContent>
-            </Select>
-        )}
-        </FormItem>
-    )}
-    />
-
-            <FormField
-              control={form.control}
-              name="isStatus"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      // @ts-ignore
-                      onCheckedChange={field.onChange}
+                    <FormField
+                        control={form.control}
+                        name="images"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Images</FormLabel>
+                                <FormControl>
+                                    <ImageUpload
+                                        value={(field.value || []).map(
+                                            (image) => image.url
+                                        )}
+                                        disabled={loading}
+                                        onChange={(url) => {
+                                            // Kiểm tra xem field.value có tồn tại không
+                                            if (field.value) {
+                                                field.onChange([
+                                                    ...field.value,
+                                                    { url },
+                                                ]);
+                                            } else {
+                                                // Nếu field.value không tồn tại, tạo một mảng mới
+                                                field.onChange([{ url }]);
+                                            }
+                                        }}
+                                        onRemove={(url) => {
+                                            // Kiểm tra xem field.value có tồn tại không
+                                            if (field.value) {
+                                                field.onChange([
+                                                    ...field.value.filter(
+                                                        (current) =>
+                                                            current.url !== url
+                                                    ),
+                                                ]);
+                                            }
+                                        }}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
                     />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      Archived
-                    </FormLabel>
-                    <FormDescription>
-                      This product will not appear anywhere in the store.
-                    </FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-          <Button disabled={loading} className="ml-auto" type="submit">
-            {action}
-          </Button>
-        </form>
-      </Form>
-    </>
-  );
+
+                    <div className="md:grid md:grid-cols-3 gap-8 ">
+                        {/* HÃNG ĐIỆN THOẠI - CATEGORY */}
+                        {/* {!initialData && (
+                            <FormField
+                                control={form.control}
+                                name="category_id"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Category</FormLabel>
+                                        <Select
+                                            disabled={loading}
+                                            onValueChange={field.onChange}
+                                            value={String(field.value)}
+                                            defaultValue={String(field.value)}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue
+                                                        defaultValue={
+                                                            field.value
+                                                        }
+                                                        placeholder="Chọn Hãng điện thoại ..."
+                                                    />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {categories.map((category) => (
+                                                    <SelectItem
+                                                        key={
+                                                            category.category_id
+                                                        }
+                                                        value={String(
+                                                            category.category_id
+                                                        )}
+                                                    >
+                                                        {category.category_name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )} */}
+                        {/* CATEGORY */}
+                        {!initialData && (
+                            <FormField
+                                control={form.control}
+                                name="category_id"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Hãng điện thoại</FormLabel>
+                                        <div className="relative w-max">
+                                            <FormControl>
+                                                <select
+                                                    className={cn(
+                                                        buttonVariants({
+                                                            variant: "outline",
+                                                        }),
+                                                        "w-[200px] appearance-none bg-transparent font-normal"
+                                                    )}
+                                                    {...field}
+                                                >
+                                                    {categories.map(
+                                                        (
+                                                            category: Category
+                                                        ) => (
+                                                            <option
+                                                                key={
+                                                                    category.category_id
+                                                                }
+                                                                value={
+                                                                    category.category_id
+                                                                }
+                                                            >
+                                                                {
+                                                                    category.category_name
+                                                                }
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
+                                            </FormControl>
+                                            <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
+                                        </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+
+                        {/* TÊN DÒNG SẢN PHẨM - MODEL NAME */}
+                        <FormField
+                            control={form.control}
+                            name="model_name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Model Name</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={loading}
+                                            placeholder="Model name"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* QUANTITY */}
+                        <FormField
+                            control={form.control}
+                            name="quantity"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Số lượng sản phẩm</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập thông tin PIN ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* price */}
+                        {!initialData && (
+                            <FormField
+                                control={form.control}
+                                name="price"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Giá Bán</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                disabled={loading}
+                                                placeholder="9.99"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+                        {/* Unit Price */}
+                        {!initialData && (
+                            <FormField
+                                control={form.control}
+                                name="unit_price"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Giá Nhập</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                disabled={loading}
+                                                placeholder="9.99"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+
+                        {/* OPERATION SYSTEM */}
+                        <FormField
+                            control={form.control}
+                            name="operation_system"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>OS</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={loading}
+                                            placeholder="Hệ điều hành của thiết bị ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* HARDWARE */}
+                        <FormField
+                            control={form.control}
+                            name="hardware"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Hardware</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={loading}
+                                            placeholder="Phần cứng thiết bị ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* COLOR */}
+                        <FormField
+                            control={form.control}
+                            name="color"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Màu sắc</FormLabel>
+                                    <div className="relative w-max">
+                                        <FormControl>
+                                            <select
+                                                className={cn(
+                                                    buttonVariants({
+                                                        variant: "outline",
+                                                    }),
+                                                    "w-[200px] appearance-none bg-transparent font-normal"
+                                                )}
+                                                {...field}
+                                            >
+                                                <option value="red">Đỏ</option>
+                                                <option value="black">
+                                                    Đen
+                                                </option>
+                                                <option value="blue">
+                                                    Xanh Dương
+                                                </option>
+                                                <option value="gray">
+                                                    Xám
+                                                </option>
+                                                <option value="white">
+                                                    Trắng
+                                                </option>
+                                                <option value="other">
+                                                    Khác
+                                                </option>
+                                            </select>
+                                        </FormControl>
+                                        <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
+                                    </div>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* DISCOUNT */}
+                        <FormField
+                            control={form.control}
+                            name="discount_id"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Discount Code</FormLabel>
+                                    <div className="relative w-max">
+                                        <FormControl>
+                                            <select
+                                                className={cn(
+                                                    buttonVariants({
+                                                        variant: "outline",
+                                                    }),
+                                                    "w-[200px] appearance-none bg-transparent font-normal"
+                                                )}
+                                                {...field}
+                                            >
+                                                {discounts.map(
+                                                    (discount: Discount) => (
+                                                        <option
+                                                            key={
+                                                                discount.discount_id
+                                                            }
+                                                            value={
+                                                                discount.discount_id
+                                                            }
+                                                        >
+                                                            {
+                                                                discount.description
+                                                            }
+                                                        </option>
+                                                    )
+                                                )}
+                                            </select>
+                                        </FormControl>
+                                        <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
+                                    </div>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* STATUS */}
+                        <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                                    <div className="space-y-0.5">
+                                        <FormLabel className="text-base">
+                                            Trạng Thái Hoạt Động
+                                        </FormLabel>
+                                    </div>
+                                    <FormControl>
+                                        <Switch
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        {/* BATTERY */}
+                        <FormField
+                            control={form.control}
+                            name="battery"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Dung lượng PIN</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập thông tin PIN ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* FRONT CAMERA */}
+                        <FormField
+                            control={form.control}
+                            name="front_camera"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Cam trước</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập thông tin Cam Trước ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* BEHIND CAMERA */}
+                        <FormField
+                            control={form.control}
+                            name="behind_camera"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Cam Sau</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập thông tin Cam Sau ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* RAM */}
+                        <FormField
+                            control={form.control}
+                            name="ram"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Ram</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập thông tin Ram ... "
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* SCREEN */}
+                        <FormField
+                            control={form.control}
+                            name="screen"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Kích Thước Màn Hình</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Your Phone number"
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* MEMORY */}
+                        <FormField
+                            control={form.control}
+                            name="memory"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Dung lượng Bộ Nhớ</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập thông tin Bộ nhớ ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Mô tả sản phẩm</FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            disabled={loading}
+                                            placeholder="Nhập mô tả sản phẩm ..."
+                                            {...field}
+                                        />
+                                        {/* <Input /> */}
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <Button
+                        disabled={loading}
+                        className="ml-auto"
+                        type="submit"
+                    >
+                        {action}
+                    </Button>
+                </form>
+            </Form>
+        </>
+    );
 };
+
+const formSchema = z.object({
+    images: z.object({ url: z.string() }).array().optional(),
+    model_name: z.string().min(1),
+    price: z.coerce.number().min(1),
+    unit_price: z.coerce.number().min(1),
+    vote: z.coerce.number().min(1),
+    description: z.string().min(1),
+    quantity: z.coerce.number().min(1),
+    category_id: z.coerce.number().min(1),
+    discount_id: z.coerce.number().min(1),
+    operation_system: z.string().min(1),
+    hardware: z.string().min(1),
+    status: z.boolean().default(false).optional(),
+    // color: z.enum(
+    //     ["red", "black", "gray", "blue", "white", "yellow", "other"],
+    //     {
+    //         invalid_type_error: `${ErrorInput.NOT_SELECT_FIELD} color.`,
+    //         required_error: `${ErrorInput.NOT_SELECT_FIELD} color.`,
+    //     }
+    // ),
+    color: z.string().min(1),
+    battery: z.coerce.number().min(1),
+    screen: z.coerce.number().min(1),
+    memory: z.coerce.number().min(1),
+    front_camera: z.coerce.number().min(1),
+    behind_camera: z.coerce.number().min(1),
+    ram: z.coerce.number().min(1),
+});
+
+// enum Color {
+//     Red = "red",
+//     Black = "black",
+//     Gray = "gray",
+//     Blue = "blue",
+//     White = "white",
+//     Yellow = "yellow",
+//     Other = "other",
+// }

@@ -1,10 +1,9 @@
 import { Product } from "@/types/product.interface"
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/product/get-products`
+const URL=`${process.env.SERVER_URL}/product/get-products`
 
 export async function GetProducts(): Promise<Product[]> {
-  // const token = localStorage.getItem('token');
+  
   try {
-    // const url = `${URL}${Product_id}`;
     const options = {
       method: 'GET', // Chỉ định phương thức là GET
       // headers: {
@@ -15,9 +14,7 @@ export async function GetProducts(): Promise<Product[]> {
 
     const res = await fetch(URL, options);
 
-    // if (!res.ok) {
-    //   throw new Error('Failed to fetch data');
-    // }
+   
 
     // Xử lý kết quả từ res ở đây
     return res.json();
@@ -27,3 +24,12 @@ export async function GetProducts(): Promise<Product[]> {
     throw error;
   }
 }
+
+
+
+
+ // if (!res.ok) {
+    //   throw new Error('Failed to fetch data');
+    // }
+
+// const token = localStorage.getItem('token');

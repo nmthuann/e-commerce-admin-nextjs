@@ -9,7 +9,7 @@ export enum ErrorInput{
     INPUT_INVALID = "Nhập thông tin không hợp lệ.",
     NAME_INVALID = "Tên không được chứa số hoặc khoảng trắng.",
     INPUT_WRONG_FORMAT = "Nhập thông tin sai định dạng.",
-    NOT_FULL_FIELD = "Vui lòng không bỏ trống.",
+    NOT_FULL_FIELD = "Vui lòng không được bỏ trống.",
     FIELD_MISSING = "bạn nhập thiếu ",
     PHONE_NUMBER_ERROR = "Số điện thoại phải có đúng 10 chữ số.",
     EMAIL_ERROR = "Nhập Email chưa đúng.",
@@ -30,7 +30,8 @@ export enum AuthError{
 
 export enum SystemError{
   INTERNAL_SERVER_ERROR = "Internal server error.",
-  CONNECT_ERROR = "Kết nối thất bại."
+  CONNECT_ERROR = "Kết nối thất bại.",
+  FETCH_DATA_ERROR = 'Failed to fetch data',
 }
 
 export enum MiddlewareError{
@@ -40,4 +41,20 @@ export enum MiddlewareError{
 
 export enum UnknownError{
   SOMETHING_WRONG = 'Something went wrong.'
+}
+
+export enum AuthExceptionMessages {
+  PASSWORD_WRONG = 'Bạn nhập sai mật khẩu.',
+  LOGIN_INVAILD = 'Email hoặc Password của bạn không hợp lệ.',
+  LOGIN_FAILED = 'Đăng nhập thất bại',
+  EMAIL_EXSIT = 'Email already exists.',
+  VERIFY_MAIL_FAILED = 'Xác thực email thất bại.',
+  SEND_MAIL_FAILED = 'Gửi mail thất bại.',
+  REGISTER_EMPLOYEE_FAILED = 'Đăng ký Tài khoản nhân viên thất bại.',
+  REGISTER_CUSTOMER_FAILED = 'Đăng ký thất bại.',
+}
+
+
+export enum ProductError{
+  PRODUCT_ERROR = "Something went wrong.",
 }

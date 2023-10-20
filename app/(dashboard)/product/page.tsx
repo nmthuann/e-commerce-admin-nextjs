@@ -1,23 +1,17 @@
-import { format } from "date-fns";
-
-// import prismadb from "@/lib/prismadb";
-import { formatter } from "@/lib/utils";
-
 import { ProductsClient } from "./components/client";
 import { ProductColumn } from "./components/columns";
 import { GetProducts } from "@/actions/product/get-products";
 
 const ProductsPage = async () => {
-
     const products = await GetProducts();
     const formattedProducts: ProductColumn[] = products.map((item) => ({
         product_id: item.product_id.toString(),
-        product_name: item.product_name,
-        category: item.__category__.category_name,
+        model_name: item.model_name,
+        category: item.category.category_name,
         vote: item.vote.toString(),
-        brand: item.brand,
-        origin: item.origin,
-        isDiscount: item.__discount__ ? true : false,
+        operation_system: item.operation_system,
+        hardware: item.hardware,
+        isDiscount: item.discount ? true : false,
         isStatus: item.status,
         price: item.price.toString(),
         unit_price: item.unit_price.toString(),
@@ -25,13 +19,13 @@ const ProductsPage = async () => {
         quantity: item.quantity.toString(),
     }));
 
-  return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-4 p-8 pt-6">
-        <ProductsClient data={formattedProducts} />
-      </div>
-    </div>
-  );
+    return (
+        <div className="flex-col">
+            <div className="flex-1 space-y-4 p-8 pt-6">
+                <ProductsClient data={formattedProducts} />
+            </div>
+        </div>
+    );
 };
 
 export default ProductsPage;

@@ -23,13 +23,16 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { ErrorInput } from "@/constants/errors/errors";
+import { AuthExceptionMessages, ErrorInput } from "@/constants/errors/errors";
 import { Position } from "@/types/position.interface";
 import ImageUpload from "@/components/ui/image-upload";
 import AvatarUpload from "@/components/ui/avatar-upload";
 import { useState } from "react";
 import { useEmail } from "@/contexts/email.context";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Messages } from "@/constants/notifications/message";
 // import { toast } from "@/components/ui/use-toast";
 // import { useState } from "react";
 
@@ -69,6 +72,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
 }) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
     // const { email } = useEmail();
     const params = useParams();
 
@@ -78,12 +82,43 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
     });
 
     // 2. Define a submit handler.
-    function onSubmit(data: registerFormValues) {
-        console.log(
-            `Submit ${JSON.stringify(data, null, 2)} ${params.email}@${
-                params.domain
-            } `
-        );
+    async function onSubmit(values: registerFormValues) {
+        // console.log(
+        //     `Submit ${JSON.stringify(data, null, 2)} ${params.email}@${
+        //         params.domain
+        //     } `
+        // );
+
+        console.log("values:::", values);
+        // const email = `${params.email}@${params.domain}`;
+        // try {
+        //     setLoading(true);
+        //     await axios.post(`/api/employee/create-employee`, {
+        //         employee_id: values.employee_id,
+        //         avatar_url: values.avatar_url,
+        //         first_name: values.first_name,
+        //         last_name: values.last_name,
+        //         gender: values.gender,
+        //         birthday: values.birthday,
+        //         addres: values.address,
+        //         phone: values.phone,
+        //         position_id: values.position_id,
+        //         email: email,
+        //     });
+        //     // if (result.data.message == AuthExceptionMessages.PASSWORD_WRONG) {
+        //     //     toast.error(`${AuthExceptionMessages.PASSWORD_WRONG} `);
+        //     // }
+        //     toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
+        //     router.push("/employee");
+        // } catch (error) {
+        //     console.log("onSubmit :: register ::", error);
+        //     toast.error(`${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED}`);
+        // } finally {
+        //     setLoading(false);
+        // }
+
+        toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
+        router.push("/employee");
     }
 
     return (

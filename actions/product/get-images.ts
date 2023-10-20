@@ -14,10 +14,6 @@ export async function GetImages(): Promise<Image[]> {
 
     const res = await fetch(URL, options);
 
-    // if (!res.ok) {
-    //   throw new Error('Failed to fetch data');
-    // }
-
     // Xử lý kết quả từ res ở đây
     return res.json();
 

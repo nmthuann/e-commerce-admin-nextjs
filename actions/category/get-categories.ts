@@ -1,6 +1,7 @@
 
 // import useAxios from "../../hooks/use-axios";
 
+import { SystemError } from "@/constants/errors/errors"
 import { Category } from "@/types/category.interface"
 
 // import httpClient from "../../lib/axios-instance";
@@ -29,15 +30,16 @@ import { Category } from "@/types/category.interface"
 // }
 
 
+const URL=`${process.env.SERVER_URL}/category/get-categories`
 export async function GetCategories(): Promise<Category []> {
-  const res = await fetch('http://localhost:3000/category/get-categories',
+  const res = await fetch(URL,
   {
     next: { revalidate: 0 },
   })
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data')
+    throw new Error(SystemError.FETCH_DATA_ERROR)
   }
  
   return await res.json()

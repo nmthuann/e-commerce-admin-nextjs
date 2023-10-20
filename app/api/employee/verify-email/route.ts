@@ -15,10 +15,6 @@ export async function POST(
 
     //  call api in here
     const verify = await axios.post(URL, {email});
-    // console.log("discount:::::",discount.data)
-    // if (await verify.data.message){
-    //   throw Error(`${verify.data.message}`)
-    // }
     return NextResponse.json(verify.data);
   } catch (error) {
     console.log('[VERIFY_EMAIL_POST]', error);

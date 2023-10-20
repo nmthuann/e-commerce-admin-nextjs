@@ -5,7 +5,6 @@ const product_URL =  `${process.env.NEXT_PUBLIC_API_URL}/product/`;
 
 
 
-
 export async function GET(
   req: Request,
   { params }: { params: { product_id: string } }
