@@ -2,7 +2,6 @@
 
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Heading } from "@/components/ui/heading";
@@ -10,13 +9,13 @@ import { Separator } from "@/components/ui/separator";
 import { ApiList } from "@/components/ui/api-list";
 
 import { ProductColumn, columns } from "./columns";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 interface ProductsClientProps {
     data: ProductColumn[];
 }
 
 export const ProductsClient: React.FC<ProductsClientProps> = ({ data }) => {
-    // const params = useParams();
     const router = useRouter();
 
     return (
@@ -27,10 +26,11 @@ export const ProductsClient: React.FC<ProductsClientProps> = ({ data }) => {
                     description="Manage products for your store"
                 />
                 <Button onClick={() => router.push(`/product/create`)}>
-                    <Plus className="mr-2 h-4 w-4" /> Add New
+                    <Plus className="mr-2 h-4 w-4" /> Thêm mới
                 </Button>
             </div>
             <Separator />
+
             <DataTable searchKey="model_name" columns={columns} data={data} />
             <Heading title="API" description="API Calls for Products" />
             <Separator />

@@ -22,9 +22,15 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modals/alert-modal";
-
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import ImageUpload from "@/components/ui/image-upload";
-
+import { Checkbox } from "@/components/ui/checkbox";
 import { Product } from "@/types/product.interface";
 import { Category } from "@/types/category.interface";
 import { Image } from "@/types/image.interface";
@@ -32,88 +38,63 @@ import { useOrigin } from "@/hooks/use-origin";
 import { Discount } from "@/types/discount.interface";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-
+import { ErrorInput } from "@/constants/errors/errors";
 import { Switch } from "@/components/ui/switch";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Messages } from "@/constants/notifications/message";
 
-type ProductFormValues = z.infer<typeof formSchema>;
+type CreateProductFormValues = z.infer<typeof formSchema>;
 
-interface ProductFormProps {
-    initialData:
-        | (Product & {
-              images: Image[];
-          })
-        | null;
-
+interface CreateProductFormProps {
     categories: Category[];
     discounts: Discount[];
 }
+const defaultValues: Partial<CreateProductFormValues> = {
+    // images: [],
+};
 
-export const ProductForm: React.FC<ProductFormProps> = ({
-    initialData,
+export const CreateProductForm: React.FC<CreateProductFormProps> = ({
     categories,
     discounts,
 }) => {
-    const params = useParams();
-    const router = useRouter();
-
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const params = useParams();
+    const router = useRouter();
 
     // const title = initialData ? "Edit product" : "Create product";
     // const description = initialData ? "Edit a product." : "Add a new product";
     // const toastMessage = initialData ? "Product updated." : "Product created.";
     // const action = initialData ? "Save changes" : "Create";
 
-    const defaultValues = initialData
-        ? {
-              ...initialData,
-              price: parseFloat(String(initialData?.price)),
-              unit_price: parseFloat(String(initialData?.unit_price)),
-              category_id: parseInt(String(initialData?.category.category_id)),
-              discount_id: parseInt(String(initialData?.discount.discount_id)),
-          }
-        : {
-              images: [],
-              model_name: "",
-              price: 0,
-              unit_price: 0,
-              vote: 0,
-              description: "",
-              quantity: 0,
-              category_id: 1,
-              discount_id: 1,
-              operation_system: "",
-              hardware: "",
-              status: false,
-              color: "",
-              battery: 0,
-              screen: 0,
-              memory: 0,
-              front_camera: 0,
-              behind_camera: 0,
-              ram: 0,
-          };
-
-    const form = useForm<ProductFormValues>({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues,
     });
-
-    async function onSubmit(values: ProductFormValues) {
+    async function onSubmit(values: CreateProductFormValues) {
         console.log(`Submit ${JSON.stringify(values, null, 2)} `);
+        if (values.unit_price > values.price) {
+            // Nếu điều kiện không thỏa mãn, hiển thị thông báo lỗi
+            form.setError("unit_price", {
+                type: "manual",
+                message: "Giá nhập không thể lớn hơn giá bán.",
+            });
+            return;
+        } else {
+            // Nếu điều kiện thỏa mãn, xóa thông báo lỗi nếu có
+            form.clearErrors("unit_price");
+        }
 
+        // toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
         // try {
         //     setLoading(true);
-        //     console.log(initialData);
-        //     await axios.put(
-        //         `/api/product/${parseInt(params.product_id as string)}`,
-        //         values
-        //     );
+        //     await axios.post(`/api/product`, values);
+
         //     router.refresh();
         //     router.push(`/product`);
-        //     toast.success(Product updated.);
+        //     toast.success("Product created.");
         // } catch (error: any) {
         //     toast.error("Something went wrong.");
         // } finally {
@@ -121,50 +102,41 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         // }
     }
 
-    const onDelete = async () => {
-        try {
-            setLoading(true);
-            await axios.delete(`/api/product/${params.product_id}`);
-            router.refresh();
-            router.push(`/product`);
-            toast.success("Product deleted.");
-        } catch (error: any) {
-            toast.error("Something went wrong.");
-        } finally {
-            setLoading(false);
-            setOpen(false);
-        }
-    };
-
+    // const onDelete = async () => {
+    //     toast.success("Xóa Thành công!");
+    // };
     return (
         <>
             <AlertModal
                 isOpen={open}
                 onClose={() => setOpen(false)}
-                onConfirm={onDelete}
+                onConfirm={() => {}} //onDelete
                 loading={loading}
             />
             <div className="flex items-center justify-between">
-                <Heading title="Edit product" description="Edit product." />
-                {initialData && (
-                    <Button
-                        disabled={loading}
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => setOpen(true)}
-                    >
-                        <Trash className="h-4 w-4" />
-                    </Button>
-                )}
+                <Heading
+                    title="Create product"
+                    description="Add a new product"
+                />
+
+                {/* <Button
+                    disabled={loading}
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => setOpen(true)}
+                >
+                    <Trash className="h-4 w-4" />
+                </Button> */}
             </div>
             <Separator />
+
             {/* FORM CREAT PRODUCT */}
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-8"
                 >
-                    <FormField
+                    {/* <FormField
                         control={form.control}
                         name="images"
                         render={({ field }) => (
@@ -204,7 +176,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    /> */}
 
                     <div className="md:grid md:grid-cols-3 gap-8 ">
                         {/* HÃNG ĐIỆN THOẠI - CATEGORY */}
@@ -317,26 +289,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Giá Nhập</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            disabled={loading}
-                                            placeholder="9.99"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        {/* VOTE */}
-                        <FormField
-                            control={form.control}
-                            name="vote"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Lượt bình chọn</FormLabel>
                                     <FormControl>
                                         <Input
                                             type="number"
@@ -509,26 +461,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                 </FormItem>
                             )}
                         />
-                        {/* STATUS */}
-                        <FormField
-                            control={form.control}
-                            name="status"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                                    <div className="space-y-0.5">
-                                        <FormLabel className="text-base">
-                                            Trạng Thái Hoạt Động
-                                        </FormLabel>
-                                    </div>
-                                    <FormControl>
-                                        <Switch
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
+
                         {/* BATTERY */}
                         <FormField
                             control={form.control}
@@ -626,7 +559,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                         />
                     </div>
 
-                    <Button type="submit">Save changes</Button>
+                    <Button type="submit">Xác Nhận</Button>
                 </form>
             </Form>
         </>
@@ -640,11 +573,11 @@ const formSchema = z.object({
     category_id: z.coerce.number().min(1),
     price: z.coerce.number().min(1),
     unit_price: z.coerce.number().min(1),
-    vote: z.coerce.number().min(0),
+    // vote: z.coerce.number().min(1),
     discount_id: z.coerce.number().min(1),
     operation_system: z.string().min(1),
     hardware: z.string().min(1),
-    status: z.boolean().default(false),
+    // status: z.boolean().default(false),
     color: z.string().min(1),
     battery: z.coerce.number().min(1),
 
@@ -656,13 +589,3 @@ const formSchema = z.object({
 
     description: z.string().min(1),
 });
-
-// enum Color {
-//     Red = "red",
-//     Black = "black",
-//     Gray = "gray",
-//     Blue = "blue",
-//     White = "white",
-//     Yellow = "yellow",
-//     Other = "other",
-// }

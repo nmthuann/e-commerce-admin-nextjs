@@ -14,11 +14,23 @@ export type ProductColumn = {
     operation_system: string; // brandsize
     hardware: string; // color: string,
     warranty_time: string;
-    isDiscount: boolean; // status // isFeatured
-    isStatus: boolean; // iss Archive = status
+    is_discount: boolean; // status // isFeatured
+    status: boolean; // iss Archive = status
+
+    color: string;
+    battery: number;
+    screen: number;
+    memory: number;
+    front_camera: number;
+    behind_camera: number;
+    ram: number;
 };
 
 export const columns: ColumnDef<ProductColumn>[] = [
+    {
+        accessorKey: "product_id",
+        header: "ID",
+    },
     {
         accessorKey: "model_name",
         header: "Name",
@@ -28,24 +40,24 @@ export const columns: ColumnDef<ProductColumn>[] = [
         header: "Vote",
     },
     {
-        accessorKey: "isStatus",
-        header: "Status",
+        accessorKey: "status",
+        header: "Trạng Thái",
     },
     {
-        accessorKey: "isDiscount",
-        header: "Discount",
+        accessorKey: "is_discount",
+        header: "Giảm giá",
     },
     {
         accessorKey: "price",
-        header: "Price (đ)",
+        header: "Giá Bán (đ)",
     },
     {
         accessorKey: "unit_price",
-        header: "Unit Price (đ)",
+        header: "Giá Nhập (đ)",
     },
     {
         accessorKey: "category",
-        header: "Category",
+        header: "Hãng",
     },
     {
         accessorKey: "operation_system",
@@ -54,16 +66,10 @@ export const columns: ColumnDef<ProductColumn>[] = [
     {
         accessorKey: "hardware",
         header: "Hardware",
-        // cell: ({ row }) => (
-        //   <div className="flex items-center gap-x-2">
-        //     {row.original.color}
-        //     <div className="h-6 w-6 rounded-full border" style={{ backgroundColor: row.original.color }} />
-        //   </div>
-        // )
     },
     {
         accessorKey: "warranty_time",
-        header: "Warranty (m)",
+        header: "Bảo Hàng",
     },
     {
         id: "actions",

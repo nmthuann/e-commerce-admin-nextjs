@@ -1,9 +1,9 @@
 import { GetProductById } from "@/actions/product/get-product";
-import { ProductForm } from "./components/product-form";
 import { GetDiscounts } from "@/actions/discount/get-discounts";
 import { GetCategories } from "@/actions/category/get-categories";
+import { CreateProductForm } from "./components/create-product-form";
 
-const ProductPage = async ({ params }: { params: { product_id: string } }) => {
+const CreateProductPage = async () => {
     // let product = null;
     // console.log(params.product_id);
     // if (params.product_id != "create") {
@@ -12,20 +12,17 @@ const ProductPage = async ({ params }: { params: { product_id: string } }) => {
     // }
     const discounts = await GetDiscounts();
     const categories = await GetCategories();
-    const product = await GetProductById(parseInt(params.product_id, 10));
-    // const Images = await GetImages();
 
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <ProductForm
+                <CreateProductForm
                     categories={categories}
                     discounts={discounts}
-                    initialData={product}
                 />
             </div>
         </div>
     );
 };
 
-export default ProductPage;
+export default CreateProductPage;
