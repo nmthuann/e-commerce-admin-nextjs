@@ -1,5 +1,5 @@
 import { Payment } from "@/types/payment.interface";
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/payment/get-payments`
+const URL=`${process.env.SERVER_URL}/payment/get-payments`
 
 export async function GetPayments(): Promise<Payment[]> {
   try {

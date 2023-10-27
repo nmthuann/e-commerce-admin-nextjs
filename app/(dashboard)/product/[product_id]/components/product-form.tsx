@@ -23,8 +23,6 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modals/alert-modal";
 
-import ImageUpload from "@/components/ui/image-upload";
-
 import { Product } from "@/types/product.interface";
 import { Category } from "@/types/category.interface";
 import { Image } from "@/types/image.interface";
@@ -36,6 +34,7 @@ import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import ImageUpload from "@/components/ui/image-upload";
 
 type ProductFormValues = z.infer<typeof formSchema>;
 
@@ -176,7 +175,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                             (image) => image.url
                                         )}
                                         disabled={loading}
-                                        onChange={(url) => {
+                                        onChange={(url: any) => {
                                             // Kiểm tra xem field.value có tồn tại không
                                             if (field.value) {
                                                 field.onChange([

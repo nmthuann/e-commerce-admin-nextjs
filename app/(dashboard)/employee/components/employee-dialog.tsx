@@ -15,8 +15,12 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Messages } from "@/constants/notifications/message";
-import axios from "axios";
-import { ErrorInput } from "@/constants/errors/errors";
+import axios, { AxiosError } from "axios";
+import {
+    AuthExceptionMessages,
+    ErrorInput,
+    StatusCode,
+} from "@/constants/errors/errors";
 interface EmployeeDialogProps {
     onClose: () => void; // Function to close the dialog
     //   routers: string;
@@ -24,7 +28,6 @@ interface EmployeeDialogProps {
 
 const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
     const router = useRouter();
-    // const pathname = usePathname();
     const [email, setEmail] = useState("");
 
     const emailAddress = email;
@@ -44,17 +47,35 @@ const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
                 email,
             });
 
-            if (response.data.message) {
+            if (response.data.message === AuthExceptionMessages.EMAIL_EXIST) {
                 toast.error(response.data.message);
-            } else {
-                toast.success(Messages.EMAIL_VALID);
-                onClose();
-                router.push(`/employee/create-employee/${userName}/${domain}`);
+                return;
             }
-        } catch (error: any) {
+
+            toast.success(Messages.EMAIL_VALID);
+            onClose();
+            router.push(`/employee/create-employee/${userName}/${domain}`);
+        } catch (error: AxiosError | any) {
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    const status = error.response.status;
+                    if (status === 403) {
+                        toast.error(`${StatusCode.FORBIDDEN_403}`);
+                        return;
+                    }
+                }
+                if (error.response) {
+                    const status = error.response.status;
+                    if (status === 401) {
+                        toast.error(`${StatusCode.UNAUTHORIZED_401}`);
+                        return;
+                    }
+                }
+            }
+
+            // console.error("API Error:", error);
             toast.error(`${error}`);
             onClose();
-            console.error("API Error:", error);
         }
     };
 
@@ -70,10 +91,12 @@ const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogTitle>Xác thực Email</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when
-                        you're done.
+                        {/* Make changes to your profile here. Click save when
+                        you're done. */}
+                        Thực hiện cho việc xác thực email nhân viên ở đây. Nhấp
+                        vào Confirm khi bạn hoàn tất.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">

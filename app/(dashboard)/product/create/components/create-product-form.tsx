@@ -29,7 +29,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import ImageUpload from "@/components/ui/image-upload";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Product } from "@/types/product.interface";
 import { Category } from "@/types/category.interface";
@@ -38,11 +38,16 @@ import { useOrigin } from "@/hooks/use-origin";
 import { Discount } from "@/types/discount.interface";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-import { ErrorInput } from "@/constants/errors/errors";
+import {
+    ErrorInput,
+    ProductError,
+    SystemError,
+} from "@/constants/errors/errors";
 import { Switch } from "@/components/ui/switch";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Messages } from "@/constants/notifications/message";
+import ImageUpload from "@/components/ui/image-upload";
 
 type CreateProductFormValues = z.infer<typeof formSchema>;
 
@@ -64,47 +69,43 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
     const params = useParams();
     const router = useRouter();
 
-    // const title = initialData ? "Edit product" : "Create product";
-    // const description = initialData ? "Edit a product." : "Add a new product";
-    // const toastMessage = initialData ? "Product updated." : "Product created.";
-    // const action = initialData ? "Save changes" : "Create";
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues,
     });
     async function onSubmit(values: CreateProductFormValues) {
-        console.log(`Submit ${JSON.stringify(values, null, 2)} `);
         if (values.unit_price > values.price) {
             // Nếu điều kiện không thỏa mãn, hiển thị thông báo lỗi
             form.setError("unit_price", {
                 type: "manual",
-                message: "Giá nhập không thể lớn hơn giá bán.",
+                message: ProductError.CHECK_INPUT_PRICE,
             });
             return;
         } else {
             // Nếu điều kiện thỏa mãn, xóa thông báo lỗi nếu có
             form.clearErrors("unit_price");
         }
+        // console.log(`Submit ${JSON.stringify(values, null, 2)} `);
 
-        // toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
-        // try {
-        //     setLoading(true);
-        //     await axios.post(`/api/product`, values);
+        try {
+            setLoading(true);
+            const res = await axios.post(`/api/product/create`, values);
 
-        //     router.refresh();
-        //     router.push(`/product`);
-        //     toast.success("Product created.");
-        // } catch (error: any) {
-        //     toast.error("Something went wrong.");
-        // } finally {
-        //     setLoading(false);
-        // }
+            if (res.status !== 200) {
+                toast.error(res.data);
+                return;
+            } else {
+                router.push(`/product`);
+                router.refresh();
+                toast.success(res.data);
+            }
+        } catch (error: any) {
+            toast.error(SystemError.INTERNAL_SERVER_ERROR);
+        } finally {
+            setLoading(false);
+        }
     }
 
-    // const onDelete = async () => {
-    //     toast.success("Xóa Thành công!");
-    // };
     return (
         <>
             <AlertModal
@@ -118,15 +119,6 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                     title="Create product"
                     description="Add a new product"
                 />
-
-                {/* <Button
-                    disabled={loading}
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => setOpen(true)}
-                >
-                    <Trash className="h-4 w-4" />
-                </Button> */}
             </div>
             <Separator />
 
@@ -136,7 +128,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-8"
                 >
-                    {/* <FormField
+                    <FormField
                         control={form.control}
                         name="images"
                         render={({ field }) => (
@@ -176,7 +168,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                 <FormMessage />
                             </FormItem>
                         )}
-                    /> */}
+                    />
 
                     <div className="md:grid md:grid-cols-3 gap-8 ">
                         {/* HÃNG ĐIỆN THOẠI - CATEGORY */}
@@ -252,7 +244,27 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                     <FormControl>
                                         <Input
                                             type="number"
-                                            placeholder="Nhập thông tin PIN ..."
+                                            placeholder="Nhập Số lượng sản phẩm ..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* WARRANTY */}
+                        <FormField
+                            control={form.control}
+                            name="warranty_time"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Thời gian bảo hành</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="Nhập Thời gian bảo hành ..."
                                             {...field}
                                         />
                                     </FormControl>
@@ -567,7 +579,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
 };
 
 const formSchema = z.object({
-    images: z.object({ url: z.string() }).array().optional(),
+    images: z.object({ url: z.string() }).array(), //.optional(),
     model_name: z.string().min(1),
     quantity: z.coerce.number().min(1),
     category_id: z.coerce.number().min(1),
@@ -580,12 +592,16 @@ const formSchema = z.object({
     // status: z.boolean().default(false),
     color: z.string().min(1),
     battery: z.coerce.number().min(1),
-
     front_camera: z.coerce.number().min(1),
     behind_camera: z.coerce.number().min(1),
     screen: z.coerce.number().min(1),
     memory: z.coerce.number().min(1),
     ram: z.coerce.number().min(1),
-
     description: z.string().min(1),
+    warranty_time: z.coerce.number().min(1),
 });
+
+// const title = initialData ? "Edit product" : "Create product";
+// const description = initialData ? "Edit a product." : "Add a new product";
+// const toastMessage = initialData ? "Product updated." : "Product created.";
+// const action = initialData ? "Save changes" : "Create";

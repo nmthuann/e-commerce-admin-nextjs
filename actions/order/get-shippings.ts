@@ -1,5 +1,5 @@
 import { Shipping } from "@/types/shipping.interface";
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/shipping/get-shippings`
+const URL=`${process.env.SERVER_URL}/shipping/get-shippings`
 
 export async function GetShippings(): Promise<Shipping[]> {
   try {

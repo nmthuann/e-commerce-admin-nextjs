@@ -23,7 +23,11 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { AuthExceptionMessages, ErrorInput } from "@/constants/errors/errors";
+import {
+    AuthExceptionMessages,
+    ErrorInput,
+    MiddlewareError,
+} from "@/constants/errors/errors";
 import { Position } from "@/types/position.interface";
 import ImageUpload from "@/components/ui/image-upload";
 import AvatarUpload from "@/components/ui/avatar-upload";
@@ -83,42 +87,53 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
 
     // 2. Define a submit handler.
     async function onSubmit(values: registerFormValues) {
-        // console.log(
-        //     `Submit ${JSON.stringify(data, null, 2)} ${params.email}@${
-        //         params.domain
-        //     } `
-        // );
+        console.log(
+            `Submit ${JSON.stringify(values, null, 2)} ${params.email}@${
+                params.domain
+            } `
+        );
 
-        console.log("values:::", values);
-        // const email = `${params.email}@${params.domain}`;
-        // try {
-        //     setLoading(true);
-        //     await axios.post(`/api/employee/create-employee`, {
-        //         employee_id: values.employee_id,
-        //         avatar_url: values.avatar_url,
-        //         first_name: values.first_name,
-        //         last_name: values.last_name,
-        //         gender: values.gender,
-        //         birthday: values.birthday,
-        //         addres: values.address,
-        //         phone: values.phone,
-        //         position_id: values.position_id,
-        //         email: email,
-        //     });
-        //     // if (result.data.message == AuthExceptionMessages.PASSWORD_WRONG) {
-        //     //     toast.error(`${AuthExceptionMessages.PASSWORD_WRONG} `);
-        //     // }
-        //     toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
-        //     router.push("/employee");
-        // } catch (error) {
-        //     console.log("onSubmit :: register ::", error);
-        //     toast.error(`${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED}`);
-        // } finally {
-        //     setLoading(false);
-        // }
+        const email = `${params.email}@${params.domain}`;
+        try {
+            setLoading(true);
+            const res = await axios.post(`/api/employee/create-employee`, {
+                employee_id: values.employee_id,
+                avatar_url: values.avatar_url,
+                first_name: values.first_name,
+                last_name: values.last_name,
+                gender: values.gender,
+                birthday: values.birthday,
+                address: values.address,
+                phone: values.phone,
+                position_id: values.position_id,
+                email: email,
+            });
+            if (res.status === 400) {
+                toast.error(
+                    `${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED} `
+                );
+                return;
+            }
+            if (res.data.message === ErrorInput.EMAIL_NOT_FOUND) {
+                toast.error(`${ErrorInput.EMAIL_NOT_FOUND} `);
+                return;
+            }
+            if (res.data.message === MiddlewareError.TOKEN_MISSING) {
+                toast.error(`${ErrorInput.EMAIL_NOT_FOUND} `);
+                return;
+            }
+            router.push("/employee");
+            router.refresh();
+            toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
+        } catch (error) {
+            console.log("onSubmit :: register ::", error);
+            toast.error(`${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED}`);
+        } finally {
+            setLoading(false);
+        }
 
-        toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
-        router.push("/employee");
+        // toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
+        // router.push("/employee");
     }
 
     return (
@@ -315,21 +330,6 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
                     )}
                 />
 
-                {/* Email */}
-                {/* <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Your Email" {...field} />
-                            </FormControl>
-                   
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
                 <FormField
                     control={form.control}
                     name="position_id"
@@ -372,7 +372,7 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
                     )}
                 />
 
-                <Button type="submit">Xác Nhận</Button>
+                <Button type="submit">Creat</Button>
             </form>
         </Form>
     );
@@ -432,9 +432,3 @@ const registerFormSchema = z.object({
         message: `${ErrorInput.LENGTH_ERROR} 12 kí tự.`,
     }),
 });
-
-// email: z
-//     .string({
-//         required_error: ErrorInput.EMAIL_ERROR,
-//     })
-//     .email(),

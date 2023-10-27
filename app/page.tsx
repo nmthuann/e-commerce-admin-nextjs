@@ -16,8 +16,10 @@ import {
 } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import useAuth from "@/hooks/use-auth";
+
 import { formatter } from "@/lib/utils";
+// import { useAuth } from "@/providers/auth-provider";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import axios from "axios";
 import { CreditCard, DollarSign, Package } from "lucide-react";
 
@@ -27,7 +29,11 @@ import { useEffect, useState } from "react";
 const HomePage = () => {
     const router = useRouter();
     // const login = useAuth();
-    const [login, setLogin] = useState(false);
+    // const [login, setLogin] = useState(false);
+
+    // const { admin } = useAuth();
+    const dispatch = useAppDispatch();
+    const admin = useAppSelector((state) => state.auth.currentAdmin?.name);
 
     const [graphRevenue, setGraphRevenue] = useState<GraphData[]>([]);
     const [totalRevenue, setTotalRevenue] = useState(0);
@@ -39,37 +45,39 @@ const HomePage = () => {
         CounttProductSold().then((res) => setProductInStock(res));
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Simulate an API request to get user data
-                const response = await axios.post("/api/auth/login", {}); // Replace with your API endpoint
-                if (response.status === 200) {
-                    // const userData = await response.json();
-                    console.log("check if");
-                    router.push("/");
-                    setLogin(true);
-                } else {
-                    router.push("/auth/login");
-                    console.log("check else");
-                    setLogin(false);
-                }
-            } catch (error) {
-                console.log("check error");
-                router.push("/auth/login");
-                setLogin(false);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             // Simulate an API request to get user data
+    //             const response = await axios.post("/api/auth/login", {}); // Replace with your API endpoint
+    //             if (response.status === 200) {
+    //                 // const userData = await response.json();
+    //                 console.log("check if");
+    //                 router.push("/");
+    //                 setLogin(true);
+    //             } else {
+    //                 router.push("/auth/login");
+    //                 console.log("check else");
+    //                 setLogin(false);
+    //             }
+    //         } catch (error) {
+    //             console.log("check error");
+    //             router.push("/auth/login");
+    //             setLogin(false);
+    //         }
+    //     };
 
-        fetchData();
-    }, []);
+    //     fetchData();
+    // }, []);
 
     useEffect(() => {
         // Sử dụng một useEffect mới để theo dõi biến login và chạy DataDashboard() khi login là true
-        if (login) {
+        if (admin != null) {
             DataDashboard();
+        } else {
+            router.push("auth/login");
         }
-    }, [login]);
+    }, []);
 
     return (
         <div className="flex-col">

@@ -19,10 +19,21 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { LoginApi } from "@/actions/auth/login";
 import { redirect, useRouter } from "next/navigation";
-import { AuthError, ErrorInput, UnknownError } from "@/constants/errors/errors";
+import {
+    AuthError,
+    AuthExceptionMessages,
+    ErrorInput,
+    UnknownError,
+} from "@/constants/errors/errors";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Messages } from "@/constants/notifications/message";
+import { useAppDispatch } from "@/redux/hook";
+import { authActions } from "@/redux/features/auth-slice";
+// import { authActions } from "@/redux/store";
+// import { useAuth } from "@/providers/auth-provider";
+// import { useAppDispatch } from "@/redux/hook";
+// import { authActions } from "@/redux/reducers/auth-slice";
 
 const formSchema = z.object({
     email: z
@@ -30,36 +41,19 @@ const formSchema = z.object({
         .min(2, {
             message: `${ErrorInput.MIN_ERROR} 2 kí tự.`,
         })
-        .email(),
+        .email({
+            message: ErrorInput.EMAIL_INVALID,
+        }),
     password: z.string().min(8, {
         message: `${ErrorInput.MIN_ERROR} 6 kí tự.`,
     }),
 });
 
 export function LoginForm() {
-    // const { loginResponse, loginIsLoading, loginError, callLoginRefetch } =
-    //     LoginApi();
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-    //
-    // useEffect(() => {
-    //     if (loginResponse) {
-    //         console.log(loginResponse);
-    //         localStorage.setItem("token", loginResponse.access_token);
-    //         //  cookies().set({
-    //         //   name: 'token',
-    //         //   value: loginResponse.access_token,
-    //         //   httpOnly: true,
-    //         // })
-    //         redirect("/");
-    //     } else if (loginError) {
-    //         console.log(loginError);
-    //         alert(AuthError.LOGIN_FAILED);
-    //     }
-    // }, [loginResponse, loginError]);
-
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    // const { login } = useAuth();
+    const dispatch = useAppDispatch();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -71,17 +65,39 @@ export function LoginForm() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("values:::", values);
+        // console.log("values:::", values);
         // callLoginRefetch(values);
         try {
             setLoading(true);
-            await axios.post(`/api/auth/login`, values);
+            const res = await axios.post(`/api/auth/login`, values);
+            if (res.data.message) {
+                toast.error(res.data.message);
+                return;
+            }
+
+            // replace in here
+            // login({
+            //     email: values.email,
+            //     name: await res.data.first_name,
+            //     avatar_url: await res.data.avatar_url,
+            //     position: await res.data.position,
+            // });
+
+            // bổ sung redux
+            dispatch(
+                authActions.login({
+                    email: values.email,
+                    name: await res.data.first_name,
+                    avatar_url: await res.data.avatar_url,
+                    position: await res.data.position,
+                })
+            );
+
             toast.success(Messages.EMAIL_VALID);
-            // redirect("/");
             router.push("/");
         } catch (error) {
             console.log("onSubmit :: Login ::", error);
-            toast.error("hahaha");
+            toast.error(AuthExceptionMessages.LOGIN_FAILED);
         } finally {
             setLoading(false);
         }

@@ -1,4 +1,5 @@
-import { ErrorInput, SystemError } from "@/constants/errors/errors";
+import { ErrorInput, MiddlewareError, SystemError } from "@/constants/errors/errors";
+import { Messages } from "@/constants/notifications/message";
 import axios from "axios";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -9,6 +10,10 @@ export async function POST(
 ) {
 
     try {
+    const token = cookies().get('token')?.value;
+    if(!token){
+      return NextResponse.json({message: MiddlewareError.TOKEN_MISSING});
+    }
 
     const body = await req.json();
 
@@ -28,9 +33,9 @@ export async function POST(
       return new NextResponse(`${ErrorInput.FIELD_MISSING} employee_id`, { status: 400 });
     }
 
-    if (!avatar_url) {
-      return new NextResponse(`${ErrorInput.FIELD_MISSING} avatar_url`, { status: 400 });
-    }
+    // if (!avatar_url) {
+    //   return new NextResponse(`${ErrorInput.FIELD_MISSING} avatar_url`, { status: 400 });
+    // }
 
 
     if (!first_name) {
@@ -70,7 +75,7 @@ export async function POST(
 
     //  call api in here
     const register = 
-        await axios.post(`${URL}/:${email}`, 
+        await axios.post(`${URL}/${email}`, 
         {
             avatar_url,
             employee_id,
@@ -81,12 +86,19 @@ export async function POST(
             phone,
             address,
             position_id,
+        },{
+           headers: {
+          'Authorization': `Bearer ${token}` 
+        }
         });
    
 
-    if(register.data.message === ErrorInput.PASSWORD_ERROR){
-      return NextResponse.json(register.data);
-    }
+    // if(register.data.message === ErrorInput.EMAIL_NOT_FOUND){
+    //   return NextResponse.json(register.data);
+    // }
+    // if(register.data.message === Messages.CREATE_EMPLOYEE_SUCCESS){
+    //    return NextResponse.json(register.data);
+    // }
 
     return NextResponse.json(register.data);
   } catch (error) {
