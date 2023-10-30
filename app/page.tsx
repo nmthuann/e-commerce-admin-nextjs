@@ -45,31 +45,6 @@ const HomePage = () => {
         CounttProductSold().then((res) => setProductInStock(res));
     };
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             // Simulate an API request to get user data
-    //             const response = await axios.post("/api/auth/login", {}); // Replace with your API endpoint
-    //             if (response.status === 200) {
-    //                 // const userData = await response.json();
-    //                 console.log("check if");
-    //                 router.push("/");
-    //                 setLogin(true);
-    //             } else {
-    //                 router.push("/auth/login");
-    //                 console.log("check else");
-    //                 setLogin(false);
-    //             }
-    //         } catch (error) {
-    //             console.log("check error");
-    //             router.push("/auth/login");
-    //             setLogin(false);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
     useEffect(() => {
         // Sử dụng một useEffect mới để theo dõi biến login và chạy DataDashboard() khi login là true
         if (admin != null) {

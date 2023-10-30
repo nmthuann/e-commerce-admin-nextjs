@@ -70,7 +70,7 @@
 // // export default store;
 
 import { configureStore } from "@reduxjs/toolkit";
-import authSlice from "./features/auth-slice";
+import authSlice from "../reducers/auth-slice";
 
 
 

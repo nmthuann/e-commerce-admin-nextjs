@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,23 +11,49 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authActions } from "@/redux/features/auth-slice";
+import { authActions } from "@/redux/reducers/auth-slice";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-// import { useAuth } from "@/providers/auth-provider";
-// import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export function UserNav() {
     // const { admin, logout } = useAuth();
+
+    const [isMounted, setIsMounted] = useState(false);
+    const router = useRouter();
+    const dispatch = useAppDispatch();
     const admin = useAppSelector((state) => state.auth.currentAdmin);
 
-    const dispatch = useAppDispatch();
+    useEffect(() => {
+        const admin = localStorage.getItem("admin");
+        if (admin) {
+            const userDataObject = JSON.parse(admin);
+            if (userDataObject) {
+                const { name, email, position, avatar_url } = userDataObject;
+                // Gán giá trị vào biến admin
+                dispatch(
+                    authActions.login({ name, email, avatar_url, position })
+                );
+            }
+        }
+        setIsMounted(true);
+    }, [dispatch]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         // Thực hiện đăng xuất
+        const res = await axios.post("/api/auth/logout", {});
+        toast.success(res.data);
+        router.push("auth/login");
+
         // Xóa thông tin người dùng khỏi Redux
         dispatch(authActions.logout());
     };
+    if (!isMounted) {
+        return null;
+    }
 
     return (
         <DropdownMenu>

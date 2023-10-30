@@ -4,7 +4,12 @@ export enum Messages{
     CREATE_EMPLOYEE_SUCCESS = 'Tạo tài khoản nhân viên thành công.',
     COPY_ID = 'ID copied to clipboard.',
     CREATE_PRODUCT_SUCCESS = 'Tạo mới sản phẩm thành công.',
-     LOGOUT_SUCCESS = 'Bạn đã đăng xuất thành công',
+    LOGOUT_SUCCESS = 'Bạn đã đăng xuất thành công',
+    CONFIRMED_SUCCESS = 'Xác nhận đơn hàng thành công.',
+    CANCELED_SUCCESS = 'Hủy đơn hàng thành công.',
+    INPROGRESS_SUCCESS = 'Đơn hàng đang được giao cho đơn vị vận chuyển.',
+    COMPLETED_SUCCESS = 'Hoàn tất quá trình giao hàng.',
+    REFUNDED_SUCCESS = ' Hoàn trả đơn hàng.'
 }
 
 
@@ -14,4 +19,8 @@ export enum SuccessMessages{
 
 export enum NoResult{
     NO_RESULT = "Không tìm thấy kết quả phù hợp.",
+}
+
+export enum RequestMessage{
+    REQUEST_LOGIN = 'Vui lòng đăng nhập.',
 }

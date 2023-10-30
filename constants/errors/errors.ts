@@ -70,3 +70,30 @@ export enum StatusCode{
   UNAUTHORIZED_401 = "401 Yêu cầu không được xác thực.",
 
 }
+
+
+export enum OrderError {
+  CREATE_ORDER_ONLINE_ERROR = 'Tạo đơn hàng online thất bại.',
+  CREATE_ORDER_OFFLINE_ERROR = 'Tạo đơn hàng offline thất bại.',
+  ORDER_NOT_FOUND = 'Không tìm thấy đơn hàng theo yêu cầu.',
+  CANCELED_ORDER_DUPLICATE = 'Đơn hàng đã được hủy.',
+  CANCELED_ORDER_FAILED = 'Đơn hàng không được hủy.',
+  CANCELED_ORDER_NOT_UPDATE = 'Đơn hàng không thể hủy vui lòng yêu cầu khác.',
+  CANCELED_FOR_CONFIRMED_ORDER = 'Đơn hàng của bạn đã xác nhận nên không thể hủy.',
+  INPROGRESS_FOR_CONFIRMED_ORDER = 'Không thể xác nhận khi đang giao',
+  INPROGRESS_FOR_CANCELED_ORDER = 'Không thể hủy khi đang giao',
+  COMPLETED_FOR_CONFIRMED_ORDER = 'Đơn hàng đã hoàn thành không thể xác nhận.',
+  REFUNDED_FOR_CONFIRMED_ORDER = 'Đơn hàng đã hoàn trả không thể xác nhận.',
+  CONFIRMED_ORDER_FAILED = 'Đơn hàng của bạn đã được xác nhận.',
+  CONFIRMED_ORDER_DUPLICATE = 'Đơn hàng đã được xác nhận.',
+  CONFIRMED_FOR_CANCELED_ORDER = 'Đơn hàng của bạn đã hủy nên không thể xác nhận.',
+  INPROGRESS_ORDER_NOT_UPDATE = 'Đơn hàng đang vận chuyển không thể thay đổi trạng thái.',
+  CONFIRMED_FOR_COMPLETED_ORDER = 'Vui giao hàng trước khi xác nhận hoàn tất.', 
+  INPROGRESS_ORDER_DUPLICATE = 'Đơn hàng đang được giao.',
+  COMPLETED_FOR_INPROGRESS_ORDER = 'Đơn hàng đã hoàn tất.',
+  COMPLETED_ORDER_FAILED = 'Đơn hàng đã hoàn thành không được thay đổi trạng thái.',
+  REFUNDED_ORDER_FAILED = 'Đơn hàng đã hoàn trả không được thay đổi trạng thái.',
+  NOT_YET_CONFIRM = 'Đơn hàng chưa được duyệt.',
+  CANCELED_ORDER = 'Đơn hàng không được hủy.',
+  UPDATE_STATUS_ORDER_FAILED = 'Cập nhật trạng thái thất bại.',
+}

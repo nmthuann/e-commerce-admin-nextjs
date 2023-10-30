@@ -7,11 +7,11 @@ export async function GetTaskOrders(): Promise<ITask[]> {
   try {
 
     const response = await axios.get(URL);
-    console.log(response.data)
+    // console.log(response.data)
     return response.data;
 
   } catch (error) {
-    console.error('Error fetching data:', error);
+    // console.error('Error fetching data:', error);
     throw error;
   }
 }

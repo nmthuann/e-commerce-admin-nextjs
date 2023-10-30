@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-// import { useAuth } from "@/providers/auth-provider";
 import { Position } from "@/constants/enums/positon.enum";
 import { Button } from "./ui/button";
 import {
@@ -94,7 +93,7 @@ export function MainNav({
         );
         routes.length = 0; // Clear the routes array
         routes.push(...filteredRoutes); // Add the filtered routes back to the array
-    } else if (admin?.position === Position.SHIPPING) {
+    } else if (admin?.position === Position.SHIPPER) {
         const filteredRoutes = routes.filter(
             (route) =>
                 route.label === "Task" ||
@@ -104,6 +103,12 @@ export function MainNav({
         routes.length = 0; // Clear the routes array
         routes.push(...filteredRoutes); // Add the filtered routes back to the array
     } else if (admin?.position === Position.SELLER) {
+        const filteredRoutes = routes.filter(
+            (route) => route.label !== "Employees"
+        );
+        routes.length = 0; // Clear the routes array
+        routes.push(...filteredRoutes);
+    } else if (admin?.position === Position.WAREHOUSE) {
         const filteredRoutes = routes.filter(
             (route) => route.label !== "Employees"
         );

@@ -29,7 +29,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Messages } from "@/constants/notifications/message";
 import { useAppDispatch } from "@/redux/hook";
-import { authActions } from "@/redux/features/auth-slice";
+import { authActions } from "@/redux/reducers/auth-slice";
 // import { authActions } from "@/redux/store";
 // import { useAuth } from "@/providers/auth-provider";
 // import { useAppDispatch } from "@/redux/hook";

@@ -5,9 +5,24 @@ import {
     CheckCircledIcon,
     CircleIcon,
     CrossCircledIcon,
+    LapTimerIcon,
     QuestionMarkCircledIcon,
+    ResetIcon,
+    RocketIcon,
     StopwatchIcon,
 } from "@radix-ui/react-icons";
+import {
+    ArchiveIcon,
+    ArrowBigDown,
+    ArrowLeftRight,
+    CheckCircleIcon,
+    ChevronDown,
+    ChevronsDown,
+    FastForward,
+    PackageCheck,
+    Undo2,
+    XCircle,
+} from "lucide-react";
 
 export const labels = [
     {
@@ -28,27 +43,32 @@ export const statuses = [
     {
         value: "pending",
         label: "Pending",
-        icon: QuestionMarkCircledIcon,
+        icon: LapTimerIcon,
     },
     {
         value: "confirmed",
         label: "Confirmed",
-        icon: CircleIcon,
+        icon: PackageCheck,
     },
     {
         value: "in progress",
         label: "In Progress",
-        icon: StopwatchIcon,
+        icon: RocketIcon,
     },
     {
         value: "completed",
         label: "Completed",
-        icon: CheckCircledIcon,
+        icon: CheckCircleIcon,
     },
     {
         value: "canceled",
         label: "Canceled",
-        icon: CrossCircledIcon,
+        icon: XCircle,
+    },
+    {
+        value: "refunded",
+        label: "Refunded",
+        icon: Undo2,
     },
 ];
 
@@ -56,17 +76,17 @@ export const priorities = [
     {
         label: "GHTK",
         value: "GHTK",
-        icon: ArrowDownIcon,
+        icon: ChevronsDown,
     },
     {
         label: "GHN",
         value: "GHN",
-        icon: ArrowRightIcon,
+        icon: ArrowLeftRight,
     },
     {
         label: "GHHT",
         value: "GHHT",
-        icon: ArrowUpIcon,
+        icon: FastForward,
     },
 ];
 

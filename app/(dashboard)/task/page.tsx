@@ -1,4 +1,3 @@
-// "use client";
 import { Metadata } from "next";
 
 import { columns } from "@/app/(dashboard)/task/components/coloumns";
@@ -10,44 +9,17 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ITask } from "@/types/task.interface";
-
 export const metadata: Metadata = {
     title: "Tasks",
     description: "A task and issue tracker build using Tanstack Table.",
 };
 
 export default async function TaskPage() {
-    //const data = await GetTaskOrders();
-    // const tasks = await GetTaskOrders();
-    // const [tasks, setTasks] = useState<ITask[]>([]);
-    // const router = useRouter();
-
-    // useEffect(() => {
-    //     GetData();
-    // }, []);
-
-    // const GetData = async () => {
-    //     // getGraphRevenue()
-    //     // .then(res => setGraphRevenue(res))
-    //     // setGraphRevenue(graphRevenueRes);
-    //     // const totalRevenueRes = await GetTotalRevenue();
-    //     // setTotalRevenue(totalRevenueRes)
-    //     const task = await GetTaskOrders();
-    //     setTasks(task);
-    //     // const productInStockRes = await CounttProductSold();
-    //     // setProductInStock(productInStockRes)
-    // };
-
-    // // console.log(tasks);
     const tasks = await GetTaskOrders();
     return (
         <>
-            <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+            {/* max-h-full h-full */}
+            <div className="hidden flex-1 flex-col space-y-8 p-8 md:flex">
                 <div className="flex items-center justify-between space-y-2">
                     <div>
                         <h2 className="text-2xl font-bold tracking-tight">

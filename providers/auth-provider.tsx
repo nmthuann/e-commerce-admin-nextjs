@@ -40,8 +40,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const contextValue = { admin, login, logout };
 
-    // const [state, dispatch] = useReducer(authReducer, initialState);
-
     return (
         <AuthContext.Provider value={contextValue}>
             {children}

@@ -4,11 +4,8 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { AuthProvider } from "@/providers/auth-provider";
 import { Provider } from "react-redux";
-import store from "@/redux/store";
-// import { Providers } from "@/redux/provider";
-// import { Provider } from "@radix-ui/react-tooltip";
+import store from "@/redux/stores/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,16 +27,11 @@ export default function RootLayout({
                     defaultTheme="system"
                     enableSystem
                 >
-                    <ToastProvider></ToastProvider>
-                    {/* <ModalProvider></ModalProvider> */}
-                    {/* <Providers> */}
+                    <ToastProvider />
                     <Provider store={store}>
                         <Navbar />
                         {children}
                     </Provider>
-                    {/* </AuthProvider> */}
-
-                    {/* </Providers> */}
                 </ThemeProvider>
             </body>
             {/* <Footer/>  */}
