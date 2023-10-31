@@ -1,15 +1,10 @@
 import { Image } from "@/types/image.interface"
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/image/get-images`
 
 export async function GetImages(): Promise<Image[]> {
-  // const token = localStorage.getItem('token');
   try {
-    // const url = `${URL}${Image_id}`;
+    const URL=`${process.env.NEXT_PUBLIC_API_URL}/image/get-images`
     const options = {
       method: 'GET', // Chỉ định phương thức là GET
-      // headers: {
-      //   'Authorization': `Bearer ${token}`,
-      // }
     };
 
     const res = await fetch(URL, options);

@@ -1,28 +1,20 @@
-// "use client"
-// import { IOrder } from "@/types/order.interface";
-import axios from "axios";
+export interface GraphData {
+  name: string;
+  total: number;
+}
 
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/order/get-revenue-by-month`
 interface RevenueByMonth{
 
    [month: string]: number;
 }
-// import { cookies } from "next/headers";
 async function getRevenueByMonth(): Promise<RevenueByMonth> {
-  
   try {
-    // const token = ''
-    const token = localStorage.getItem('token') || ""
-     
-        //  const cookieStore = cookies()
-        // const token = cookieStore.get('token')
-    const response = await axios.get(URL, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    return response.data;
+    const URL=`${process.env.NEXT_PUBLIC_API_URL}/order/get-revenue-by-month`
+    const options = {
+        method: 'GET',
+      };
+      const res = await fetch(URL, options);
+      return await res.json();
   } catch (error) {
     console.error('Error fetching data:', error);
     throw error;
@@ -30,10 +22,6 @@ async function getRevenueByMonth(): Promise<RevenueByMonth> {
 }
 
 
-export interface GraphData {
-  name: string;
-  total: number;
-}
 
 export const getGraphRevenue = async (): Promise<GraphData[]> => {
 

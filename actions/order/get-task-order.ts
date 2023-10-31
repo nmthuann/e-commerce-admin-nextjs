@@ -1,17 +1,15 @@
-import axios from 'axios';
 import { ITask } from '@/types/task.interface';
-
-const URL = `${process.env.SERVER_URL}/order/get-task-orders`;
 
 export async function GetTaskOrders(): Promise<ITask[]> {
   try {
-
-    const response = await axios.get(URL);
-    // console.log(response.data)
-    return response.data;
-
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/get-task-orders`;
+    const options = {
+      method: 'GET',
+    };
+    const res = await fetch(URL, options);
+    return await res.json();
   } catch (error) {
-    // console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error);
     throw error;
   }
 }

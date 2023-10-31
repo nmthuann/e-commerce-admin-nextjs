@@ -1,21 +1,12 @@
-import axios from 'axios';
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/count-product-sold`;
-
-export async function CounttProductSold(): Promise<number> {
+export async function CountProductSold(): Promise<number> {
   try {
-    const token = localStorage.getItem('token') || ""
-     
-        //  const cookieStore = cookies()
-        // const token = cookieStore.get('token')
-    const response = await axios.get(URL, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    // Giả sử API trả về dữ liệu dưới dạng JSON
-    return response.data;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/count-product-sold`;
+    const options = {
+      method: 'GET',
+    };
+    const res = await fetch(URL, options);
+    return await res.json();
 
   } catch (error) {
     console.error('Error fetching data:', error);

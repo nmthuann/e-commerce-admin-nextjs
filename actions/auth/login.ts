@@ -4,12 +4,6 @@ import httpClient from "../../lib/axios-instance";
 
 const loginUrl = '/auth/admin/login'
 
-// interface LoginResponse{
-//     access_token: string;
-//     refresh_token: string;
-// }
-
-
 export const LoginApi = () => {
     const { 
         response: loginResponse,

@@ -31,7 +31,7 @@ export function MainNav({
     const routes = [
         {
             href: `/`,
-            label: "Overview",
+            label: "Dashboard",
             active: pathname === `/`,
             icon: PieChart,
         },
@@ -82,7 +82,7 @@ export function MainNav({
     if (admin?.position === Position.STORE_MANAGER) {
         const filteredRoutes = routes.filter(
             (route) =>
-                route.label === "Overview" ||
+                route.label === "Dashboard" ||
                 route.label === "Categories" ||
                 route.label === "Discounts" ||
                 route.label === "Products" ||
@@ -97,7 +97,7 @@ export function MainNav({
         const filteredRoutes = routes.filter(
             (route) =>
                 route.label === "Task" ||
-                route.label === "Overview" ||
+                route.label === "Dashboard" ||
                 route.label === "Settings"
         );
         routes.length = 0; // Clear the routes array

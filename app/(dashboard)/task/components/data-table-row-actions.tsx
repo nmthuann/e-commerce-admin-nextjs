@@ -288,6 +288,19 @@ export function DataTableRowActions<TData>({
                         </DropdownMenuItem>
                     </>
                 )}
+                {admin?.position === Position.SELLER && (
+                    <>
+                        <DropdownMenuItem onClick={handleConfirmedOrder}>
+                            Confirm
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleCanceledOrder}>
+                            Cancel
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleInProgressOrder}>
+                            In Progress
+                        </DropdownMenuItem>
+                    </>
+                )}
                 {admin?.position === Position.SHIPPER && (
                     <>
                         <DropdownMenuItem onClick={() => {}}>
