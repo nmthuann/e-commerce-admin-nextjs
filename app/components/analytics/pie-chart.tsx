@@ -39,7 +39,7 @@ export const AnalysisPieChart: React.FC<PieChartProps> = ({ data }) => {
                     data={data}
                     dataKey="ma"
                     nameKey="name"
-                    cx="50%"
+                    cx="40%"
                     cy="50%"
                     outerRadius={75}
                     label
@@ -52,10 +52,10 @@ export const AnalysisPieChart: React.FC<PieChartProps> = ({ data }) => {
                     ))}
                 </Pie>
                 <Legend
-                    align="center"
-                    verticalAlign="bottom"
-                    iconSize={5}
-                    layout="horizontal"
+                    align="left"
+                    verticalAlign="top"
+                    iconSize={10}
+                    layout="radial"
                 />
             </PieChart>
         </div>

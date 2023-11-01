@@ -29,6 +29,28 @@ import { useRouter } from "next/navigation";
 import { OrderStatus } from "@/constants/enums/order-status.enum";
 import { useAppSelector } from "@/redux/hook";
 import { Position } from "@/constants/enums/positon.enum";
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import OrderDetailSheet from "./order-detail-sheet";
+import {
+    CheckCircle2,
+    PackageCheck,
+    Rocket,
+    Undo2,
+    WalletCards,
+    XCircle,
+} from "lucide-react";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -256,6 +278,16 @@ export function DataTableRowActions<TData>({
         }
     }
 
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+    const openSheet = () => {
+        setIsSheetOpen(true);
+    };
+
+    const closeSheet = () => {
+        setIsSheetOpen(false);
+    };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -272,19 +304,24 @@ export function DataTableRowActions<TData>({
                     admin?.position === Position.SELLER) && (
                     <>
                         <DropdownMenuItem onClick={handleConfirmedOrder}>
-                            Confirm
+                            <PackageCheck className="mr-2 h-4 w-4" />
+                            <span>Confirm</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleCanceledOrder}>
-                            Cancel
+                            <XCircle className="mr-2 h-4 w-4" />
+                            <span>Cancel</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleInProgressOrder}>
-                            In Progress
+                            <Rocket className="mr-2 h-4 w-4" />
+                            <span>In Progress</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleCompletedOrder}>
-                            Completed
+                            <CheckCircle2 className="mr-2 h-4 w-4" />
+                            <span> Complete</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleRefundedOrder}>
-                            Refunded
+                            <Undo2 className="mr-2 h-4 w-4" />
+                            <span> Refund</span>
                         </DropdownMenuItem>
                     </>
                 )}
@@ -314,7 +351,10 @@ export function DataTableRowActions<TData>({
                 {admin?.position === Position.WAREHOUSE && <></>}
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>Method</DropdownMenuSubTrigger>
+                    <DropdownMenuSubTrigger>
+                        <WalletCards className="mr-2 h-4 w-4" />
+                        <span>Method Payment</span>
+                    </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent>
                         <DropdownMenuRadioGroup value={task.label}>
                             {labels.map((label) => (
@@ -331,7 +371,15 @@ export function DataTableRowActions<TData>({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     onClick={() => {
-                        console.log("on click Order Detail");
+                        isSheetOpen && (
+                            <div>
+                                <OrderDetailSheet
+                                    onClose={() => {
+                                        setIsSheetOpen(false);
+                                    }}
+                                />
+                            </div>
+                        );
                     }}
                 >
                     Order Detail
@@ -349,3 +397,55 @@ export function DataTableRowActions<TData>({
 //                 <DropdownMenuItem onClick={handleCanceledOrder}>
 //                     Cancel
 //                 </DropdownMenuItem> */}
+
+// {
+//     isSheetOpen && (
+//         <Sheet>
+//             {/* <SheetTrigger asChild>
+//                     <Button variant="outline">Open</Button>
+//                 </SheetTrigger> */}
+//             <SheetContent>
+//                 <SheetHeader>
+//                     <SheetTitle>Edit profile</SheetTitle>
+//                     <SheetDescription>
+//                         Make changes to your profile here. Click
+//                         save when you're done.
+//                     </SheetDescription>
+//                 </SheetHeader>
+//                 <div className="grid gap-4 py-4">
+//                     <div className="grid grid-cols-4 items-center gap-4">
+//                         <Label
+//                             htmlFor="name"
+//                             className="text-right"
+//                         >
+//                             Name
+//                         </Label>
+//                         <Input
+//                             id="name"
+//                             value="Pedro Duarte"
+//                             className="col-span-3"
+//                         />
+//                     </div>
+//                     <div className="grid grid-cols-4 items-center gap-4">
+//                         <Label
+//                             htmlFor="username"
+//                             className="text-right"
+//                         >
+//                             Username
+//                         </Label>
+//                         <Input
+//                             id="username"
+//                             value="@peduarte"
+//                             className="col-span-3"
+//                         />
+//                     </div>
+//                 </div>
+//                 <SheetFooter>
+//                     <SheetClose asChild>
+//                         <Button type="submit">Save changes</Button>
+//                     </SheetClose>
+//                 </SheetFooter>
+//             </SheetContent>
+//         </Sheet>
+//     );
+// }

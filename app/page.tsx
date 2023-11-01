@@ -31,6 +31,10 @@ import OverviewTab from "./components/overview-tab";
 import { AnalyticsTab } from "./components/analytics-tab";
 import ReportsTab from "./components/reports-tab";
 
+import { writeFileSync } from "fs";
+import * as ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+
 const HomePage = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
@@ -55,6 +59,25 @@ const HomePage = () => {
         }
     }, []);
 
+    const handleReport = async () => {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet("Sheet 1");
+
+        // Thêm dữ liệu vào bảng Excel (ví dụ)
+        worksheet.addRow(["Tên", "Tuổi"]);
+        worksheet.addRow(["John Doe", 30]);
+        worksheet.addRow(["Jane Smith", 25]);
+
+        // Tạo một tệp Excel tạm thời trong bộ nhớ
+        const buffer = await workbook.xlsx.writeBuffer();
+
+        // Lưu tệp Excel và xuất ra
+        const blob = new Blob([buffer], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        saveAs(blob, `report_${Date.now()}.csv`);
+    };
+
     return (
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
@@ -68,7 +91,7 @@ const HomePage = () => {
                     />
                     <div className="flex items-center space-x-2">
                         <CalendarDateRangePicker />
-                        <Button>Report</Button>
+                        <Button onClick={handleReport}>Report</Button>
                     </div>
                 </div>
                 <Tabs defaultValue="overview" className="space-y-4">
