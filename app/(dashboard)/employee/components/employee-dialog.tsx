@@ -43,14 +43,14 @@ const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
             return;
         }
         try {
-            const response = await axios.post("/api/employee/verify-email", {
-                email,
-            });
+            // const response = await axios.post("/api/employee/verify-email", {
+            //     email,
+            // });
 
-            if (response.data.message === AuthExceptionMessages.EMAIL_EXIST) {
-                toast.error(response.data.message);
-                return;
-            }
+            // if (response.data.message === AuthExceptionMessages.EMAIL_EXIST) {
+            //     toast.error(response.data.message);
+            //     return;
+            // }
 
             toast.success(Messages.EMAIL_VALID);
             onClose();

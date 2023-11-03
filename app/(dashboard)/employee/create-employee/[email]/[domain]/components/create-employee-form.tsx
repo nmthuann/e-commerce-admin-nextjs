@@ -37,6 +37,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Messages } from "@/constants/notifications/message";
+
 // import { toast } from "@/components/ui/use-toast";
 // import { useState } from "react";
 
@@ -60,6 +61,7 @@ import { Messages } from "@/constants/notifications/message";
 interface EmployeeFormProps {
     positions: Position[];
     // email?: string;
+    location: ILocation[];
 }
 
 type registerFormValues = z.infer<typeof registerFormSchema>;
@@ -72,6 +74,7 @@ const defaultValues: Partial<registerFormValues> = {
 
 export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
     positions,
+    location,
     // email,
 }) => {
     const [open, setOpen] = useState(false);
@@ -80,10 +83,53 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
     // const { email } = useEmail();
     const params = useParams();
 
+    const [city, setCity] = useState<string>("");
+    const [districtList, setDistrictList] = useState<IDistricts[]>([]);
+    const [district, setDistrict] = useState<string>("");
+    const [wardList, setWardList] = useState<IWards[]>([]);
+
     const form = useForm<z.infer<typeof registerFormSchema>>({
         resolver: zodResolver(registerFormSchema),
         defaultValues,
     });
+
+    const handleCityChange = (event: any) => {
+        //React.ChangeEvent<HTMLInputElement>
+        const selectedCityId: string = event.target.value;
+        console.log("selectedCityId:::", selectedCityId);
+        setCity(selectedCityId);
+        const selectedDistricts: ILocation | undefined = location.find(
+            (city: ILocation) => city.Name === selectedCityId
+        );
+        //  location[selectedCityId] || [];
+        console.log("selectedDistricts:::", selectedDistricts);
+        // setDistrictList(selectedDistricts.Districts);
+        if (selectedDistricts) {
+            setDistrictList(selectedDistricts.Districts || []);
+        } else {
+            // Xử lý trường hợp không tìm thấy quận/huyện ở thành phố được chọn
+            setDistrictList([]);
+        }
+    };
+
+    const handleDistrictChange = (event: any) => {
+        //React.ChangeEvent<HTMLInputElement>
+        const selectedDistrictId: string = event.target.value;
+        console.log("selectedCityId:::", selectedDistrictId);
+        setDistrict(selectedDistrictId);
+        const selectedWards: IDistricts | undefined = districtList.find(
+            (city: IDistricts) => city.Name === selectedDistrictId
+        );
+        //  location[selectedCityId] || [];
+        console.log("selectedWards:::", selectedWards);
+        // setDistrictList(selectedDistricts.Districts);
+        if (selectedWards) {
+            setWardList(selectedWards.Wards || []);
+        } else {
+            // Xử lý trường hợp không tìm thấy quận/huyện ở thành phố được chọn
+            setWardList([]);
+        }
+    };
 
     // 2. Define a submit handler.
     async function onSubmit(values: registerFormValues) {
@@ -93,44 +139,44 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
             } `
         );
 
-        const email = `${params.email}@${params.domain}`;
-        try {
-            setLoading(true);
-            const res = await axios.post(`/api/employee/create-employee`, {
-                employee_id: values.employee_id,
-                avatar_url: values.avatar_url,
-                first_name: values.first_name,
-                last_name: values.last_name,
-                gender: values.gender,
-                birthday: values.birthday,
-                address: values.address,
-                phone: values.phone,
-                position_id: values.position_id,
-                email: email,
-            });
-            if (res.status === 400) {
-                toast.error(
-                    `${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED} `
-                );
-                return;
-            }
-            if (res.data.message === ErrorInput.EMAIL_NOT_FOUND) {
-                toast.error(`${ErrorInput.EMAIL_NOT_FOUND} `);
-                return;
-            }
-            if (res.data.message === MiddlewareError.TOKEN_MISSING) {
-                toast.error(`${ErrorInput.EMAIL_NOT_FOUND} `);
-                return;
-            }
-            router.push("/employee");
-            router.refresh();
-            toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
-        } catch (error) {
-            console.log("onSubmit :: register ::", error);
-            toast.error(`${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED}`);
-        } finally {
-            setLoading(false);
-        }
+        // const email = `${params.email}@${params.domain}`;
+        // try {
+        //     setLoading(true);
+        //     const res = await axios.post(`/api/employee/create-employee`, {
+        //         employee_id: values.employee_id,
+        //         avatar_url: values.avatar_url,
+        //         first_name: values.first_name,
+        //         last_name: values.last_name,
+        //         gender: values.gender,
+        //         birthday: values.birthday,
+        //         address: values.address,
+        //         phone: values.phone,
+        //         position_id: values.position_id,
+        //         email: email,
+        //     });
+        //     if (res.status === 400) {
+        //         toast.error(
+        //             `${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED} `
+        //         );
+        //         return;
+        //     }
+        //     if (res.data.message === ErrorInput.EMAIL_NOT_FOUND) {
+        //         toast.error(`${ErrorInput.EMAIL_NOT_FOUND} `);
+        //         return;
+        //     }
+        //     if (res.data.message === MiddlewareError.TOKEN_MISSING) {
+        //         toast.error(`${ErrorInput.EMAIL_NOT_FOUND} `);
+        //         return;
+        //     }
+        //     router.push("/employee");
+        //     router.refresh();
+        //     toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
+        // } catch (error) {
+        //     console.log("onSubmit :: register ::", error);
+        //     toast.error(`${AuthExceptionMessages.REGISTER_EMPLOYEE_FAILED}`);
+        // } finally {
+        //     setLoading(false);
+        // }
 
         // toast.success(Messages.CREATE_EMPLOYEE_SUCCESS);
         // router.push("/employee");
@@ -231,9 +277,6 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
                                 </FormControl>
                                 <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
                             </div>
-                            {/* <FormDescription>
-                                Set the font you want to use in the dashboard.
-                            </FormDescription> */}
                             <FormMessage />
                         </FormItem>
                     )}
@@ -347,11 +390,6 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
                                         )}
                                         {...field}
                                     >
-                                        {/* <option value="male">Bán hàng</option>
-                                        <option value="female">Kho</option>
-                                        <option value="other">
-                                            Vận chuyển
-                                        </option> */}
                                         {positions.map((position: Position) => (
                                             <option
                                                 key={position.position_id}
@@ -364,15 +402,119 @@ export const CreateEmployeeForm: React.FC<EmployeeFormProps> = ({
                                 </FormControl>
                                 <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
                             </div>
-                            {/* <FormDescription>
-                                Set the font you want to use in the dashboard.
-                            </FormDescription> */}
+
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                <Button type="submit">Creat</Button>
+                <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>City</FormLabel>
+                            <div className="relative w-max">
+                                <FormControl>
+                                    <select
+                                        onChangeCapture={handleCityChange}
+                                        className={cn(
+                                            buttonVariants({
+                                                variant: "outline",
+                                            }),
+                                            "w-[200px] appearance-none bg-transparent font-normal"
+                                        )}
+                                        {...field}
+                                    >
+                                        {location.map((city: any) => (
+                                            <option
+                                                key={city.Id}
+                                                value={city.Name}
+                                            >
+                                                {city.Name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </FormControl>
+                                <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
+                            </div>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="district"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Quận/ Huyện</FormLabel>
+                            <div className="relative w-max">
+                                <FormControl>
+                                    <select
+                                        onChangeCapture={handleDistrictChange}
+                                        className={cn(
+                                            buttonVariants({
+                                                variant: "outline",
+                                            }),
+                                            "w-[200px] appearance-none bg-transparent font-normal"
+                                        )}
+                                        {...field}
+                                    >
+                                        {districtList.map((district: any) => (
+                                            <option
+                                                key={district.Id}
+                                                value={district.Name}
+                                            >
+                                                {district.Name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </FormControl>
+                                <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
+                            </div>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="ward"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Phường/ Xã</FormLabel>
+                            <div className="relative w-max">
+                                <FormControl>
+                                    <select
+                                        className={cn(
+                                            buttonVariants({
+                                                variant: "outline",
+                                            }),
+                                            "w-[200px] appearance-none bg-transparent font-normal"
+                                        )}
+                                        {...field}
+                                    >
+                                        {wardList.map((ward: any) => (
+                                            <option
+                                                key={ward.Id}
+                                                value={ward.Name}
+                                            >
+                                                {ward.Name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </FormControl>
+                                <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
+                            </div>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <Button type="submit">Create</Button>
             </form>
         </Form>
     );
@@ -430,5 +572,15 @@ const registerFormSchema = z.object({
 
     employee_id: z.string().length(12, {
         message: `${ErrorInput.LENGTH_ERROR} 12 kí tự.`,
+    }),
+
+    city: z.string().nonempty({
+        message: `${ErrorInput.NOT_FULL_FIELD}`,
+    }),
+    district: z.string().nonempty({
+        message: `${ErrorInput.NOT_FULL_FIELD}`,
+    }),
+    ward: z.string().nonempty({
+        message: `${ErrorInput.NOT_FULL_FIELD}`,
     }),
 });

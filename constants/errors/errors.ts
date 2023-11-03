@@ -91,6 +91,7 @@ export enum OrderError {
   CONFIRMED_FOR_COMPLETED_ORDER = 'Vui giao hàng trước khi xác nhận hoàn tất.', 
   INPROGRESS_ORDER_DUPLICATE = 'Đơn hàng đang được giao.',
   COMPLETED_FOR_INPROGRESS_ORDER = 'Đơn hàng đã hoàn tất.',
+  COMPLETE_FOR_CANCELED_ORDER = 'Đơn hàng đã hủy không thể hoàn tất.',
   COMPLETED_ORDER_FAILED = 'Đơn hàng đã hoàn thành không được thay đổi trạng thái.',
   REFUNDED_ORDER_FAILED = 'Đơn hàng đã hoàn trả không được thay đổi trạng thái.',
   NOT_YET_CONFIRM = 'Đơn hàng chưa được duyệt.',

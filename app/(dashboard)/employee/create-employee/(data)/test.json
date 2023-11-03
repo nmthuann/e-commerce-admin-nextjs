@@ -1,0 +1,78 @@
+[
+    {
+        "Id": "01",
+        "Name": "Thành phố Hà Nội",
+        "Districts": [
+            {
+                "Id": "001",
+                "Name": "Quận Ba Đình",
+                "Wards": [
+                    {
+                        "Id": "00001",
+                        "Name": "Phường Phúc Xá",
+                        "Level": "Phường"
+                    },
+                    {
+                        "Id": "00004",
+                        "Name": "Phường Trúc Bạch",
+                        "Level": "Phường"
+                    }
+                ]
+            },
+            {
+                "Id": "002",
+                "Name": "Quận Hoàn Kiếm",
+                "Wards": [
+                    {
+                        "Id": "00037",
+                        "Name": "Phường Phúc Tân",
+                        "Level": "Phường"
+                    },
+                    {
+                        "Id": "00040",
+                        "Name": "Phường Đồng Xuân",
+                        "Level": "Phường"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "Id": "02",
+        "Name": "Tỉnh Hà Giang",
+        "Districts": [
+            {
+                "Id": "024",
+                "Name": "Thành phố Hà Giang",
+                "Wards": [
+                    {
+                        "Id": "00688",
+                        "Name": "Phường Quang Trung",
+                        "Level": "Phường"
+                    },
+                    {
+                        "Id": "00691",
+                        "Name": "Phường Trần Phú",
+                        "Level": "Phường"
+                    }
+                ]
+            },
+            {
+                "Id": "026",
+                "Name": "Huyện Đồng Văn",
+                "Wards": [
+                    {
+                        "Id": "00712",
+                        "Name": "Thị trấn Phó Bảng",
+                        "Level": "Thị trấn"
+                    },
+                    {
+                        "Id": "00715",
+                        "Name": "Xã Lũng Cú",
+                        "Level": "Xã"
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -78,7 +78,7 @@ export function DataTableRowActions<TData>({
             return;
         }
         if (task.status === OrderStatus.Completed) {
-            toast.error(OrderError.CANCELED_FOR_CONFIRMED_ORDER);
+            toast.error(OrderError.COMPLETED_FOR_CONFIRMED_ORDER);
             return;
         }
         if (task.status === OrderStatus.Refunded) {
@@ -208,11 +208,16 @@ export function DataTableRowActions<TData>({
             toast.success(OrderError.REFUNDED_ORDER_FAILED);
             return;
         }
-        if (
-            task.status === OrderStatus.Confirmed ||
-            task.status === OrderStatus.Canceled
-        ) {
+        if (task.status === OrderStatus.Confirmed) {
             toast.error(OrderError.CONFIRMED_FOR_COMPLETED_ORDER);
+            return;
+        }
+        if (task.status === OrderStatus.Canceled) {
+            toast.error(OrderError.COMPLETE_FOR_CANCELED_ORDER);
+            return;
+        }
+        if (task.status === OrderStatus.Pending) {
+            toast.error(OrderError.NOT_YET_CONFIRM);
             return;
         }
         try {
@@ -248,11 +253,16 @@ export function DataTableRowActions<TData>({
             toast.success(OrderError.REFUNDED_ORDER_FAILED);
             return;
         }
-        if (
-            task.status === OrderStatus.Confirmed ||
-            task.status === OrderStatus.Canceled
-        ) {
+        if (task.status === OrderStatus.Confirmed) {
             toast.error(OrderError.CONFIRMED_FOR_COMPLETED_ORDER);
+            return;
+        }
+        if (task.status === OrderStatus.Canceled) {
+            toast.error(OrderError.COMPLETE_FOR_CANCELED_ORDER);
+            return;
+        }
+        if (task.status === OrderStatus.Pending) {
+            toast.error(OrderError.NOT_YET_CONFIRM);
             return;
         }
         try {
@@ -328,13 +338,16 @@ export function DataTableRowActions<TData>({
                 {admin?.position === Position.SELLER && (
                     <>
                         <DropdownMenuItem onClick={handleConfirmedOrder}>
-                            Confirm
+                            <PackageCheck className="mr-2 h-4 w-4" />
+                            <span>Confirm</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleCanceledOrder}>
-                            Cancel
+                            <XCircle className="mr-2 h-4 w-4" />
+                            <span>Cancel</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={handleInProgressOrder}>
-                            In Progress
+                            <Rocket className="mr-2 h-4 w-4" />
+                            <span>In Progress</span>
                         </DropdownMenuItem>
                     </>
                 )}
