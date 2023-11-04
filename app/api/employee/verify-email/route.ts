@@ -1,10 +1,9 @@
 import { MiddlewareError, StatusCode, SystemError } from '@/constants/errors/errors';
-import { Discount } from '@/types/discount.interface';
 import axios, { AxiosError } from 'axios';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const URL=`${process.env.SERVER_URL}/auth/verify-email`
+const URL=`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email`
 export async function POST(
   req: Request
 ) {

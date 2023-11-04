@@ -26,10 +26,11 @@ async function getLocationData() {
 }
 
 export default async function CreateEmployeePage() {
+    const location = await getTasks();
     const positions = await GetPositions();
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen my-8">
-            <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+        <div className="flex flex-col justify-center items-center min-h-screen my-0">
+            <div className="w-full max-w-5xl p-6 bg-white rounded-lg shadow-lg m-4">
                 <div>
                     <h2 className="text-2xl font-bold tracking-tight  mb-2">
                         Tạo Tài Khoản Nhân Viên
@@ -38,19 +39,29 @@ export default async function CreateEmployeePage() {
                         Tạo tài khoản để truy cập website!
                     </p>
                 </div>
-                <div className="mt-4">
-                    {/* <EmailProvider value={{ email }}> */}
-                    {/* Các phần tử và component khác trong EmployeeDialog */}
+                <div className="mt-4 ">
                     <CreateEmployeeForm
                         positions={positions}
                         location={location}
+                        // location
                     />
-                    {/* </EmailProvider> */}
-                    {/* <CreateEmployeeForm positions={positions} /> */}
                 </div>
             </div>
         </div>
     );
+}
+
+async function getTasks(): Promise<ILocation[]> {
+    const data = await fs.readFile(
+        path.join(
+            process.cwd(),
+            "app/(dashboard)/employee/create-employee/(data)/VN-location-data.json"
+        )
+    );
+
+    const location = JSON.parse(data.toString());
+
+    return await location; // z.array(taskSchema).parse(tasks);
 }
 
 const location = [
