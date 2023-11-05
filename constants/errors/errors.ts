@@ -62,6 +62,7 @@ export enum ProductError{
   PRODUCT_CREATE_FAILED = "Tạo mới một sản phẩm thất bại.",
   CHECK_INPUT_PRICE = "Giá nhập không thể lớn hơn giá bán.",
   IMAGE_WRONG_FAIL ="Ảnh sai định dạng.",
+  PRODUCT_DUPLICATE = "Model Sản phẩm đã tồn tại.",
 }
 
 

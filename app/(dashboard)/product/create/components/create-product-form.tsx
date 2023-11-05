@@ -1,12 +1,11 @@
 "use client";
 
 import * as z from "zod";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
@@ -22,32 +21,16 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modals/alert-modal";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Product } from "@/types/product.interface";
 import { Category } from "@/types/category.interface";
-import { Image } from "@/types/image.interface";
-import { useOrigin } from "@/hooks/use-origin";
 import { Discount } from "@/types/discount.interface";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-import {
-    ErrorInput,
-    ProductError,
-    SystemError,
-} from "@/constants/errors/errors";
-import { Switch } from "@/components/ui/switch";
+import { ProductError, SystemError } from "@/constants/errors/errors";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Messages } from "@/constants/notifications/message";
 import ImageUpload from "@/components/ui/image-upload";
+import { Messages } from "@/constants/notifications/message";
 
 type CreateProductFormValues = z.infer<typeof formSchema>;
 
@@ -66,14 +49,16 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const params = useParams();
+    //const params = useParams();
     const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues,
     });
-    async function onSubmit(values: CreateProductFormValues) {
+
+    //async function onSubmit(values: CreateProductFormValues) {
+    const onSubmit = async (values: CreateProductFormValues) => {
         if (values.unit_price > values.price) {
             // Nếu điều kiện không thỏa mãn, hiển thị thông báo lỗi
             form.setError("unit_price", {
@@ -85,26 +70,56 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
             // Nếu điều kiện thỏa mãn, xóa thông báo lỗi nếu có
             form.clearErrors("unit_price");
         }
-        // console.log(`Submit ${JSON.stringify(values, null, 2)} `);
+        console.log(`Submit ${JSON.stringify(values, null, 2)} `);
 
         try {
-            setLoading(true);
+            //setLoading(true);
             const res = await axios.post(`/api/product/create`, values);
+            // if (res.data === ProductError.PRODUCT_DUPLICATE) {
+            //     toast.error(ProductError.PRODUCT_DUPLICATE);
+            //     return;
+            // }
+            // const data = res.data;
 
-            if (res.status !== 200) {
-                toast.error(res.data);
+            // const response = await fetch(`/api/product/create`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify(values),
+            // });
+            // console.log("response::::", await response.json());
+
+            // if (!response.ok) {
+            //     console.log("await res.data", await response.json());
+            //     toast.error(`${await response.json()}`);
+            //     return;
+            // }
+
+            if (res.data.message === ProductError.PRODUCT_DUPLICATE) {
+                console.log("await res.data", await res.data);
+                toast.error(ProductError.PRODUCT_DUPLICATE);
                 return;
             } else {
-                router.push(`/product`);
+                router.push("/product");
                 router.refresh();
-                toast.success(res.data);
+                toast.success(Messages.CREATE_PRODUCT_SUCCESS);
             }
-        } catch (error: any) {
+        } catch (error: AxiosError | any) {
+            if (error.response) {
+                const status = error.response.status;
+                if (status === 400) {
+                    toast.error(`${ProductError.PRODUCT_CREATE_FAILED}`);
+                    return;
+                }
+            }
+
             toast.error(SystemError.INTERNAL_SERVER_ERROR);
-        } finally {
-            setLoading(false);
         }
-    }
+        // finally {
+        //     setLoading(false);
+        // }
+    };
 
     return (
         <>
@@ -139,7 +154,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                         value={(field.value || []).map(
                                             (image) => image.url
                                         )}
-                                        disabled={loading}
+                                        // disabled={loading}
                                         onChange={(url) => {
                                             // Kiểm tra xem field.value có tồn tại không
                                             if (field.value) {
@@ -225,7 +240,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                     <FormLabel>Model Name</FormLabel>
                                     <FormControl>
                                         <Input
-                                            disabled={loading}
+                                            // disabled={loading}
                                             placeholder="Model name"
                                             {...field}
                                         />
@@ -284,7 +299,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                     <FormControl>
                                         <Input
                                             type="number"
-                                            disabled={loading}
+                                            // disabled={loading}
                                             placeholder="9.99"
                                             {...field}
                                         />
@@ -304,7 +319,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                     <FormControl>
                                         <Input
                                             type="number"
-                                            disabled={loading}
+                                            // disabled={loading}
                                             placeholder="9.99"
                                             {...field}
                                         />
@@ -362,7 +377,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                     <FormLabel>OS</FormLabel>
                                     <FormControl>
                                         <Input
-                                            disabled={loading}
+                                            // disabled={loading}
                                             placeholder="Hệ điều hành của thiết bị ..."
                                             {...field}
                                         />
@@ -380,7 +395,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                     <FormLabel>Hardware</FormLabel>
                                     <FormControl>
                                         <Input
-                                            disabled={loading}
+                                            // disabled={loading}
                                             placeholder="Phần cứng thiết bị ..."
                                             {...field}
                                         />
@@ -419,6 +434,9 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                                 </option>
                                                 <option value="white">
                                                     Trắng
+                                                </option>
+                                                <option value="yellow">
+                                                    Vàng
                                                 </option>
                                                 <option value="other">
                                                     Khác
@@ -559,7 +577,7 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
                                     <FormLabel>Mô tả sản phẩm</FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            disabled={loading}
+                                            // disabled={loading}
                                             placeholder="Nhập mô tả sản phẩm ..."
                                             {...field}
                                         />

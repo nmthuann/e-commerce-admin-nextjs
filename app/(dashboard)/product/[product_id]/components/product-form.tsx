@@ -26,7 +26,6 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import { Product } from "@/types/product.interface";
 import { Category } from "@/types/category.interface";
 import { Image } from "@/types/image.interface";
-import { useOrigin } from "@/hooks/use-origin";
 import { Discount } from "@/types/discount.interface";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
@@ -35,6 +34,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import ImageUpload from "@/components/ui/image-upload";
+import { UnknownError } from "@/constants/errors/errors";
 
 type ProductFormValues = z.infer<typeof formSchema>;
 
@@ -50,9 +50,9 @@ interface ProductFormProps {
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
-    initialData,
     categories,
     discounts,
+    initialData,
 }) => {
     const params = useParams();
     const router = useRouter();
@@ -124,11 +124,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         try {
             setLoading(true);
             await axios.delete(`/api/product/${params.product_id}`);
-            router.refresh();
             router.push(`/product`);
+            router.refresh();
             toast.success("Product deleted.");
         } catch (error: any) {
-            toast.error("Something went wrong.");
+            toast.error(UnknownError.SOMETHING_WRONG);
         } finally {
             setLoading(false);
             setOpen(false);
@@ -257,7 +257,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                             name="model_name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Model Name</FormLabel>
+                                    <FormLabel>Tên model sản phẩm</FormLabel>
                                     <FormControl>
                                         <Input
                                             disabled={loading}

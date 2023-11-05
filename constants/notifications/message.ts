@@ -14,6 +14,7 @@ export enum Messages{
 
 
 export enum SuccessMessages{
+    PRODUCT_DELETED = "Xóa sản phẩm thành công.",
     MESSAGE_DELETED = 'bạn đã được xóa thành công.',
 }
 

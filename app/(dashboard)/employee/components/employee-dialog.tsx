@@ -43,8 +43,8 @@ const EmployeeDialog: React.FC<EmployeeDialogProps> = ({ onClose }) => {
             return;
         }
         try {
-            toast.error("OKKKk");
-            const response = await axios.post("api/employee/verify-email", {
+            // toast.error("OKKKk");
+            const response = await axios.post("/api/employee/verify-email", {
                 email,
             });
 

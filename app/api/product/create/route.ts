@@ -1,12 +1,11 @@
 import { ErrorInput, MiddlewareError, ProductError, SystemError } from '@/constants/errors/errors';
 import { Messages } from '@/constants/notifications/message';
-import { Product } from '@/types/product.interface';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const CREATE_PRRODUCT_URL=`${process.env.SERVER_URL}/product/create`
-const CREATE_IMAGES_URL = `${process.env.SERVER_URL}/image/insert-images` //:product_id
+const CREATE_PRRODUCT_URL=`${process.env.NEXT_PUBLIC_API_URL}/product/create`
+const CREATE_IMAGES_URL = `${process.env.NEXT_PUBLIC_API_URL}/image/insert-images` //:product_id
 
 
 class ImageDto{
@@ -46,7 +45,7 @@ export async function POST(
     const body = await req.json();
 
     const { 
-       images,
+      images,
       model_name, 
       price, 
       unit_price, 
@@ -62,15 +61,32 @@ export async function POST(
       front_camera,
       behind_camera,
       ram,
-        description,
-        warranty_time
+      description,
+      warranty_time
      
     } = body;
 
   
+    // //  CHECK DUPLICATE
+    // const data = {
+    //   model_name,
+    //   hardware,
+    //   color,
+    //   screen,
+    //   battery,
+    //   memory,
+    //   front_camera,
+    //   behind_camera,
+    //   ram,
+    // }
+    // console.log("DATA:::::", data);
 
-    // if (!model_name) {
-    //   return new NextResponse(`${ErrorInput.FIELD_MISSING} model_name`, { status: 400 });
+    // const checkProductDuplicate = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/product/get-product-duplicate`,  
+    //   data
+    // );
+    // if (checkProductDuplicate.data === ProductError.PRODUCT_DUPLICATE) {
+
+    //   return new NextResponse(ProductError.PRODUCT_DUPLICATE,{status: 400});
     // }
     
     //  call api in here
@@ -99,6 +115,15 @@ export async function POST(
         }
       });
 
+      if(!product){
+        throw new NextResponse(JSON.stringify(ProductError.PRODUCT_CREATE_FAILED), {status: 400});
+      }
+
+      if(await product.data.message ){
+        console.log(await product.data)
+        return NextResponse.json({message: product.data.message}); // new   //NextResponse(ProductError.PRODUCT_DUPLICATE, {status: 400});
+      }
+
       if(images){
         const createImages = 
                 await axios.post(`${CREATE_IMAGES_URL}/${await product.data.product_id}`,images,{
@@ -110,12 +135,7 @@ export async function POST(
 
       }
      
-   
-      if( !product){
-        return new NextResponse(ProductError.PRODUCT_CREATE_FAILED, {status: 400});
-      }
-
-    return new NextResponse(Messages.CREATE_PRODUCT_SUCCESS, {status: 200}); //product.data
+    return new NextResponse(JSON.stringify(Messages.CREATE_PRODUCT_SUCCESS), {status: 200}); //product.data
   } catch (error) {
     console.log('[PRODUCTS_POST]', error);
     return new NextResponse(SystemError.INTERNAL_SERVER_ERROR, { status: 500 });
