@@ -1,8 +1,8 @@
 "use client";
 
 import * as z from "zod";
-import axios from "axios";
-import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -34,16 +34,18 @@ import { Switch } from "@/components/ui/switch";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import ImageUpload from "@/components/ui/image-upload";
-import { UnknownError } from "@/constants/errors/errors";
+import { ProductError, UnknownError } from "@/constants/errors/errors";
+import { Messages, SuccessMessages } from "@/constants/notifications/message";
 
 type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
-    initialData:
-        | (Product & {
-              images: Image[];
-          })
-        | null;
+    initialData: Product;
+    // | (Product
+    //      & {
+    //       images: Image[];
+    //   })
+    // | null;
 
     categories: Category[];
     discounts: Discount[];
@@ -60,48 +62,74 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // const title = initialData ? "Edit product" : "Create product";
-    // const description = initialData ? "Edit a product." : "Add a new product";
-    // const toastMessage = initialData ? "Product updated." : "Product created.";
-    // const action = initialData ? "Save changes" : "Create";
+    // const { control, handleSubmit, setValue, getValues } = useForm();
+    // const [isFormChanged, setFormChanged] = useState(false);
+    // const [initialFormState, setInitialFormState] = useState({});
+    const { register, handleSubmit } = useForm();
 
-    const defaultValues = initialData
-        ? {
-              ...initialData,
-              price: parseFloat(String(initialData?.price)),
-              unit_price: parseFloat(String(initialData?.unit_price)),
-              category_id: parseInt(String(initialData?.category.category_id)),
-              discount_id: parseInt(String(initialData?.discount.discount_id)),
-          }
-        : {
-              images: [],
-              model_name: "",
-              price: 0,
-              unit_price: 0,
-              vote: 0,
-              description: "",
-              quantity: 0,
-              category_id: 1,
-              discount_id: 1,
-              operation_system: "",
-              hardware: "",
-              status: false,
-              color: "",
-              battery: 0,
-              screen: 0,
-              memory: 0,
-              front_camera: 0,
-              behind_camera: 0,
-              ram: 0,
-          };
+    const defaultValues: ProductFormValues = {
+        status: initialData.status,
+        battery: initialData.battery,
+        behind_camera: initialData.behind_camera,
+        category_id: initialData.category.category_id,
+        color: initialData.color,
+        description: initialData.description,
+        discount_id: initialData.category.category_id,
+        front_camera: initialData.front_camera,
+        hardware: initialData.hardware,
+        memory: initialData.memory,
+        model_name: initialData.model_name,
+        operation_system: initialData.operation_system,
+        price: initialData.price,
+        quantity: initialData.quantity,
+        ram: initialData.ram,
+        screen: initialData.screen,
+        unit_price: initialData.unit_price,
+        vote: initialData.vote,
+        images: initialData.images,
+    };
 
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues,
     });
 
-    async function onSubmit(values: ProductFormValues) {
+    /**
+     *
+     * @param values
+     * @returns
+     * 1. Values === defaultValues
+     * 2. 1 field thay đổi giá trị
+     * 3. nhiều field thay đổi giá trị
+     */
+    const onSubmit = async (values: ProductFormValues) => {
         console.log(`Submit ${JSON.stringify(values, null, 2)} `);
+        //toast.success("Bạn không thay đổi gì cả!");
+        const check: boolean = areObjectsEqual(values, defaultValues);
+        if (check) {
+            toast.success("Bạn không thay đổi gì!");
+            router.push(`/product`);
+            router.refresh();
+            return;
+        } else {
+            try {
+                await axios.put(
+                    `/api/product/${parseInt(params.product_id as string)}`,
+                    values
+                );
+                router.refresh();
+                router.push(`/product`);
+                toast.success(SuccessMessages.PRODUCT_UPDATED);
+            } catch (error: AxiosError | any) {
+                if (error.response) {
+                    const status = error.response.status;
+                    if (status === 400) {
+                        toast.error(`${ProductError.PRODUCT_CREATE_FAILED}`);
+                        return;
+                    }
+                }
+            }
+        }
 
         // try {
         //     setLoading(true);
@@ -118,15 +146,15 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         // } finally {
         //     setLoading(false);
         // }
-    }
+    };
 
     const onDelete = async () => {
         try {
-            setLoading(true);
-            await axios.delete(`/api/product/${params.product_id}`);
+            // setLoading(true);
+            // await axios.delete(`/api/product/${params.product_id}`);
             router.push(`/product`);
             router.refresh();
-            toast.success("Product deleted.");
+            toast.success(SuccessMessages.PRODUCT_DELETED);
         } catch (error: any) {
             toast.error(UnknownError.SOMETHING_WRONG);
         } finally {
@@ -157,6 +185,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 )}
             </div>
             <Separator />
+
             {/* FORM CREAT PRODUCT */}
             <Form {...form}>
                 <form
@@ -643,7 +672,7 @@ const formSchema = z.object({
     discount_id: z.coerce.number().min(1),
     operation_system: z.string().min(1),
     hardware: z.string().min(1),
-    status: z.boolean().default(false),
+    status: z.boolean().default(true),
     color: z.string().min(1),
     battery: z.coerce.number().min(1),
 
@@ -655,6 +684,44 @@ const formSchema = z.object({
 
     description: z.string().min(1),
 });
+
+function areObjectsEqual(obj1: any, obj2: any): boolean {
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    // let changedField: string | null = null;
+
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+
+    //  Array is images
+    for (const key of keys1) {
+        if (Array.isArray(obj1[key]) && Array.isArray(obj2[key])) {
+            // If both values are arrays, compare the 'url' property
+            // delete images
+            if (obj1[key].length !== obj2[key].length) {
+                return false;
+            }
+
+            for (let i = 0; i < obj1[key].length; i++) {
+                if (obj1[key][i].url !== obj2[key][i].url) {
+                    return false;
+                }
+            }
+        } else if (obj1[key] !== obj2[key]) {
+            // handle here
+            // if (changedField === null) {
+            //     changedField = key;
+            // } else {
+            //     return false;
+            // }
+            return false;
+        }
+    }
+
+    return true;
+}
 
 // enum Color {
 //     Red = "red",

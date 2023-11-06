@@ -62,7 +62,8 @@ export async function POST(
       behind_camera,
       ram,
       description,
-      warranty_time
+      warranty_time,
+      quantity
      
     } = body;
 
@@ -109,6 +110,7 @@ export async function POST(
         ram,
         description,
         warranty_time,
+        quantity
       }, {
         headers: {
           'Authorization': `Bearer ${token}` 
@@ -120,18 +122,18 @@ export async function POST(
       }
 
       if(await product.data.message ){
-        console.log(await product.data)
-        return NextResponse.json({message: product.data.message}); // new   //NextResponse(ProductError.PRODUCT_DUPLICATE, {status: 400});
+        // console.log(await product.data)
+        return NextResponse.json(product.data); // new   //NextResponse(ProductError.PRODUCT_DUPLICATE, {status: 400});
       }
 
       if(images){
         const createImages = 
-                await axios.post(`${CREATE_IMAGES_URL}/${await product.data.product_id}`,images,{
-                  headers: {
-                    'Authorization': `Bearer ${token}` 
-                  }
-                });
-                console.log("OKKKK",images)
+            await axios.post(`${CREATE_IMAGES_URL}/${await product.data.product_id}`,images,{
+              headers: {
+                  'Authorization': `Bearer ${token}` 
+              }
+            });
+                // console.log("OKKKK",images)
 
       }
      
@@ -141,15 +143,3 @@ export async function POST(
     return new NextResponse(SystemError.INTERNAL_SERVER_ERROR, { status: 500 });
   }
 };
-
-
-// export async function GET() {
-//   try {
-//     const getUrl =`${process.env.NEXT_PUBLIC_API_URL}/product/get-categories`
-//     const categories = await axios.get(getUrl)
-//     return NextResponse.json(categories.data);
-//   } catch (error) {
-//     console.log('[CATEGORIES_GET]', error);
-//     return new NextResponse("Internal error", { status: 500 });
-//   }
-// };

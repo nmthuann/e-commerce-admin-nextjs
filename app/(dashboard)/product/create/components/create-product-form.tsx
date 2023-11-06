@@ -75,26 +75,6 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = ({
         try {
             //setLoading(true);
             const res = await axios.post(`/api/product/create`, values);
-            // if (res.data === ProductError.PRODUCT_DUPLICATE) {
-            //     toast.error(ProductError.PRODUCT_DUPLICATE);
-            //     return;
-            // }
-            // const data = res.data;
-
-            // const response = await fetch(`/api/product/create`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(values),
-            // });
-            // console.log("response::::", await response.json());
-
-            // if (!response.ok) {
-            //     console.log("await res.data", await response.json());
-            //     toast.error(`${await response.json()}`);
-            //     return;
-            // }
 
             if (res.data.message === ProductError.PRODUCT_DUPLICATE) {
                 console.log("await res.data", await res.data);
