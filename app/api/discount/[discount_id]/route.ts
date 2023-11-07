@@ -1,7 +1,7 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-const discount_URL =  `${process.env.NEXT_PUBLIC_VERCEL_URL}/discount/`;
+const discount_URL =  `${process.env.NEST_PUBLIC_VERCEL_URL}/discount/`;
 
 export async function GET(
   req: Request,

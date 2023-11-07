@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const URL=`${process.env.NEXT_PUBLIC_VERCEL_URL}/auth/verify-email`
+const URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/auth/verify-email`
 export async function POST(
   req: Request
 ) {

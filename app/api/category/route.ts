@@ -2,7 +2,7 @@ import { Category } from '@/types/category.interface';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 
-const URL=`${process.env.NEXT_PUBLIC_VERCEL_URL}/category/create`
+const URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/category/create`
 export async function POST(
   req: Request,
 ) {

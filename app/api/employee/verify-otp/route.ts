@@ -2,7 +2,7 @@ import axios from 'axios';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const URL=`${process.env.NEXT_PUBLIC_VERCEL_URL}/auth/verify-otp`
+const URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/auth/verify-otp`
 export async function POST(
   req: Request
 ) {
