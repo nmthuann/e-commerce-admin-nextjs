@@ -5,20 +5,18 @@ import { DataTable } from "./components/data-table";
 
 const CustomersPage = async () => {
     const customers = await GetCustomerList();
-    console.log(customers);
-    const formattedCustomers: CustomerColumn[] | undefined = customers.map(
-        (item) => ({
-            avatar_url: item.avatar_url,
-            customer_id: item.customer_id,
-            customer_name: item.customer_name,
-            birthday: item.birthday,
-            gender: item.gender,
-            count_order: item.count_order,
-            total_price: item.total_price,
-            canceled: item.canceled,
-            address: item.address,
-        })
-    );
+    // console.log(customers);
+    const formattedCustomers: CustomerColumn[] = customers.map((item) => ({
+        avatar_url: item.avatar_url,
+        customer_id: item.customer_id,
+        customer_name: item.customer_name,
+        birthday: item.birthday,
+        gender: item.gender,
+        count_order: item.count_order,
+        total_price: item.total_price,
+        canceled: item.canceled,
+        address: item.address,
+    }));
 
     return (
         <div className="flex-col">

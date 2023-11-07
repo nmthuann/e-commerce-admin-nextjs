@@ -1,5 +1,5 @@
 import { Discount } from "@/types/discount.interface"
-const URL=`http://127.0.0.1:3333/discount/get-discounts`
+const URL=`${process.env.NEST_PUBLIC_API_URL}/discount/get-discounts`
 
 export async function GetDiscounts(): Promise<Discount[]> {
   try {

@@ -2,7 +2,7 @@ import { ITask } from '@/types/task.interface';
 
 export async function GetTaskOrders(): Promise<ITask[]> {
   try {
-    const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/get-task-orders`;
+    const URL = `${process.env.NEST_PUBLIC_API_URL}/order/get-task-orders`;
     const options = {
       method: 'GET',
     };
