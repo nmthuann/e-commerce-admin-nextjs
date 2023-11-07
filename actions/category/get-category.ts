@@ -2,7 +2,7 @@ import { Category } from "@/types/category.interface"
 
 export async function GetCategoryById(category_id: number): Promise<Category> {
   try {
-    const URL = `${process.env.NEST_PUBLIC_API_URL}/category/${category_id}` ;
+    const URL = `${process.env.API_URL}/category/${category_id}` ;
     const options = {
       method: 'GET',
       // Thêm các thông tin khác vào options nếu cần (headers, body, ...)

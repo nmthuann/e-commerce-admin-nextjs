@@ -2,7 +2,7 @@ import { IOrder } from "@/types/order.interface";
 
 export async function CountOrdersCreated(): Promise<number> {
     try {
-        const GET_ORDERS_URL = `${process.env.NEXT_PUBLIC_API_URL}/order/get-orders`
+        const GET_ORDERS_URL = `${process.env.API_URL}/order/get-orders`
         const options = {
             method: 'GET',
         };

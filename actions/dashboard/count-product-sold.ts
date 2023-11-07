@@ -1,7 +1,7 @@
 
 export async function CountProductSold(): Promise<number> {
   try {
-    const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/count-product-sold`;
+    const URL = `${process.env.API_URL}/order/count-product-sold`;
     const options = {
       method: 'GET',
     };

@@ -1,4 +1,4 @@
-    const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/get-total-revenue`;
+    const URL = `${process.env.API_URL}/order/get-total-revenue`;
 
 export async function GetTotalRevenue(): Promise<number> {
   try {

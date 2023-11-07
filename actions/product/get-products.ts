@@ -1,5 +1,5 @@
 import { Product } from "@/types/product.interface"
-const URL=`${process.env.NEST_PUBLIC_API_URL}/product/get-products`
+const URL=`${process.env.API_URL}/product/get-products`
 
 export async function GetProducts(): Promise<Product[]> {
   

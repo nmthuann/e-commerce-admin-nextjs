@@ -2,7 +2,7 @@ import { IOrder } from "@/types/order.interface";
 
 export async function GetOrders(): Promise<IOrder[]> {
     try {
-        const URL = `${process.env.NEXT_PUBLIC_API_URL}/order/get-orders`;
+        const URL = `${process.env.API_URL}/order/get-orders`;
         const options = {
             method: 'GET',
         };

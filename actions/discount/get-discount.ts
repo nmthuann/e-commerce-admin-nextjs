@@ -1,5 +1,5 @@
 import { Discount } from "@/types/discount.interface";
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/discount/`
+const URL=`${process.env.API_URL}/discount/`
 
 export async function GetDiscountById(discount_id: number): Promise<Discount> {
   try {
