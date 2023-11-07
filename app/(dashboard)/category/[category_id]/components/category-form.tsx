@@ -72,7 +72,13 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
             setLoading(true);
             if (initialData) {
                 // console.log(`${URL}}/update/${params.category_id}`)
-                await axios.put(`/api/category/${params.category_id}`, data);
+                await axios.put(
+                    `/api/category/${parseInt(
+                        params.category_id as string,
+                        10
+                    )}`,
+                    data
+                );
             } else {
                 // console.log(`${baseUrl}`,baseUrl)
                 await axios.post(`/api/category`, data);

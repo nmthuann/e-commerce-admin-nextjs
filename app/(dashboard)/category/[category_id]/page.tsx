@@ -7,12 +7,12 @@ import { useParams } from "next/navigation";
 const CategoryPage = async ({
     params,
 }: {
-    params: { category_id: number };
+    params: { category_id: string };
 }) => {
     // const params = useParams();
     let category = null;
     if (params.category_id.toString() != "create") {
-        category = await GetCategoryById(params.category_id);
+        category = await GetCategoryById(parseInt(params.category_id, 10));
     }
 
     console.log(":::category/:id/page.tsx:::", params.category_id); // { params: { category_id: 'new' }, searchParams: {} }
