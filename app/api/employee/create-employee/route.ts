@@ -4,7 +4,7 @@ import axios from "axios";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const URL=`${process.env.SERVER_URL}/auth/register-employee`
+const URL=`${process.env.NEXT_PUBLIC_VERCEL_URL}/auth/register-employee`
 export async function POST(
   req: Request,
 ) {

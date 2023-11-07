@@ -1,5 +1,5 @@
 import { ICustomer} from "@/types/customer.interface";
-const URL=`${process.env.NEXT_PUBLIC_API_URL}/order/get-customer-list`
+const URL=`${process.env.NEXT_PUBLIC_VERCEL_URL}/order/get-customer-list`
 
 export async function GetCustomerList(): Promise<ICustomer[]> {
   try {
