@@ -1,21 +1,19 @@
-
-import { format } from "date-fns";
-import { DiscountColumn } from "./components/columns"
+import { DiscountColumn } from "./components/columns";
 import { DiscountsClient } from "./components/client";
 
 import { Discount } from "@/types/discount.interface";
 import { GetDiscounts } from "@/actions/discount/get-discounts";
 
-
-const DiscountsPage = async (
-) => {
+const DiscountsPage = async () => {
     const discounts = await GetDiscounts();
-    const formattedDiscounts: DiscountColumn[] = discounts.map((item: Discount) => ({
-        discount_id: String(item.discount_id),
-        description: item.description,
-        expired: item.expired,
-        percent: item.percent,
-    }));
+    const formattedDiscounts: DiscountColumn[] = discounts.map(
+        (item: Discount) => ({
+            discount_id: String(item.discount_id),
+            description: item.description,
+            expired: item.expired,
+            percent: item.percent,
+        })
+    );
 
     return (
         <div className="flex-col">
@@ -24,6 +22,6 @@ const DiscountsPage = async (
             </div>
         </div>
     );
-    };
+};
 
 export default DiscountsPage;

@@ -25,7 +25,7 @@ import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modals/alert-modal";
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Category } from "@/types/category.interface";
-import { useOrigin } from "@/hooks/use-origin";
+// import { useOrigin } from "@/hooks/use-origin";
 import { Textarea } from "@/components/ui/textarea";
 
 // const URL=`${process.env.NEXT_PUBLIC_API_URL}/category`
@@ -48,8 +48,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 }) => {
     const params = useParams();
     const router = useRouter();
-
-    const origin = useOrigin();
 
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);

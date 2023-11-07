@@ -16,14 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatter } from "@/lib/utils";
 // import { useAuth } from "@/providers/auth-provider";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import {
-    CreditCard,
-    DollarSign,
-    Package,
-    Receipt,
-    User2,
-    Users2,
-} from "lucide-react";
+import { CreditCard, Package, Receipt, Users2 } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

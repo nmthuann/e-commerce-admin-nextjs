@@ -2,23 +2,21 @@ import { EmployeesClient } from "@/app/(dashboard)/employee/components/client";
 import { EmployeeColumn } from "./components/columns";
 import { GetEmployeeList } from "@/actions/employee/get-employees";
 
-export const EmployeesPage = async () => {
+const EmployeesPage = async () => {
     const employees = await GetEmployeeList();
-    console.log(employees);
-    const formattedEmployees: EmployeeColumn[] | undefined = employees.map(
-        (item) => ({
-            avatar_url: item.avatar_url,
-            employee_id: item.employee_id,
-            employee_name: item.employee_name,
-            birthday: item.birthday,
-            gender: item.gender,
-            salary: item.salary,
-            position: item.position,
-            create: item.create,
-            work_status: item.work_status,
-            address: item.address,
-        })
-    );
+    // console.log(employees);
+    const formattedEmployees: EmployeeColumn[] = employees.map((item) => ({
+        avatar_url: item.avatar_url,
+        employee_id: item.employee_id,
+        employee_name: item.employee_name,
+        birthday: item.birthday,
+        gender: item.gender,
+        salary: item.salary,
+        position: item.position,
+        create: item.create,
+        work_status: item.work_status,
+        address: item.address,
+    }));
 
     return (
         <div className="flex-col">

@@ -1,3 +1,71 @@
+
+
+//"use client"
+// import { configureStore } from "@reduxjs/toolkit";
+// import authSlice from "../reducers/auth-slice";
+// // import { createWrapper } from "next-redux-wrapper";
+
+
+
+// // const store = configureStore({
+// //   reducer: {
+// //     auth: authSlice.reducer,
+    
+// //   },
+// // });
+// export function makeStore() {
+//   return configureStore({
+//     reducer: {
+//       auth: authSlice.reducer,
+//       // user: UserSlice.reducer
+//     },
+//   })
+// }
+// // const makeStore = () => store;
+// const store = makeStore()
+
+// export type RootState = ReturnType<typeof store.getState>
+// // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+// export type AppDispatch = typeof store.dispatch
+
+// export default store;
+
+
+
+// export const wrapper = createWrapper(makeStore);
+
+// export default store;
+
+
+
+
+
+
+
+
+
+// // store.ts
+// import { configureStore } from "@reduxjs/toolkit";
+// import { createWrapper, Context, HYDRATE } from 'next-redux-wrapper';
+// import authReducer from "../reducers/auth-slice"; // Assuming the file is named auth-slice.ts
+
+// const rootReducer = {
+//   auth: authReducer,
+//   // Add other reducers if needed
+// };
+
+// const makeStore = (context: Context) => configureStore({
+//   reducer: rootReducer,
+// });
+
+// export const wrapper = createWrapper(makeStore, { debug: true });
+
+// export type RootState = ReturnType<typeof rootReducer.auth>;
+// export type AppDispatch = typeof store.dispatch;
+
+
+
+
 // // // src/store.ts
 // // import { configureStore } from '@reduxjs/toolkit';
 // // import createSagaMiddleware from 'redux-saga';
@@ -69,27 +137,28 @@
 
 // // export default store;
 
+
+
+
+
 import { configureStore } from "@reduxjs/toolkit";
-import authSlice from "../reducers/auth-slice";
+
+// import { userApi } from "./services/userApi";
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
+import authReducer from "../reducers/auth-slice";
 
 
-
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    auth: authSlice.reducer,
-    // toast: toastSlice.reducer,
-    // cart: cartSlice.reducer,
-    // wishList: wishListSlice.reducer
+    auth: authReducer,
+    // [userApi.reducerPath]: userApi.reducer,
   },
+  devTools: process.env.NODE_ENV !== "production",
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware({}).concat([userApi.middleware]),
 });
 
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+setupListeners(store.dispatch);
 
-export default store;
-
-// export const toastAction = toastSlice.actions;
-
-// export const cartActions = cartSlice.actions;
-// export const wishListActions = wishListSlice.actions;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -24,7 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modals/alert-modal";
 import { Discount } from "@/types/discount.interface";
-import { useOrigin } from "@/hooks/use-origin";
+// import { useOrigin } from "@/hooks/use-origin";
 import {
     Popover,
     PopoverContent,
@@ -55,8 +55,8 @@ export const DiscountForm: React.FC<DiscountFormProps> = ({ initialData }) => {
     const params = useParams();
     const router = useRouter();
 
-    const origin = useOrigin();
-    const baseUrl = `${origin}`;
+    // const origin = useOrigin();
+    // const baseUrl = `${origin}`;
     const URL = `${process.env.NEXT_PUBLIC_API_URL}/discount`;
 
     const [open, setOpen] = useState(false);

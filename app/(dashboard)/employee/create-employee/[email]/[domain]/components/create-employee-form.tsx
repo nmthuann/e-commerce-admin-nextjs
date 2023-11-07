@@ -32,7 +32,7 @@ import { Position } from "@/types/position.interface";
 import ImageUpload from "@/components/ui/image-upload";
 import AvatarUpload from "@/components/ui/avatar-upload";
 import { useState } from "react";
-import { useEmail } from "@/contexts/email.context";
+// import { useEmail } from "@/contexts/email.context";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";

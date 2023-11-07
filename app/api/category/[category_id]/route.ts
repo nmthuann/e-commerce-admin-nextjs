@@ -7,7 +7,7 @@ const category_URL =  `${process.env.NEXT_PUBLIC_API_URL}/category/`;
 
 
 export async function GET(
-//   req: Request,
+  req: Request,
   { params }: { params: { category_id: string } }
 ) {
     try {

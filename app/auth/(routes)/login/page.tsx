@@ -1,15 +1,15 @@
 "use client";
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { LoginForm } from "@/app/auth/(routes)/login/components/user-auth-form";
 
-export const metadata: Metadata = {
-    title: "Login",
-    description: "Authentication forms built using the components.",
-};
+// export const metadata: Metadata = {
+//     title: "Login",
+//     description: "Authentication forms built using the components.",
+// };
 
 export default function LoginPage() {
     return (
