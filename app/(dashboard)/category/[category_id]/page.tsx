@@ -1,6 +1,6 @@
 // import prismadb from "@/lib/prismadb";
 
-import { GetCategoryById } from "@/actions/category/get-category";
+import { GetData } from "@/actions/category/get-category";
 import { CategoryForm } from "@/app/(dashboard)/category/[category_id]/components/category-form";
 
 // export const revalidate = 0;
@@ -12,7 +12,7 @@ const CategoryPage = async ({
     // const params = useParams();
     let category = null;
     if (params.category_id.toString() != "create") {
-        category = await GetCategoryById(parseInt(params.category_id, 10));
+        category = await GetData(parseInt(params.category_id, 10));
     }
 
     // console.log(":::category/:id/page.tsx:::", params.category_id); // { params: { category_id: 'new' }, searchParams: {} }

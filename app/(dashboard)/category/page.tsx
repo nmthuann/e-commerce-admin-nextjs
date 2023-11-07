@@ -2,7 +2,7 @@ import { CategoryColumn } from "./components/columns";
 import { CategoriesClient } from "./components/client";
 
 import { Category } from "@/types/category.interface";
-import { GetCategories } from "@/actions/category/get-categories";
+import { GetData } from "@/actions/category/get-categories";
 
 const CategoriesPage = async () => {
     // {
@@ -11,7 +11,7 @@ const CategoriesPage = async () => {
     //         getCategoriesError,
     //         getRefetch
     //     } =
-    const categories = await GetCategories();
+    const categories = await GetData();
     // const categories: Category = getCategoriesResponse;
     //console.log("sss",params.category_id)
     const formattedCategories: CategoryColumn[] = categories.map(

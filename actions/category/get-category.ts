@@ -1,6 +1,7 @@
 import { Category } from "@/types/category.interface"
+import 'server-only'
 
-export async function GetCategoryById(category_id: number): Promise<Category> {
+export async function GetData(category_id: number): Promise<Category> {
   try {
     const URL = `http://127.0.0.1:3333/category/${category_id}` ;
     const options = {
