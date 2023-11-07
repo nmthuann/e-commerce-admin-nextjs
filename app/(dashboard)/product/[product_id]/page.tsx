@@ -1,7 +1,7 @@
 import { GetProductById } from "@/actions/product/get-product";
 import { ProductForm } from "./components/product-form";
 import { GetDiscounts } from "@/actions/discount/get-discounts";
-import { GetCategories } from "@/actions/category/get-categories";
+import { GetData } from "@/actions/category/get-categories";
 
 const ProductPage = async ({ params }: { params: { product_id: string } }) => {
     // let product = null;
@@ -11,7 +11,7 @@ const ProductPage = async ({ params }: { params: { product_id: string } }) => {
     //     product = await GetProductById(parseInt(params.product_id, 10));
     // }
     const discounts = await GetDiscounts();
-    const categories = await GetCategories();
+    const categories = await GetData();
     const product = await GetProductById(parseInt(params.product_id, 10));
     // const Images = await GetImages();
 
