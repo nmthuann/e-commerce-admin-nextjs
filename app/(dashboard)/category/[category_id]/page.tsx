@@ -2,7 +2,7 @@
 
 import { GetCategoryById } from "@/actions/category/get-category";
 import { CategoryForm } from "@/app/(dashboard)/category/[category_id]/components/category-form";
-import { useParams } from "next/navigation";
+
 // export const revalidate = 0;
 const CategoryPage = async ({
     params,
@@ -15,7 +15,7 @@ const CategoryPage = async ({
         category = await GetCategoryById(parseInt(params.category_id, 10));
     }
 
-    console.log(":::category/:id/page.tsx:::", params.category_id); // { params: { category_id: 'new' }, searchParams: {} }
+    // console.log(":::category/:id/page.tsx:::", params.category_id); // { params: { category_id: 'new' }, searchParams: {} }
 
     // const billboards = await prismadb.billboard.findMany({
     //   where: {

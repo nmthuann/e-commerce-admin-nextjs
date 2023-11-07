@@ -3,7 +3,7 @@ import axios from 'axios';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers'
 
-const URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/employee/create/`
+const URL=`http://127.0.0.1:3333/employee/create/`
 export async function POST(
   req: Request
 ) {

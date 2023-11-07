@@ -4,8 +4,8 @@ import axios from 'axios';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const CREATE_PRRODUCT_URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/product/create`
-const CREATE_IMAGES_URL = `${process.env.NEST_PUBLIC_VERCEL_URL}/image/insert-images` //:product_id
+const CREATE_PRRODUCT_URL=`http://127.0.0.1:3333/product/create`
+const CREATE_IMAGES_URL = `http://127.0.0.1:3333/image/insert-images` //:product_id
 
 
 class ImageDto{

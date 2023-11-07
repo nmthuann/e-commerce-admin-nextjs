@@ -2,7 +2,7 @@ import { Discount } from '@/types/discount.interface';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 
-const URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/discount/create`
+const URL=`http://127.0.0.1:3333/discount/create`
 export async function POST(
   req: Request
 ) {

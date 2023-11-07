@@ -4,9 +4,9 @@ import axios from "axios";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-const product_URL =  `${process.env.NEST_PUBLIC_VERCEL_URL}/product/`;
-const UPDATE_PRRODUCT_URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/product/update`
-const UPDATE_IMAGES_URL = `${process.env.NEST_PUBLIC_VERCEL_URL}/image/update-images` //:product_id
+const product_URL =  `http://127.0.0.1:3333/product/`;
+const UPDATE_PRRODUCT_URL=`http://127.0.0.1:3333/product/update`
+const UPDATE_IMAGES_URL = `http://127.0.0.1:3333/image/update-images` //:product_id
 
 
 export async function GET(

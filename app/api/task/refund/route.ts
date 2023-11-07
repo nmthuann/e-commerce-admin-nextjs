@@ -1,10 +1,10 @@
 import { MiddlewareError, StatusCode, SystemError } from '@/constants/errors/errors';
-import { Discount } from '@/types/discount.interface';
 import axios, { AxiosError } from 'axios';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const URL=`${process.env.NEST_PUBLIC_VERCEL_URL}/order/update-refunded/`
+
+const URL=`http://127.0.0.1:3333/order/update-refunded/`
 export async function POST(
   req: Request
 ) {

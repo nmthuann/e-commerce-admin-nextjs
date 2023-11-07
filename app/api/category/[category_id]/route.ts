@@ -1,7 +1,7 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-const category_URL =  `${process.env.NEST_PUBLIC_VERCEL_URL}/category/`;
+const category_URL =  `http://127.0.0.1:3333/category/`;
 
 
 
