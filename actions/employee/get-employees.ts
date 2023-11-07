@@ -2,7 +2,7 @@ import { IGetEmployeeList} from "@/types/employee.interface";
 
 export async function GetEmployeeList(): Promise<IGetEmployeeList[]> {
   try {
-    const URL=`${process.env.API_URL}/employee/get-employee-list`
+    const URL=`http://127.0.0.1:3333/employee/get-employee-list`
     const options = {
       method: 'GET', // Chỉ định phương thức là GET
       next: { revalidate: 0 },

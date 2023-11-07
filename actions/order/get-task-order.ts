@@ -2,7 +2,7 @@ import { ITask } from '@/types/task.interface';
 
 export async function GetTaskOrders(): Promise<ITask[]> {
   try {
-    const URL = `${process.env.API_URL}/order/get-task-orders`;
+    const URL = `http://127.0.0.1:3333/order/get-task-orders`;
     const options = {
       method: 'GET',
     };

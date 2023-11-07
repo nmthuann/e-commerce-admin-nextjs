@@ -1,7 +1,7 @@
 
 export async function CountProductSold(): Promise<number> {
   try {
-    const URL = `${process.env.API_URL}/order/count-product-sold`;
+    const URL = `http://127.0.0.1:3333/order/count-product-sold`;
     const options = {
       method: 'GET',
     };

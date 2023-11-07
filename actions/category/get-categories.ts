@@ -2,7 +2,7 @@ import { SystemError } from "@/constants/errors/errors"
 import { Category } from "@/types/category.interface"
 
 
-const URL=`${process.env.API_URL}/category/get-categories`
+const URL=`http://127.0.0.1:3333/category/get-categories`
 export async function GetCategories(): Promise<Category []> {
   const res = await fetch(URL,
   {

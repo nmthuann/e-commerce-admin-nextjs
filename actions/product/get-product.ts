@@ -1,6 +1,6 @@
 
 import { Product } from "@/types/product.interface";
-const URL=`${process.env.API_URL}/product`
+const URL=`http://127.0.0.1:3333/product`
 
 export async function GetProductById(product_id: number): Promise<Product> {
   // const token = localStorage.getItem('token');

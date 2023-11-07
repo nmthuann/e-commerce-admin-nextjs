@@ -9,7 +9,7 @@ interface RevenueByMonth{
 }
 async function getRevenueByMonth(): Promise<RevenueByMonth> {
   try {
-    const URL=`${process.env.API_URL}/order/get-revenue-by-month`
+    const URL=`http://127.0.0.1:3333/order/get-revenue-by-month`
     const options = {
         method: 'GET',
       };

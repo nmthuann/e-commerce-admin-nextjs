@@ -1,4 +1,4 @@
-    const URL = `${process.env.API_URL}/order/get-total-revenue`;
+    const URL = `http://127.0.0.1:3333/order/get-total-revenue`;
 
 export async function GetTotalRevenue(): Promise<number> {
   try {

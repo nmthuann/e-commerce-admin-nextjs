@@ -2,7 +2,7 @@ import { Image } from "@/types/image.interface"
 
 export async function GetImages(): Promise<Image[]> {
   try {
-    const URL=`${process.env.API_URL}/image/get-images`
+    const URL=`http://127.0.0.1:3333/image/get-images`
     const options = {
       method: 'GET', // Chỉ định phương thức là GET
     };

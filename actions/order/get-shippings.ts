@@ -2,7 +2,7 @@ import { Shipping } from "@/types/shipping.interface";
 
 export async function GetShippings(): Promise<Shipping[]> {
   try {
-    const URL=`${process.env.API_URL}/shipping/get-shippings`
+    const URL=`http://127.0.0.1:3333/shipping/get-shippings`
     const options = {
       method: 'GET', // Chỉ định phương thức là GET
     };
