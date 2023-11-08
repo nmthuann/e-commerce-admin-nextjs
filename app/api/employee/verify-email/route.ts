@@ -11,6 +11,9 @@ export async function POST(
 
     // const { userId } = auth(); // check token
     
+    console.log("verify email")
+
+
     const token = cookies().get('token')?.value;
     if(!token){
       return NextResponse.json({message: MiddlewareError.TOKEN_MISSING});

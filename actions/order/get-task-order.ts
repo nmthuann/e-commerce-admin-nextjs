@@ -5,6 +5,9 @@ export async function GetTaskOrders(): Promise<ITask[]> {
     const URL = `http://127.0.0.1:3333/order/get-task-orders`;
     const options = {
       method: 'GET',
+      next: {
+        revalidate: 0
+      }
     };
     const res = await fetch(URL, options);
     return await res.json();

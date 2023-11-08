@@ -29,20 +29,8 @@ import { useRouter } from "next/navigation";
 import { OrderStatus } from "@/constants/enums/order-status.enum";
 import { useAppSelector } from "@/redux/hook";
 import { Position } from "@/constants/enums/positon.enum";
-// import {
-//     Sheet,
-//     SheetClose,
-//     SheetContent,
-//     SheetDescription,
-//     SheetFooter,
-//     SheetHeader,
-//     SheetTitle,
-//     SheetTrigger,
-// } from "@/components/ui/sheet";
-// import { Label } from "@/components/ui/label";
-// import { Input } from "@/components/ui/input";
-import { useState } from "react";
-// import OrderDetailSheet from "./order-detail-sheet";
+
+import { useEffect, useState } from "react";
 import {
     CheckCircle2,
     PackageCheck,
@@ -51,6 +39,7 @@ import {
     WalletCards,
     XCircle,
 } from "lucide-react";
+import { OrderDetailModal } from "@/components/modals/order-detail-modal";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -62,6 +51,10 @@ export function DataTableRowActions<TData>({
     const task = row.original as ITask;
     const router = useRouter();
     const admin = useAppSelector((state) => state.auth.currentAdmin);
+
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [orderDetails, setOrderDetails] = useState([]);
 
     //  PENDING -> CONFIRMED
     async function handleConfirmedOrder() {
@@ -287,178 +280,134 @@ export function DataTableRowActions<TData>({
             toast.error(OrderError.UPDATE_STATUS_ORDER_FAILED);
         }
     }
+    useEffect(() => {
+        // Gọi API và cập nhật state khi dữ liệu đã được lấy về
 
-    const [isSheetOpen, setIsSheetOpen] = useState(false);
+        const fetchOrderDetails = async () => {
+            try {
+                const response = await fetch(
+                    `http://127.0.0.1:3333/order-detail/${parseInt(
+                        task.id,
+                        10
+                    )}`
+                );
+                const data = await response.json();
 
-    const openSheet = () => {
-        setIsSheetOpen(true);
-    };
+                // Cập nhật state orderDetails và loading
+                setOrderDetails(data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching order details:", error);
+                setLoading(false);
+            }
+        };
 
-    const closeSheet = () => {
-        setIsSheetOpen(false);
-    };
+        // Kiểm tra điều kiện mở modal và loading trước khi gọi API
+        if (open && loading) {
+            fetchOrderDetails();
+        }
+    }, [open, loading]);
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant="ghost"
-                    className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                >
-                    <DotsHorizontalIcon className="h-4 w-4" />
-                    <span className="sr-only">Open menu</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[160px]">
-                {(admin?.position === Position.STORE_MANAGER ||
-                    admin?.position === Position.SELLER) && (
-                    <>
-                        <DropdownMenuItem onClick={handleConfirmedOrder}>
-                            <PackageCheck className="mr-2 h-4 w-4" />
-                            <span>Confirm</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleCanceledOrder}>
-                            <XCircle className="mr-2 h-4 w-4" />
-                            <span>Cancel</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleInProgressOrder}>
-                            <Rocket className="mr-2 h-4 w-4" />
-                            <span>In Progress</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleCompletedOrder}>
-                            <CheckCircle2 className="mr-2 h-4 w-4" />
-                            <span> Complete</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleRefundedOrder}>
-                            <Undo2 className="mr-2 h-4 w-4" />
-                            <span> Refund</span>
-                        </DropdownMenuItem>
-                    </>
-                )}
-                {admin?.position === Position.SELLER && (
-                    <>
-                        <DropdownMenuItem onClick={handleConfirmedOrder}>
-                            <PackageCheck className="mr-2 h-4 w-4" />
-                            <span>Confirm</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleCanceledOrder}>
-                            <XCircle className="mr-2 h-4 w-4" />
-                            <span>Cancel</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleInProgressOrder}>
-                            <Rocket className="mr-2 h-4 w-4" />
-                            <span>In Progress</span>
-                        </DropdownMenuItem>
-                    </>
-                )}
-                {admin?.position === Position.SHIPPER && (
-                    <>
-                        <DropdownMenuItem onClick={() => {}}>
-                            Completed
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {}}>
-                            Refunded
-                        </DropdownMenuItem>
-                    </>
-                )}
-                {admin?.position === Position.WAREHOUSE && <></>}
-                <DropdownMenuSeparator />
-                <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>
-                        <WalletCards className="mr-2 h-4 w-4" />
-                        <span>Method Payment</span>
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent>
-                        <DropdownMenuRadioGroup value={task.label}>
-                            {labels.map((label) => (
-                                <DropdownMenuRadioItem
-                                    key={label.value}
-                                    value={label.value}
-                                >
-                                    {label.label}
-                                </DropdownMenuRadioItem>
-                            ))}
-                        </DropdownMenuRadioGroup>
-                    </DropdownMenuSubContent>
-                </DropdownMenuSub>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                    onClick={() => {
-                        // isSheetOpen && (
-                        //     <div>
-                        //         <OrderDetailSheet
-                        //             onClose={() => {
-                        //                 setIsSheetOpen(false);
-                        //             }}
-                        //         />
-                        //     </div>
-                        // );
-                    }}
-                >
-                    Order Detail
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+            <OrderDetailModal
+                isOpen={open}
+                onClose={() => {
+                    router.refresh();
+                    setOpen(false);
+                }}
+                orderDetails={orderDetails}
+                loading={loading}
+            />
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="ghost"
+                        className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                    >
+                        <DotsHorizontalIcon className="h-4 w-4" />
+                        <span className="sr-only">Open menu</span>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[160px]">
+                    {(admin?.position === Position.STORE_MANAGER ||
+                        admin?.position === Position.SELLER) && (
+                        <>
+                            <DropdownMenuItem onClick={handleConfirmedOrder}>
+                                <PackageCheck className="mr-2 h-4 w-4" />
+                                <span>Confirm</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleCanceledOrder}>
+                                <XCircle className="mr-2 h-4 w-4" />
+                                <span>Cancel</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleInProgressOrder}>
+                                <Rocket className="mr-2 h-4 w-4" />
+                                <span>In Progress</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleCompletedOrder}>
+                                <CheckCircle2 className="mr-2 h-4 w-4" />
+                                <span> Complete</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleRefundedOrder}>
+                                <Undo2 className="mr-2 h-4 w-4" />
+                                <span> Refund</span>
+                            </DropdownMenuItem>
+                        </>
+                    )}
+                    {admin?.position === Position.SELLER && (
+                        <>
+                            <DropdownMenuItem onClick={handleConfirmedOrder}>
+                                <PackageCheck className="mr-2 h-4 w-4" />
+                                <span>Confirm</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleCanceledOrder}>
+                                <XCircle className="mr-2 h-4 w-4" />
+                                <span>Cancel</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleInProgressOrder}>
+                                <Rocket className="mr-2 h-4 w-4" />
+                                <span>In Progress</span>
+                            </DropdownMenuItem>
+                        </>
+                    )}
+                    {admin?.position === Position.SHIPPER && (
+                        <>
+                            <DropdownMenuItem onClick={() => {}}>
+                                Completed
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => {}}>
+                                Refunded
+                            </DropdownMenuItem>
+                        </>
+                    )}
+                    {admin?.position === Position.WAREHOUSE && <></>}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            <WalletCards className="mr-2 h-4 w-4" />
+                            <span>Method Payment</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuRadioGroup value={task.label}>
+                                {labels.map((label) => (
+                                    <DropdownMenuRadioItem
+                                        key={label.value}
+                                        value={label.value}
+                                    >
+                                        {label.label}
+                                    </DropdownMenuRadioItem>
+                                ))}
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => setOpen(true)}>
+                        Order Detail
+                        <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </>
     );
 }
-
-// {/* <DropdownMenuItem onClick={handleConfirmedOrder}>
-//                     Confirm
-//                 </DropdownMenuItem>
-//                 {/* <DropdownMenuItem>Make a copy</DropdownMenuItem> */}
-//                 <DropdownMenuItem onClick={handleCanceledOrder}>
-//                     Cancel
-//                 </DropdownMenuItem> */}
-
-// {
-//     isSheetOpen && (
-//         <Sheet>
-//             {/* <SheetTrigger asChild>
-//                     <Button variant="outline">Open</Button>
-//                 </SheetTrigger> */}
-//             <SheetContent>
-//                 <SheetHeader>
-//                     <SheetTitle>Edit profile</SheetTitle>
-//                     <SheetDescription>
-//                         Make changes to your profile here. Click
-//                         save when you're done.
-//                     </SheetDescription>
-//                 </SheetHeader>
-//                 <div className="grid gap-4 py-4">
-//                     <div className="grid grid-cols-4 items-center gap-4">
-//                         <Label
-//                             htmlFor="name"
-//                             className="text-right"
-//                         >
-//                             Name
-//                         </Label>
-//                         <Input
-//                             id="name"
-//                             value="Pedro Duarte"
-//                             className="col-span-3"
-//                         />
-//                     </div>
-//                     <div className="grid grid-cols-4 items-center gap-4">
-//                         <Label
-//                             htmlFor="username"
-//                             className="text-right"
-//                         >
-//                             Username
-//                         </Label>
-//                         <Input
-//                             id="username"
-//                             value="@peduarte"
-//                             className="col-span-3"
-//                         />
-//                     </div>
-//                 </div>
-//                 <SheetFooter>
-//                     <SheetClose asChild>
-//                         <Button type="submit">Save changes</Button>
-//                     </SheetClose>
-//                 </SheetFooter>
-//             </SheetContent>
-//         </Sheet>
-//     );
-// }

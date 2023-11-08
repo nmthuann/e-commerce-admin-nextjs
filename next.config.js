@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: "export",
+    // output: "export",
     images: {
         domains: [
             "tailwindui.com",
@@ -8,6 +8,18 @@ const nextConfig = {
             "res.cloudinary.com",
         ],
     },
+    // generateStaticParams: function () {
+    //     return {
+    //         "/": { page: "/" },
+    //         "/category": { page: "/category" },
+    //         "/discount": { page: "/discount" },
+    //         "/customer": { page: "/customer" },
+    //         "/task": { page: "/task" },
+    //         "/setting": { page: "/setting" },
+    //         "/product": { page: "/product" },
+    //         "/proudct/[product_id]": { page: "/proudct/[product_id]" },
+    //     };
+    // },
 };
 
 module.exports = nextConfig;

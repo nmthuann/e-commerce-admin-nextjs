@@ -23,9 +23,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/modals/alert-modal";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Category } from "@/types/category.interface";
-// import { useOrigin } from "@/hooks/use-origin";
 import { Textarea } from "@/components/ui/textarea";
 
 // const URL=`${process.env.NEXT_PUBLIC_API_URL}/category`

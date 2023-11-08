@@ -1,7 +1,8 @@
 // import { GetProductById } from "@/actions/product/get-product";
 import { GetDiscounts } from "@/actions/discount/get-discounts";
-import { GetData } from "@/actions/category/get-categories";
+
 import { CreateProductForm } from "./components/create-product-form";
+import { GetCategories } from "@/actions/category/get-categories";
 
 const CreateProductPage = async () => {
     // let product = null;
@@ -11,7 +12,7 @@ const CreateProductPage = async () => {
     //     product = await GetProductById(parseInt(params.product_id, 10));
     // }
     const discounts = await GetDiscounts();
-    const categories = await GetData();
+    const categories = await GetCategories();
 
     return (
         <div className="flex-col">

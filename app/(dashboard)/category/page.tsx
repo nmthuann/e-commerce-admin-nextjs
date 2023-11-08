@@ -2,19 +2,13 @@ import { CategoryColumn } from "./components/columns";
 import { CategoriesClient } from "./components/client";
 
 import { Category } from "@/types/category.interface";
-import { GetData } from "@/actions/category/get-categories";
+import { GetCategories } from "@/actions/category/get-categories";
 
 const CategoriesPage = async () => {
-    // {
-    //         getCategoriesResponse,
-    //         getCategoriesIsLoading,
-    //         getCategoriesError,
-    //         getRefetch
-    //     } =
-    const categories = await GetData();
+    const categories = await GetCategories();
     // const categories: Category = getCategoriesResponse;
     //console.log("sss",params.category_id)
-    const formattedCategories: CategoryColumn[] = categories.map(
+    const formattedCategories: CategoryColumn[] | undefined = categories.map(
         (item: Category) => ({
             category_id: String(item.category_id),
             category_name: item.category_name,
@@ -23,6 +17,8 @@ const CategoriesPage = async () => {
             createdAt: String(item.createdAt),
         })
     );
+
+    console.log(formattedCategories);
 
     return (
         <div className="flex-col">

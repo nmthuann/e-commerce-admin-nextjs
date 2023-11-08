@@ -1,7 +1,7 @@
 import { GetProductById } from "@/actions/product/get-product";
 import { ProductForm } from "./components/product-form";
 import { GetDiscounts } from "@/actions/discount/get-discounts";
-import { GetData } from "@/actions/category/get-categories";
+import { GetCategories } from "@/actions/category/get-categories";
 
 const ProductPage = async ({ params }: { params: { product_id: string } }) => {
     // let product = null;
@@ -10,10 +10,12 @@ const ProductPage = async ({ params }: { params: { product_id: string } }) => {
     //     // discount = await GetDiscountById(parseInt(params.discount_id));
     //     product = await GetProductById(parseInt(params.product_id, 10));
     // }
+    const categories = await GetCategories();
     const discounts = await GetDiscounts();
-    const categories = await GetData();
     const product = await GetProductById(parseInt(params.product_id, 10));
     // const Images = await GetImages();
+
+    console.log("categories", categories);
 
     return (
         <div className="flex-col">
@@ -29,3 +31,10 @@ const ProductPage = async ({ params }: { params: { product_id: string } }) => {
 };
 
 export default ProductPage;
+
+// export async function getStaticPaths() {
+//     return {
+//         paths: [{ params: { product_id: 1 } }],
+//         fallback: false,
+//     };
+// }

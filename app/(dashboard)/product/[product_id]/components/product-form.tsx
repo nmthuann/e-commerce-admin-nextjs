@@ -65,13 +65,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     // const { control, handleSubmit, setValue, getValues } = useForm();
     // const [isFormChanged, setFormChanged] = useState(false);
     // const [initialFormState, setInitialFormState] = useState({});
-    const { register, handleSubmit } = useForm();
+    // const { register, handleSubmit } = useForm();
 
     const defaultValues: ProductFormValues = {
         status: initialData.status,
         battery: initialData.battery,
         behind_camera: initialData.behind_camera,
-        category_id: initialData.category.category_id,
+        category_id: initialData.category.category_id as number,
         color: initialData.color,
         description: initialData.description,
         discount_id: initialData.category.category_id,

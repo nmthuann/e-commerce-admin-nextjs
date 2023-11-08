@@ -13,6 +13,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 
 import { DataTableRowActions } from "./data-table-row-actions";
 import { ITask } from "@/types/task.interface";
+import { MapPin } from "lucide-react";
 
 export const columns: ColumnDef<ITask>[] = [
     {
@@ -60,7 +61,7 @@ export const columns: ColumnDef<ITask>[] = [
             return (
                 <div className="flex space-x-2">
                     {label && <Badge variant="outline">{label.label}</Badge>}
-                    <span className="max-w-[500px] truncate font-medium">
+                    <span className="max-w-[400px] truncate font-medium">
                         {row.getValue("title")}
                     </span>
                 </div>
@@ -139,6 +140,22 @@ export const columns: ColumnDef<ITask>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Create Date" />
         ),
+    },
+    {
+        accessorKey: "delivery_address",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Delivery" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div>
+                    <span>
+                        {row.getValue("delivery_address")}{" "}
+                        <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
+                    </span>
+                </div>
+            );
+        },
     },
     {
         id: "actions",
