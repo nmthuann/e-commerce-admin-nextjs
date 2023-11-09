@@ -39,7 +39,7 @@ import {
     WalletCards,
     XCircle,
 } from "lucide-react";
-import { OrderDetailModal } from "@/components/modals/order-detail-modal";
+// import { OrderDetailModal } from "@/components/modals/order-detail-modal";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -310,7 +310,7 @@ export function DataTableRowActions<TData>({
 
     return (
         <>
-            <OrderDetailModal
+            {/* <OrderDetailModal
                 isOpen={open}
                 onClose={() => {
                     router.refresh();
@@ -318,7 +318,7 @@ export function DataTableRowActions<TData>({
                 }}
                 orderDetails={orderDetails}
                 loading={loading}
-            />
+            /> */}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
