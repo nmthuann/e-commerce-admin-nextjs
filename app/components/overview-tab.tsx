@@ -8,11 +8,18 @@ import {
 import { Overview } from "./overview/overview";
 import { RecentSales } from "./overview/recent-sales";
 
+// interface OverviewTabProps {
+//     data: any[];
+// }
 interface OverviewTabProps {
-    data: any[];
+    overview: any[];
+    recentSales: any[];
 }
 
-export const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
+export const OverviewTab: React.FC<OverviewTabProps> = ({
+    overview,
+    recentSales,
+}) => {
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4">
@@ -20,18 +27,18 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({ data }) => {
                     <CardTitle>Overview</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
-                    <Overview data={data} />
+                    <Overview data={overview} />
                 </CardContent>
             </Card>
             <Card className="col-span-3">
                 <CardHeader>
                     <CardTitle>Recent Sales</CardTitle>
                     <CardDescription>
-                        You made 265 sales this month.
+                        You made 32 sales this year.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <RecentSales />
+                    <RecentSales topUser={recentSales} />
                 </CardContent>
             </Card>
         </div>

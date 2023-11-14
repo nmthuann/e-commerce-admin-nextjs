@@ -27,6 +27,9 @@ import ReportsTab from "./components/reports-tab";
 import { writeFileSync } from "fs";
 import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
+import { statisticalOnOffOrderCount } from "@/actions/dashboard/statistical-OnOffOrder-count";
+import { statisticalCategoryByOrder } from "@/actions/dashboard/statistical-category-by-order";
+import { findTopUserBuyProduct } from "@/actions/dashboard/find-top-user-buy-product";
 
 const HomePage = () => {
     const router = useRouter();
@@ -37,11 +40,18 @@ const HomePage = () => {
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [orderCreated, setOrderCreated] = useState(0);
     const [productInStock, setProductInStock] = useState(0);
+    const [onOffOrderCount, setOnOffOrderCount] = useState<any[]>([]);
+    const [categoryByOrder, setCategoryByOrder] = useState<any[]>([]);
+    const [findTopUser, setFindTopUserBuyProduct] = useState<any[]>([]);
+
     const DataDashboard = () => {
         CountOrdersCreated().then((res) => setOrderCreated(res));
         getGraphRevenue().then((res) => setGraphRevenue(res));
         GetTotalRevenue().then((res) => setTotalRevenue(res));
         CountProductSold().then((res) => setProductInStock(res));
+        statisticalOnOffOrderCount().then((res) => setOnOffOrderCount(res));
+        statisticalCategoryByOrder().then((res) => setCategoryByOrder(res));
+        findTopUserBuyProduct().then((res) => setFindTopUserBuyProduct(res));
     };
 
     useEffect(() => {
@@ -147,21 +157,24 @@ const HomePage = () => {
                                 <Users2 className="h-4 w-4 text-muted-foreground" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">56</div>
+                                <div className="text-2xl font-bold">32</div>
                             </CardContent>
                         </Card>
                     </div>
                     <TabsContent value="overview" className="space-y-4">
-                        <OverviewTab data={graphRevenue} />
+                        <OverviewTab
+                            overview={graphRevenue}
+                            recentSales={findTopUser}
+                        />
                     </TabsContent>
                     <TabsContent value="analytics" className="space-y-4">
                         <AnalyticsTab
-                            dataLineChart={data03}
-                            dataPieChart={data02}
+                            dataLineChart={onOffOrderCount}
+                            dataPieChart={categoryByOrder}
                         />
                     </TabsContent>
                     <TabsContent value="reports" className="space-y-4">
-                        <ReportsTab />
+                        <ReportsTab reportsTab={findTopUser} />
                     </TabsContent>
                 </Tabs>
             </div>
@@ -169,33 +182,6 @@ const HomePage = () => {
     );
 };
 export default HomePage;
-
-const data01 = [
-    {
-        name: "Group A",
-        value: 400,
-    },
-    {
-        name: "Group B",
-        value: 300,
-    },
-    {
-        name: "Group C",
-        value: 300,
-    },
-    {
-        name: "Group D",
-        value: 200,
-    },
-    {
-        name: "Group E",
-        value: 278,
-    },
-    {
-        name: "Group F",
-        value: 189,
-    },
-];
 
 const data02 = [
     {
@@ -227,63 +213,89 @@ const data02 = [
 const data03 = [
     {
         name: "Jan",
-        uv: 4000,
-        pv: 2400,
+        on: 1,
+        off: 0,
     },
     {
         name: "Feb",
-        uv: 3000,
-        pv: 1398,
+        on: 0,
+        off: 1,
     },
     {
         name: "Mar",
-        uv: 2000,
-        pv: 9800,
+        on: 1,
+        off: 0,
     },
     {
         name: "Apr",
-        uv: 2780,
-        pv: 3908,
+        on: 1,
+        off: 0,
     },
     {
         name: "May",
-        uv: 1890,
-        pv: 4800,
+        on: 0,
+        off: 1,
     },
     {
         name: "Jun",
-        uv: 2390,
-        pv: 3800,
+        on: 0,
+        off: 1,
     },
     {
         name: "Jul",
-        uv: 3490,
-        pv: 4300,
+        on: 1,
+        off: 2,
     },
-
     {
         name: "Aug",
-        uv: 3490,
-        pv: 4300,
+        on: 0,
+        off: 1,
     },
     {
         name: "Sep",
-        uv: 3490,
-        pv: 4300,
+        on: 1,
+        off: 0,
     },
     {
         name: "Oct",
-        uv: 3490,
-        pv: 4300,
+        on: 0,
+        off: 2,
     },
     {
         name: "Nov",
-        uv: 3490,
-        pv: 4300,
+        on: 2,
+        off: 0,
     },
     {
         name: "Dec",
-        uv: 3490,
-        pv: 4300,
+        on: 1,
+        off: 0,
+    },
+];
+
+const data01 = [
+    {
+        name: "Group A",
+        value: 400,
+    },
+    {
+        name: "Group B",
+        value: 300,
+    },
+    {
+        name: "Group C",
+        value: 300,
+    },
+    {
+        name: "Group D",
+        value: 200,
+    },
+    {
+        name: "Group E",
+        value: 278,
+    },
+    {
+        name: "Group F",
+        value: 189,
     },
 ];

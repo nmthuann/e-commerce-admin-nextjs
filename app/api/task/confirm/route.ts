@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const URL=`http://127.0.0.1:3333/order/update-confirmed/`
+const URL=`http://localhost:3333/order/update-confirmed/`
 export async function POST(
   req: Request
 ) {

@@ -14,6 +14,7 @@ interface PieChartProps {
 }
 
 export const AnalysisLineChart: React.FC<PieChartProps> = ({ data }) => {
+    const max = Math.max(...data.map((entry) => entry.on));
     return (
         <div>
             <LineChart
@@ -25,11 +26,21 @@ export const AnalysisLineChart: React.FC<PieChartProps> = ({ data }) => {
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
+                <YAxis
+                    // domain={[0, max]} // Đặt độ chia tỷ lệ trục Y từ 0 đến max
+                    type="number"
+                    domain={[0, "dataMax"]}
+                    // tickCount={max + 1}
+                />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                <Line
+                    type="monotone"
+                    dataKey="on"
+                    stroke="#8884d8"
+                    activeDot={{ r: 8 }}
+                />
+                <Line type="monotone" dataKey="off" stroke="#82ca9d" />
             </LineChart>
         </div>
     );

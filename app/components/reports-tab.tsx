@@ -7,18 +7,22 @@ import {
 } from "@/components/ui/card";
 import { RecentSales } from "./reports/recent-sales";
 
-const ReportsTab = () => {
+interface ReportsTabProps {
+    reportsTab: any[];
+}
+
+export const ReportsTab: React.FC<ReportsTabProps> = ({ reportsTab }) => {
     return (
         <div>
             <Card className="col-span-3">
                 <CardHeader>
                     <CardTitle>Recent Sales</CardTitle>
                     <CardDescription>
-                        You made 265 sales this month.
+                        You made 32 sales this year.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <RecentSales />
+                    <RecentSales topUser={reportsTab} />
                 </CardContent>
             </Card>
         </div>

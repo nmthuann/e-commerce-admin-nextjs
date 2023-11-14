@@ -37,7 +37,7 @@ export const AnalysisPieChart: React.FC<PieChartProps> = ({ data }) => {
                 /> */}
                 <Pie
                     data={data}
-                    dataKey="ma"
+                    dataKey="count"
                     nameKey="name"
                     cx="40%"
                     cy="50%"

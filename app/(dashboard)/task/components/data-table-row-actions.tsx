@@ -53,8 +53,8 @@ export function DataTableRowActions<TData>({
     const admin = useAppSelector((state) => state.auth.currentAdmin);
 
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [orderDetails, setOrderDetails] = useState([]);
+    // const [loading, setLoading] = useState(false);
+    // const [orderDetails, setOrderDetails] = useState([]);
 
     //  PENDING -> CONFIRMED
     async function handleConfirmedOrder() {
@@ -78,26 +78,29 @@ export function DataTableRowActions<TData>({
             toast.error(OrderError.REFUNDED_FOR_CONFIRMED_ORDER);
             return;
         }
-        try {
-            const res = await axios.post("api/task/confirm", {
-                order_id: task.id,
-            });
-            if (res.data.message === MiddlewareError.TOKEN_MISSING) {
-                toast.error(MiddlewareError.TOKEN_MISSING);
-                setTimeout(() => {
-                    router.push("auth/login");
-                    toast.success(RequestMessage.REQUEST_LOGIN);
-                }, 2000);
+        if (task.status === OrderStatus.Pending) {
+            console.log("OrderStatus.Pending", OrderStatus.Pending);
+            try {
+                const res = await axios.post("/api/task/confirm", {
+                    order_id: task.id,
+                });
+                if (res.data.message === MiddlewareError.TOKEN_MISSING) {
+                    toast.error(MiddlewareError.TOKEN_MISSING);
+                    setTimeout(() => {
+                        router.push("/auth/login");
+                        toast.success(RequestMessage.REQUEST_LOGIN);
+                    }, 2000);
+                }
+                if (res.data.message) {
+                    toast.error(res.data.message);
+                    return;
+                }
+                router.refresh();
+                toast.success(Messages.CONFIRMED_SUCCESS);
+            } catch (error) {
+                console.log(error);
+                toast.error(OrderError.UPDATE_STATUS_ORDER_FAILED);
             }
-            if (res.data.message) {
-                toast.error(res.data.message);
-                return;
-            }
-            router.refresh();
-            toast.success(Messages.CONFIRMED_SUCCESS);
-        } catch (error) {
-            console.log(error);
-            toast.error(OrderError.UPDATE_STATUS_ORDER_FAILED);
         }
     }
 
@@ -124,13 +127,13 @@ export function DataTableRowActions<TData>({
             return;
         }
         try {
-            const res = await axios.post("api/task/cancel", {
+            const res = await axios.post("/api/task/cancel", {
                 order_id: task.id,
             });
             if (res.data.message === MiddlewareError.TOKEN_MISSING) {
                 toast.error(MiddlewareError.TOKEN_MISSING);
                 setTimeout(() => {
-                    router.push("auth/login");
+                    router.push("/auth/login");
                     toast.success(RequestMessage.REQUEST_LOGIN);
                 }, 2000);
             }
@@ -169,13 +172,13 @@ export function DataTableRowActions<TData>({
             return;
         }
         try {
-            const res = await axios.post("api/task/inprogress", {
+            const res = await axios.post("/api/task/inprogress", {
                 order_id: task.id,
             });
             if (res.data.message === MiddlewareError.TOKEN_MISSING) {
                 toast.error(MiddlewareError.TOKEN_MISSING);
                 setTimeout(() => {
-                    router.push("auth/login");
+                    router.push("/auth/login");
                     toast.success(RequestMessage.REQUEST_LOGIN);
                 }, 2000);
             }
@@ -214,13 +217,13 @@ export function DataTableRowActions<TData>({
             return;
         }
         try {
-            const res = await axios.post("api/task/complete", {
+            const res = await axios.post("/api/task/complete", {
                 order_id: task.id,
             });
             if (res.data.message === MiddlewareError.TOKEN_MISSING) {
                 toast.error(MiddlewareError.TOKEN_MISSING);
                 setTimeout(() => {
-                    router.push("auth/login");
+                    router.push("/auth/login");
                     toast.success(RequestMessage.REQUEST_LOGIN);
                 }, 2000);
             }
@@ -259,7 +262,7 @@ export function DataTableRowActions<TData>({
             return;
         }
         try {
-            const res = await axios.post("api/task/refund", {
+            const res = await axios.post("/api/task/refund", {
                 order_id: task.id,
             });
             if (res.data.message === MiddlewareError.TOKEN_MISSING) {
@@ -280,33 +283,33 @@ export function DataTableRowActions<TData>({
             toast.error(OrderError.UPDATE_STATUS_ORDER_FAILED);
         }
     }
-    useEffect(() => {
-        // Gọi API và cập nhật state khi dữ liệu đã được lấy về
+    // useEffect(() => {
+    //     // Gọi API và cập nhật state khi dữ liệu đã được lấy về
 
-        const fetchOrderDetails = async () => {
-            try {
-                const response = await fetch(
-                    `http://127.0.0.1:3333/order-detail/${parseInt(
-                        task.id,
-                        10
-                    )}`
-                );
-                const data = await response.json();
+    //     const fetchOrderDetails = async () => {
+    //         try {
+    //             const response = await fetch(
+    //                 `http://127.0.0.1:3333/order-detail/${parseInt(
+    //                     task.id,
+    //                     10
+    //                 )}`
+    //             );
+    //             const data = await response.json();
 
-                // Cập nhật state orderDetails và loading
-                setOrderDetails(data);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching order details:", error);
-                setLoading(false);
-            }
-        };
+    //             // Cập nhật state orderDetails và loading
+    //             setOrderDetails(data);
+    //             setLoading(false);
+    //         } catch (error) {
+    //             console.error("Error fetching order details:", error);
+    //             setLoading(false);
+    //         }
+    //     };
 
-        // Kiểm tra điều kiện mở modal và loading trước khi gọi API
-        if (open && loading) {
-            fetchOrderDetails();
-        }
-    }, [open, loading]);
+    //     // Kiểm tra điều kiện mở modal và loading trước khi gọi API
+    //     if (open && loading) {
+    //         fetchOrderDetails();
+    //     }
+    // }, [open, loading]);
 
     return (
         <>

@@ -45,7 +45,7 @@ export const getGraphRevenue = async (): Promise<GraphData[]> => {
 
 for (const key in aggregatedRevenue) {
   if (aggregatedRevenue.hasOwnProperty(key)) {
-    const month = parseInt(key, 10);
+    const month = parseInt(key, 10)+1;
     const total = aggregatedRevenue[key];
     
     switch (month) {
