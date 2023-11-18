@@ -4,7 +4,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { Provider } from "react-redux";
+
 import { Providers } from "@/redux/provider";
 import Head from "next/head";
 
@@ -47,7 +47,6 @@ export default function RootLayout({
                     {/* </Provider> */}
                 </ThemeProvider>
             </body>
-            {/* <Footer/>  */}
         </html>
     );
 }

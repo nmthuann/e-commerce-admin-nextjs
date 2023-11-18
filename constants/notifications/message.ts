@@ -9,7 +9,9 @@ export enum Messages{
     CANCELED_SUCCESS = 'Hủy đơn hàng thành công.',
     INPROGRESS_SUCCESS = 'Đơn hàng đang được giao cho đơn vị vận chuyển.',
     COMPLETED_SUCCESS = 'Hoàn tất quá trình giao hàng.',
-    REFUNDED_SUCCESS = ' Hoàn trả đơn hàng.'
+    REFUNDED_SUCCESS = ' Hoàn trả đơn hàng.',
+    DELETED_SUCCESS = "Thao tác xóa thực hiện thành công.",
+    UPDATED_CUSTOMER_SUCCESS = "Bạn vừa cập nhật khách hàng có ID",
 }
 
 

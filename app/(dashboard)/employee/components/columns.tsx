@@ -59,6 +59,13 @@ export const columns: ColumnDef<EmployeeColumn>[] = [
     {
         accessorKey: "work_status",
         header: "Status",
+        cell: ({ row }) => (
+            <div
+                className={`h-4 w-4 rounded-full ${
+                    row.original.work_status ? "bg-green-500" : "bg-red-500"
+                }`}
+            ></div>
+        ),
     },
     {
         accessorKey: "address",
