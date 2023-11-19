@@ -1,6 +1,15 @@
 "use client";
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Legend,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
 
 interface OverviewProps {
     data: any[];
@@ -9,7 +18,17 @@ interface OverviewProps {
 export const Overview: React.FC<OverviewProps> = ({ data }) => {
     return (
         <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={data} title="Doanh thu qua từng tháng">
+            <BarChart
+                data={data}
+                title="Doanh thu qua từng tháng"
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                     dataKey="name"
                     stroke="#888888"
@@ -24,8 +43,10 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                     axisLine={false}
                     tickFormatter={(value) => `${value}`}
                 />
-                <Bar dataKey="total" fill="#adfa1d " radius={[4, 4, 0, 0]} />
-                {/* #3498db */}
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="total" fill="#a3e635" radius={[4, 4, 0, 0]} />
+                {/* #3498db #adfa1d*/}
             </BarChart>
         </ResponsiveContainer>
     );

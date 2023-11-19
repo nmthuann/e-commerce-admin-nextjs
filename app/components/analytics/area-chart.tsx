@@ -55,6 +55,7 @@ export const AnalysisAreaChart: React.FC<PieChartProps> = ({ data }) => {
                 <YAxis />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
+                <Legend />
                 <Area
                     type="monotone"
                     dataKey="on"

@@ -14,6 +14,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { ITask } from "@/types/task.interface";
 import { MapPin } from "lucide-react";
+import { OrderStatus } from "@/constants/enums/order-status.enum";
 
 export const columns: ColumnDef<ITask>[] = [
     {
@@ -95,11 +96,38 @@ export const columns: ColumnDef<ITask>[] = [
                 return null;
             } else {
                 return (
-                    <div className="flex w-[100px] items-center">
+                    // <div className="flex w-[100px] items-center">
+                    <div
+                        className={
+                            row.getValue("status") === OrderStatus.Pending
+                                ? "bg-pink-400 p-2 rounded-lg"
+                                : row.getValue("status") ===
+                                  OrderStatus.Confirmed
+                                ? "bg-blue-400 p-2 rounded-lg"
+                                : row.getValue("status") ===
+                                  OrderStatus.Canceled
+                                ? "bg-red-400 p-2 rounded-lg"
+                                : row.getValue("status") ===
+                                  OrderStatus.InProgress
+                                ? "bg-yellow-500 p-3 rounded-lg"
+                                : row.getValue("status") ===
+                                  OrderStatus.Completed
+                                ? "bg-green-400 p-2 rounded-lg"
+                                : row.getValue("status") ===
+                                  OrderStatus.Refunded
+                                ? "bg-purple-400 p-2 rounded-lg"
+                                : "flex w-[100px] items-center"
+                        }
+                    >
                         {status.icon && (
-                            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                            <div className="flex w-[100px] items-center">
+                                <status.icon className="mr-2 h-4 w-4 text-gray-200" />
+                                {/* className="mr-2 h-4 w-4 text-muted-foreground" */}
+                                <span className="text-gray-200">
+                                    {status.label}
+                                </span>
+                            </div>
                         )}
-                        <span>{status.label}</span>
                     </div>
                 );
             }
@@ -162,3 +190,8 @@ export const columns: ColumnDef<ITask>[] = [
         cell: ({ row }) => <DataTableRowActions row={row} />,
     },
 ];
+// //   {status.icon && (
+//                             <status.icon className="mr-2 h-4 w-4 text-gray-200" />
+//                             // className="mr-2 h-4 w-4 text-muted-foreground"
+//                         )}
+//                         <span className="text-gray-200">{status.label}</span>

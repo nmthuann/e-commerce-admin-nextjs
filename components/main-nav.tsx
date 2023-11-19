@@ -18,6 +18,7 @@ import {
     Users,
 } from "lucide-react";
 import { useAppSelector } from "@/redux/hook";
+import { useEffect, useState } from "react";
 
 export function MainNav({
     className,
@@ -27,6 +28,8 @@ export function MainNav({
     const params = useParams();
     const admin = useAppSelector((state) => state.auth.currentAdmin);
     // const { admin } = useAuth();
+
+    const [activeTab, setActiveTab] = useState("");
 
     const routes = [
         {
@@ -38,43 +41,43 @@ export function MainNav({
         {
             href: `/category`,
             label: "Categories",
-            active: pathname === `/category`,
+            active: pathname === `/category/`,
             icon: Shuffle,
         },
         {
             href: `/discount`,
             label: "Discounts",
-            active: pathname === `/discount`,
+            active: pathname === `/discount/`,
             icon: Ticket,
         },
         {
             href: `/product`,
             label: "Products",
-            active: pathname === `/product`,
+            active: pathname === `/product/`,
             icon: Smartphone,
         },
         {
             href: `/task`,
             label: "Tasks",
-            active: pathname === `/task`,
+            active: pathname === `/task/`,
             icon: PackageCheck,
         },
         {
             href: `/employee`,
             label: "Employees",
-            active: pathname === `/employee`,
+            active: pathname === `/employee/`,
             icon: UserCog,
         },
         {
             href: `/customer`,
             label: "Customers",
-            active: pathname === `/customer`,
+            active: pathname === `/customer/`,
             icon: Users,
         },
         {
             href: `/setting`,
             label: "Settings",
-            active: pathname === `/setting`,
+            active: pathname === `/setting/`,
             icon: Settings,
         },
     ];
@@ -118,6 +121,12 @@ export function MainNav({
         routes.length = 1;
     }
 
+    useEffect(() => {
+        // Update the active tab when the pathname changes
+        setActiveTab(pathname);
+        // console.log("Pathname changed:", pathname);
+    }, [pathname]);
+
     return (
         <nav
             className={cn(
@@ -127,17 +136,41 @@ export function MainNav({
             {...props}
         >
             {routes.map((route) => (
+                // <Link
+                //     key={route.href}
+                //     href={route.href}
+                //     // className={cn(
+                //     //     "text-sm font-medium transition-colors hover:text-primary",
+                //     //     route.active
+                //     //         ? "text-black dark:text-white"
+                //     //         : "text-muted-foreground"
+                //     // )}
+                //     className={cn(
+                //         "text-sm font-medium transition-colors",
+                //         route.active
+                //             ? "hover:text-white text-black dark:text-white"
+                //             : "hover:text-primary text-black"
+                //     )}
+                // >
                 <Link
                     key={route.href}
                     href={route.href}
                     className={cn(
-                        "text-sm font-medium transition-colors hover:text-primary",
+                        "text-sm font-medium transition-colors",
                         route.active
-                            ? "text-black dark:text-white"
-                            : "text-muted-foreground"
+                            ? "hover:text-white text-black dark:text-white"
+                            : "hover:text-primary text-black",
+                        activeTab === route.href && "text-black" // Add this line
                     )}
                 >
-                    <Button className="bg-white text-black hover:text-white">
+                    {/* <Button className="bg-white text-black hover:text-white"> */}
+                    <Button
+                        className={cn(
+                            "bg-white text-black hover:text-white",
+                            route.active &&
+                                "bg-gray-800 text-white hover:text-white"
+                        )}
+                    >
                         <route.icon className="mr-2 h-4 w-4 " />
                         {route.label}
                     </Button>
