@@ -7,7 +7,6 @@ import {
     YAxis,
     CartesianGrid,
 } from "recharts";
-// import { CartesianGrid } from "recharts/types/cartesian/CartesianGrid";
 
 interface PieChartProps {
     data: any[];

@@ -32,17 +32,7 @@ export default async function TaskPage() {
                     <div className="flex items-center space-x-2">
                         <TooltipProvider>
                             <Tooltip>
-                                <TooltipTrigger>
-                                    {/* Hover */}
-                                    {/* <Button
-                                    // onClick={() =>
-                                    //     router.push(`/order/create`)
-                                    // }
-                                    >
-                                        <Plus className="mr-2 h-4 w-4" /> Add
-                                        New
-                                    </Button> */}
-                                </TooltipTrigger>
+                                <TooltipTrigger></TooltipTrigger>
                                 <TooltipContent>
                                     <p>Add New Order</p>
                                 </TooltipContent>

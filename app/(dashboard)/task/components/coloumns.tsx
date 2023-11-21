@@ -190,8 +190,3 @@ export const columns: ColumnDef<ITask>[] = [
         cell: ({ row }) => <DataTableRowActions row={row} />,
     },
 ];
-// //   {status.icon && (
-//                             <status.icon className="mr-2 h-4 w-4 text-gray-200" />
-//                             // className="mr-2 h-4 w-4 text-muted-foreground"
-//                         )}
-//                         <span className="text-gray-200">{status.label}</span>
