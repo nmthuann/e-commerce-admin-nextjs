@@ -14,7 +14,6 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { formatter } from "@/lib/utils";
-// import { useAuth } from "@/providers/auth-provider";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { CreditCard, Package, Receipt, Users2 } from "lucide-react";
 
@@ -24,7 +23,6 @@ import OverviewTab from "./components/overview-tab";
 import { AnalyticsTab } from "./components/analytics-tab";
 import ReportsTab from "./components/reports-tab";
 
-import { writeFileSync } from "fs";
 import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import { statisticalOnOffOrderCount } from "@/actions/dashboard/statistical-OnOffOrder-count";
@@ -49,7 +47,10 @@ const HomePage = () => {
         getGraphRevenue().then((res) => setGraphRevenue(res));
         GetTotalRevenue().then((res) => setTotalRevenue(res));
         CountProductSold().then((res) => setProductInStock(res));
-        statisticalOnOffOrderCount().then((res) => setOnOffOrderCount(res));
+        statisticalOnOffOrderCount().then((res) => {
+            console.log(res);
+            setOnOffOrderCount(res);
+        });
         statisticalCategoryByOrder().then((res) => setCategoryByOrder(res));
         findTopUserBuyProduct().then((res) => setFindTopUserBuyProduct(res));
     };

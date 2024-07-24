@@ -6,6 +6,7 @@ export async function statisticalOnOffOrderCount(): Promise<any[]> {
         method: 'GET',
       };
       const res = await fetch(URL, options);
+      console.log(res)
       return await res.json();
 
   } catch (error) {

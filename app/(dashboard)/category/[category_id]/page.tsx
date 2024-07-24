@@ -1,5 +1,3 @@
-// import prismadb from "@/lib/prismadb";
-
 import { GetData } from "@/actions/category/get-category";
 import { CategoryForm } from "@/app/(dashboard)/category/[category_id]/components/category-form";
 

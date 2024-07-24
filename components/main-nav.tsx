@@ -25,7 +25,6 @@ export function MainNav({
     ...props
 }: React.HTMLAttributes<HTMLElement>) {
     const pathname = usePathname();
-    const params = useParams();
     const admin = useAppSelector((state) => state.auth.currentAdmin);
     // const { admin } = useAuth();
 
